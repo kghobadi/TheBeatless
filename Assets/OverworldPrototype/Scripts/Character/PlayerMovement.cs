@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 targetPosition;
     public float speed;
 
+
+
     void Start()
     {
         targetPosition = transform.position;
@@ -22,8 +24,12 @@ public class PlayerMovement : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                targetPosition = hit.point;
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+                if (hit.collider.gameObject.name != "Player")
+                {
+                    targetPosition = hit.point;
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+                    
+                }
             }
         }
     }
