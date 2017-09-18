@@ -98,6 +98,7 @@ public class TerrainGenerator : MonoBehaviour {
                         {
                             int treeRando = Random.Range(0, 100);
                             int rotateRando = Random.Range(0, 360);
+
                             var unitCircle = Random.insideUnitCircle * spawnSizeArea;
                             var newPosition = new Vector3(unitCircle.x, 0, unitCircle.y) + objectPosition;
 
@@ -118,6 +119,7 @@ public class TerrainGenerator : MonoBehaviour {
                         {
                             int rockRando = Random.Range(0, 100);
                             int rotateRando = Random.Range(0, 360);
+
                             var unitCircle = Random.insideUnitCircle * spawnSizeArea;
                             var newPosition = new Vector3(unitCircle.x, 0, unitCircle.y) + objectPosition;
 
