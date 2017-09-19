@@ -17,7 +17,8 @@ public class TerrainGenerator : MonoBehaviour {
     public float offsetY = 100f;
 
     // prefabs for object instantiation
-    public GameObject scary_tree, cartoon_tree, pine_tree, circle_tree, theWindmill, rock_1, rock_2, rock_3;
+    public GameObject scary_tree, cartoon_tree, pine_tree, circle_tree, theWindmill, rock_1, rock_2, rock_3, audioSource;
+	public AudioClip clip1, clip2, clip3, clip4;
 
     // number of objects in instantiated biomes
     public int treeAmount;
@@ -70,6 +71,11 @@ public class TerrainGenerator : MonoBehaviour {
                     {
                         var objectPosition = new Vector3(x * distBetweenInstant, depth, y * distBetweenInstant); //places the object correctly on Terrain Map
                         Instantiate(theWindmill, objectPosition, Quaternion.Euler(0f, 0f, 0f));
+						GameObject windMillAudio = Instantiate(audioSource,objectPosition,Quaternion.identity);
+						windMillAudio.name = "windMillAudio";
+						windMillAudio.GetComponent<AudioSource>().clip = clip1;
+						windMillAudio.GetComponent<AudioSource>().maxDistance = distBetweenInstant/1.8f;
+						windMillAudio.GetComponent<AudioSource>().Play();
                     }
 
                     if (rando > 1 && rando < 25) //will spawn a scary forest
@@ -87,7 +93,14 @@ public class TerrainGenerator : MonoBehaviour {
                             int rotateRando = Random.Range(0, 360);
 
                             Instantiate(scary_tree, newPosition, Quaternion.Euler(0f, rotateRando, 0f));
+
+
                         }
+						GameObject scaryForest = Instantiate(audioSource,objectPosition,Quaternion.identity);
+						scaryForest.name = "scaryForestAudio";
+						scaryForest.GetComponent<AudioSource>().clip = clip2;
+						scaryForest.GetComponent<AudioSource>().maxDistance = distBetweenInstant/1.8f;
+						scaryForest.GetComponent<AudioSource>().Play();
                     }
 
                     if (rando > 25 && rando < 75) //will spawn a cartoon forest
@@ -108,7 +121,14 @@ public class TerrainGenerator : MonoBehaviour {
                                 Instantiate(pine_tree, newPosition, Quaternion.Euler(0f, rotateRando, 0f));
                             if(treeRando > 66)
                                 Instantiate(circle_tree, newPosition, Quaternion.Euler(0f, rotateRando, 0f));
+
+
                         }
+						GameObject cartoonForestAudio = Instantiate(audioSource,objectPosition,Quaternion.identity);
+						cartoonForestAudio.name = "cartoonForestAudio";
+						cartoonForestAudio.GetComponent<AudioSource>().clip = clip1;
+						cartoonForestAudio.GetComponent<AudioSource>().maxDistance = distBetweenInstant/1.8f;
+						cartoonForestAudio.GetComponent<AudioSource>().Play();
                     }
 
                     if (rando > 75 && rando < 100) // will spawn rock formations
@@ -129,7 +149,14 @@ public class TerrainGenerator : MonoBehaviour {
                                 Instantiate(rock_2, newPosition, Quaternion.Euler(0f, rotateRando, 0f));
                             if (rockRando > 66)
                                 Instantiate(rock_3, newPosition, Quaternion.Euler(0f, rotateRando, 0f));
+
+
                         }
+						GameObject rockFormAudio = Instantiate(audioSource,objectPosition,Quaternion.identity);
+						rockFormAudio.name = "rockFormAudio";
+						rockFormAudio.GetComponent<AudioSource>().clip = clip1;
+						rockFormAudio.GetComponent<AudioSource>().maxDistance = distBetweenInstant/1.8f;
+						rockFormAudio.GetComponent<AudioSource>().Play();
                     }
                 }
                 
