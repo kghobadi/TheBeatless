@@ -6,6 +6,9 @@ public class CameraMan : MonoBehaviour {
 
     GameObject player;
     Vector3 targetPosition;
+    public float minFov = 15f;
+    public float maxFov = 90f;
+    public float sensitivity = 10f;
 
     void Start()
     {
@@ -24,5 +27,10 @@ public class CameraMan : MonoBehaviour {
                 transform.LookAt(targetPosition);
             }
         }
-	}
+        float fov = Camera.main.fieldOfView;
+        fov -= Input.GetAxis("Mouse ScrollWheel") * sensitivity;
+        fov = Mathf.Clamp(fov, minFov, maxFov);
+        Camera.main.fieldOfView = fov;
+    }
+    
 }
