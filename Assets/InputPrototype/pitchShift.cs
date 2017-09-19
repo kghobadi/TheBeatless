@@ -4,13 +4,12 @@ using UnityEngine;
 //using HoloPlaySDK;
 
 public class pitchShift : MonoBehaviour{
-    public AudioSource[] audio;
+	public AudioSource[] audio = new AudioSource[4];
     public float xPos;
     public float yPos;
     public int ambPriority = 0;
 	// Use this for initialization
 	void Start () {
-		audio = new AudioSource[4];
 	}
 	
 	// Update is called once per frame

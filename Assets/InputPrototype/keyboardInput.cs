@@ -19,6 +19,8 @@ public class keyboardInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		ExtensionMethods.Remap (Input.GetAxis ("Mouse Y"), -10, 10, 0, 1);
+
 		//movement input, can press different directional keys, but not opposite
 		if (movementInput) {
 			multiKeyInput = false;
