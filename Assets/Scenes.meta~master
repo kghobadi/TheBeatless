@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/OverworldPrototype/Audio.meta
+guid: 5ebe92ddc6f1f43c191a15692dd1c0b2
+folderAsset: yes
+timeCreated: 1505700578
+=======
 guid: f8eaf56bcd7eb4203b7aff1f1fc2d080
 folderAsset: yes
 timeCreated: 1505420649
+>>>>>>> master:Assets/Scenes.meta~master
 licenseType: Free
 DefaultImporter:
   userData: 

@@ -7,7 +7,8 @@ public class Sun : MonoBehaviour {
     public Transform rotation;
 
     public Light sun;
-    
+
+   
 	
 	void Update () {
         //rotates sun around zero 
