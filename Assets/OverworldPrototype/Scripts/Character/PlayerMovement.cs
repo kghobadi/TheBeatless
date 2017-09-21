@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
 
 
-
     void Start()
     {
         targetPosition = transform.position;
@@ -28,12 +27,15 @@ public class PlayerMovement : MonoBehaviour
                 {
                     targetPosition = hit.point;
                     transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-                    transform.LookAt(Input.mousePosition);
+                    transform.LookAt(targetPosition);
                 }
             }
         }
 
         
+        
     }
+
+    
 
 }
