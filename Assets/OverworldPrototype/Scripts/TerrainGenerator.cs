@@ -67,7 +67,7 @@ public class TerrainGenerator : MonoBehaviour {
                 {
                     int rando = Random.Range(0, 100); //random int
 
-                    if(rando < 1) //will spawn windmill at a point
+                    if(rando < 2.5) //will spawn windmill at a point
                     {
                         var objectPosition = new Vector3(x * distBetweenInstant, depth, y * distBetweenInstant); //places the object correctly on Terrain Map
                         Instantiate(theWindmill, objectPosition, Quaternion.Euler(0f, 0f, 0f));
@@ -78,7 +78,7 @@ public class TerrainGenerator : MonoBehaviour {
 						windMillAudio.GetComponent<AudioSource>().Play();
                     }
 
-                    if (rando > 1 && rando < 25) //will spawn a scary forest
+                    if (rando > 2.5 && rando < 25) //will spawn a scary forest
                     {
                         var objectPosition = new Vector3(x * distBetweenInstant, depth, y * distBetweenInstant);
 
@@ -126,7 +126,7 @@ public class TerrainGenerator : MonoBehaviour {
                         }
 						GameObject cartoonForestAudio = Instantiate(audioSource,objectPosition,Quaternion.identity);
 						cartoonForestAudio.name = "cartoonForestAudio";
-						cartoonForestAudio.GetComponent<AudioSource>().clip = clip1;
+						cartoonForestAudio.GetComponent<AudioSource>().clip = clip3;
 						cartoonForestAudio.GetComponent<AudioSource>().maxDistance = distBetweenInstant/1.8f;
 						cartoonForestAudio.GetComponent<AudioSource>().Play();
                     }
@@ -154,7 +154,7 @@ public class TerrainGenerator : MonoBehaviour {
                         }
 						GameObject rockFormAudio = Instantiate(audioSource,objectPosition,Quaternion.identity);
 						rockFormAudio.name = "rockFormAudio";
-						rockFormAudio.GetComponent<AudioSource>().clip = clip1;
+						rockFormAudio.GetComponent<AudioSource>().clip = clip4;
 						rockFormAudio.GetComponent<AudioSource>().maxDistance = distBetweenInstant/1.8f;
 						rockFormAudio.GetComponent<AudioSource>().Play();
                     }

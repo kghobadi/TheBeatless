@@ -28,10 +28,12 @@ public class PlayerMovement : MonoBehaviour
                 {
                     targetPosition = hit.point;
                     transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-                    
+                    transform.LookAt(Input.mousePosition);
                 }
             }
         }
+
+        
     }
 
 }

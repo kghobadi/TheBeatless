@@ -7,12 +7,13 @@ public class SaveSound : MonoBehaviour
     private int bufferSize;
     private int numBuffers;
     private int outputRate = 44100;
-    private String fileName = "recTest.wav";
+    private String fileName = "recTest.wav"; //this should be a pop-up which takes a typed name entry from player
     private int headerSize = 44; //default for uncompressed wav
  
     private bool recOutput ;
 
     private FileStream fileStream;
+    //we should allow player to view and listen to their songs as AudioClips in game
  
     void Awake()
     {
