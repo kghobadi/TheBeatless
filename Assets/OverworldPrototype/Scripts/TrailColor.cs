@@ -27,36 +27,34 @@ public class TrailColor : MonoBehaviour {
 
     void SetTrailColor()
     {
-        int randoColor = Random.Range(0, 8);
+        int randoColor = Random.Range(1, 6);
 
         switch (randoColor)
         {
-            case 8:
-                trailRender.material.SetColor("_TintColor", Color.red);
-                break;
-            case 7:
-                trailRender.material.SetColor("_TintColor", Color.blue);
-                break;
             case 6:
-                trailRender.material.SetColor("_TintColor", Color.yellow);
+                trailRender.material.SetColor("_TintColor", Color.red);
+                Debug.Log("red");
                 break;
+                
             case 5:
-                trailRender.material.SetColor("_TintColor", Color.green);
+                trailRender.material.SetColor("_TintColor", Color.blue);
+                Debug.Log("blue");
                 break;
             case 4:
-                trailRender.material.SetColor("_TintColor", Color.magenta);
+                trailRender.material.SetColor("_TintColor", Color.yellow);
+                Debug.Log("yellow");
                 break;
             case 3:
-                trailRender.material.SetColor("_TintColor", Color.cyan);
+                trailRender.material.SetColor("_TintColor", Color.green);
+                Debug.Log("green");
                 break;
             case 2:
-                trailRender.material.SetColor("_TintColor", Color.white);
+                trailRender.material.SetColor("_TintColor", Color.magenta);
+                Debug.Log("magenta");
                 break;
             case 1:
-                trailRender.material.SetColor("_TintColor", Color.black);
-                break;
-            case 0:
-                trailRender.material.SetColor("_TintColor", Color.gray);
+                trailRender.material.SetColor("_TintColor", Color.cyan);
+                Debug.Log("cyan");
                 break;
 
         }
