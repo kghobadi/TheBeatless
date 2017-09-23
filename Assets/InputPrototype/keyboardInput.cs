@@ -12,14 +12,12 @@ public class keyboardInput : MonoBehaviour {
 		mouseStuff = false;
 		particleStuff = false;
 		movementInput = false;
-		multiKeyInput = false;
+		multiKeyInput = true;
 		oneKeyInput = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		ExtensionMethods.Remap (Input.GetAxis ("Mouse Y"), -10, 10, 0, 1);
 
 		//movement input, can press different directional keys, but not opposite
 		if (movementInput) {
@@ -202,7 +200,7 @@ public class keyboardInput : MonoBehaviour {
 				particles [3].SetActive (false);
 			}
 		} else {
-			particles [0].SetActive (false);
+//			particles [0].SetActive (false);
 			particles [1].SetActive (false);
 			particles [2].SetActive (false);
 			particles [3].SetActive (false);
