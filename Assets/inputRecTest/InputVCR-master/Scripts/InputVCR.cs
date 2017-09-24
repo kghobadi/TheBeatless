@@ -157,7 +157,7 @@ public class InputVCR : MonoBehaviour
 			Play ( currentRecording );
 		}
 	}
-	
+	    
 	/// <summary>
 	/// Play the specified recording, from optional specified time
 	/// </summary>
