@@ -43,9 +43,11 @@ public class InstrumentObject : Interactable {
 
         transform.localPosition = armPosition;
 
+        // this would have been for a smoother movement to the player's arm, but unnecessary for now
         //if(Vector3.Distance(transform.localPosition, armPosition) > 0)
         //{
         //    transform.localPosition = Vector3.MoveTowards(transform.localPosition, armPosition, movespeed * Time.deltaTime);
         //}
+
     }
 }
