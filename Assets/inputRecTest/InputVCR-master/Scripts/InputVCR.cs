@@ -108,6 +108,12 @@ public class InputVCR : MonoBehaviour
 	float playbackTime;
 	
 	public event System.Action finishedPlayback;	// sent when playback finishes
+
+	void Start(){
+
+		currentRecording = GetComponent<Recording>();
+
+	}
 	
 	/// <summary>
 	/// Start recording. Will append to already started recording
@@ -339,8 +345,9 @@ public class InputVCR : MonoBehaviour
                         Debug.Log( "Unsupported input type : " + input.inputType );
                         break;
                     }
-
+				
 					currentRecording.AddInput ( currentFrame, input );
+
 				}
 				
 				// synced location

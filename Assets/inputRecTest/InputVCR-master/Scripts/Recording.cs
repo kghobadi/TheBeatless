@@ -12,7 +12,7 @@ using System.Text;
 using System.IO;
 using LitJson;
 
-public class Recording
+public class Recording : MonoBehaviour
 {
     public int frameRate;
     public List<RecordingFrame> frames = new List<RecordingFrame>();
