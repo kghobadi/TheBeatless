@@ -9,6 +9,8 @@ public class FirstPersonController : MonoBehaviour {
     public float scrollSpeed = 2.0f;
     CharacterController player;
 
+    public bool isHoldingAnimal;
+
     //public Animation pickAxe;
     //public AudioSource miner;
     //public AudioClip mining;
@@ -55,29 +57,5 @@ public class FirstPersonController : MonoBehaviour {
 
     }
 
-    //public void PlayMine()
-    //{
-    //    StartCoroutine(Mine());
-    //}
-
-    //public IEnumerator Mine()
-    //{
-    //    IAmMining = true;
-    //    pickAxe.Play();
-    //    miner.PlayOneShot(mining);
-        
-    //    yield return new WaitForSeconds(0.25f);
-    //    rockBits.Play();
-    //    yield return new WaitForSeconds(0.65f);
-
-    //    pickAxe.Stop();
-    //    rockBits.Stop();
-    //    IAmMining = false;
-    //    Debug.Log("MINING FINISHED!");
-    //    yield break;
-    //    //NEEd TO FIGURE OUT WHY THIS WONT STOP ON LAST HIT 
-        
-
-
-    //}
+   
 }
