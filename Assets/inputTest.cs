@@ -20,6 +20,5 @@ public class inputTest : MonoBehaviour {
 		if(vcr.GetKey("s")){
 			transform.position -= new Vector3(0, Time.deltaTime * 10, 0);
 		}
-
 	}
 }
