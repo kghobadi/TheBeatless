@@ -9,13 +9,12 @@ public class Specie : MonoBehaviour
     public AnimalSpecies specieName;
     public Dictionary<string, AudioClip> audioSchema;
 
-	InputVCR vcr;
 	string keyCodeString;
 
     public void Awake()
     {
 
-		vcr = GetComponent<InputVCR>();
+
 
         specieName = AnimalSpecies.DOG;
 		audioSchema = new Dictionary<string, AudioClip>(){
