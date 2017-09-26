@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class setInputRecording : MonoBehaviour {
 
-	InstrumentObject instrumentObjectScript;
-	InputVCR vcr;
-	Specie specie;
-	Recording rec;
+	public InstrumentObject instrumentObjectScript;
+	public InputVCR vcr;
+	public Specie specie;
+	public Recording rec;
 
 	FirstPersonController playerControl;
 
@@ -52,7 +52,7 @@ public class setInputRecording : MonoBehaviour {
 			//
 			if (instrumentObjectScript.underPlayerControl && vcr.mode == InputVCRMode.Record && Input.GetKeyDown(KeyCode.T)) {
 				vcr.Stop();
-				Recording inputSequence = vcr.GetRecording();
+		//		Recording inputSequence = vcr.GetRecording();
 				//Output to Species Track list 
 				//AnimalTracks.Instance.AddTrackToSpecies(specie.specieName, inputSequence);
 
@@ -64,4 +64,7 @@ public class setInputRecording : MonoBehaviour {
 			}
 		}
 	}
+
+
+	//MUST PUT THE KEYBOARD CONTROLLER ON EACH OBJECT AND THEN 
 }

@@ -34,6 +34,8 @@ public class keyboardInput : MonoBehaviour {
 		origDVert = Dmesh.vertices;
 		dNormals = Dmesh.normals;
 
+		specie = GetComponent<Specie>();
+
 	}
 	
 	// Update is called once per frame
