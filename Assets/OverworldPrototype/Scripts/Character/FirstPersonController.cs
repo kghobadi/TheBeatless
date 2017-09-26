@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class FirstPersonController : MonoBehaviour {
 
-    public float speed = 2.0f;
+    public float speed;
+    public float sprintSpeed;
     public float scrollSpeed = 2.0f;
     CharacterController player;
+
+    public bool isHoldingAnimal;
 
     //public Animation pickAxe;
     //public AudioSource miner;
@@ -31,6 +34,14 @@ public class FirstPersonController : MonoBehaviour {
     }
 	
 	void Update () {
+        if(Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(KeyCode.RightShift))
+        {
+            speed = sprintSpeed;
+        }
+        else
+        {
+            speed = 10f;
+        }
         moveForwardBackward = Input.GetAxis("Vertical") * speed;
         moveLeftRight = Input.GetAxis("Horizontal") * speed;
         moveUpDown = Input.GetAxis("Mouse ScrollWheel") * scrollSpeed;
@@ -39,36 +50,12 @@ public class FirstPersonController : MonoBehaviour {
 
         movement = transform.rotation * movement;
         player.Move(movement * Time.deltaTime);
-        
-        
 
+
+        Debug.Log(speed);
 
 
     }
 
-    //public void PlayMine()
-    //{
-    //    StartCoroutine(Mine());
-    //}
-
-    //public IEnumerator Mine()
-    //{
-    //    IAmMining = true;
-    //    pickAxe.Play();
-    //    miner.PlayOneShot(mining);
-        
-    //    yield return new WaitForSeconds(0.25f);
-    //    rockBits.Play();
-    //    yield return new WaitForSeconds(0.65f);
-
-    //    pickAxe.Stop();
-    //    rockBits.Stop();
-    //    IAmMining = false;
-    //    Debug.Log("MINING FINISHED!");
-    //    yield break;
-    //    //NEEd TO FIGURE OUT WHY THIS WONT STOP ON LAST HIT 
-        
-
-
-    //}
+   
 }
