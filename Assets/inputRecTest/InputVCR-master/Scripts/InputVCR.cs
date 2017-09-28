@@ -258,7 +258,8 @@ public class InputVCR : MonoBehaviour
 				// end of recording
 				if ( finishedPlayback != null )
 					finishedPlayback( );
-				Stop ();
+              //  Stop ();
+                Play();
 			}
 			else
 			{

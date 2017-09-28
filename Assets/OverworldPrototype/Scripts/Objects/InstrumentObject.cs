@@ -5,7 +5,6 @@ using UnityEngine;
 public class InstrumentObject : Interactable {
     public bool underPlayerControl;
     public InputVCR inputVCR;
-    public Specie specie;
 
 
 
@@ -13,7 +12,6 @@ public class InstrumentObject : Interactable {
     {
         base.Start();
         inputVCR = GetComponent<InputVCR>();
-        specie = GetComponent<Specie>();
 
     }
 

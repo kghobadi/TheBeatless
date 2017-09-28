@@ -304,6 +304,7 @@ public class Recording : MonoBehaviour
         if ( atFrame < 0 || atFrame >= frames.Count )
         {
             Debug.LogWarning( "Frame " + atFrame + " out of bounds" );
+            
             return null;
         }
         else
