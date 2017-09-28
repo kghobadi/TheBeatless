@@ -16,7 +16,8 @@ public class pitchShift : MonoBehaviour{
 	
 	// Update is called once per frame
 	void Update () {
-      float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, -100, 5000);
+      //float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, 0.9f, 1.1f);
+		float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, -100, 4000f);
        float yPos = ExtensionMethods.Remap(Input.mousePosition.y, 0, Screen.height, 0, 1);
         //audio[0].pitch = xPos;
         audio[0].volume = yPos;
@@ -26,6 +27,7 @@ public class pitchShift : MonoBehaviour{
 
 		LPF.SetFloat ("lowPass", xPos);
 		print (xPos);
+
 		audio[2].volume = yPos;
 
 		//audio[3].pitch = xPos;
