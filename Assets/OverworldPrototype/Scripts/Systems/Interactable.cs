@@ -17,6 +17,8 @@ public abstract class Interactable : MonoBehaviour
 
     public bool interactable;
 
+	protected FirstPersonController playerControl;
+
     public virtual void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player"); //searches for Player
@@ -24,11 +26,13 @@ public abstract class Interactable : MonoBehaviour
         symbol = GameObject.FindGameObjectWithTag("Symbol").GetComponent<SpriteRenderer>(); //searches for InteractSymbol
         soundBoard = cammy.GetComponent<AudioSource>(); //assigns audio source
         interactable = true;
+
+		playerControl = _player.GetComponent<FirstPersonController>();
     }
     
     void OnMouseEnter()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable)
+		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable && !playerControl.isHoldingAnimal)
         {
             cammy.GetComponent<camMouseLook>().sensitivityX = 1f;
             cammy.GetComponent<camMouseLook>().sensitivityY = 1f;
@@ -59,9 +63,10 @@ public abstract class Interactable : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable)
+		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable && !playerControl.isHoldingAnimal)
         {
             handleClickSuccess();
+
         }
         else
         {

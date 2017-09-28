@@ -5,9 +5,12 @@ using UnityEngine;
 public class keyboardInput : MonoBehaviour {
 	public AudioClip[] sounds;
 	public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
+    public Specie specie;
 
-	//put objects you're manipulating as the public gameobjects here
-	public GameObject W, A, S, D;
+    InputVCR vcr;
+
+    //put objects you're manipulating as the public gameobjects here
+    public GameObject W, A, S, D;
 
 	//creates mesh for all gameobjects, requires 3d model
 	Mesh Wmesh, Amesh, Smesh, Dmesh;
@@ -31,6 +34,8 @@ public class keyboardInput : MonoBehaviour {
 		origDVert = Dmesh.vertices;
 		dNormals = Dmesh.normals;
 
+		specie = GetComponent<Specie>();
+
 	}
 	
 	// Update is called once per frame
@@ -42,12 +47,12 @@ public class keyboardInput : MonoBehaviour {
 			Vector3[] Dvertices = Dmesh.vertices;
 			
 
-			playSounds.clip = sounds [0];
-			playSounds2.clip = sounds [1];
-			playSounds3.clip = sounds [2];
-			playSounds4.clip = sounds [3];
+			playSounds.clip = specie.audioSchema["w"];
+			playSounds2.clip = specie.audioSchema["s"];
+			playSounds3.clip = specie.audioSchema["d"];
+			playSounds4.clip = specie.audioSchema["a"];
 
-			if (Input.GetKey(KeyCode.W)) {
+			if (vcr.GetKey("w")) {
 				
 				//vertical mouse position sets scale
 				W.transform.localScale = new Vector3 ((Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height) / 5, (Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height) / 5, (Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height) / 5);
@@ -85,7 +90,7 @@ public class keyboardInput : MonoBehaviour {
 				playSounds.loop = false;
 			}
 
-			if (Input.GetKey(KeyCode.S)) {
+			if (vcr.GetKey("s")) {
 				
 				//manipulates vertices of mesh to horizontal input
 				int i = 0;
@@ -122,7 +127,7 @@ public class keyboardInput : MonoBehaviour {
 				playSounds2.loop = false;
 			}
 
-			if (Input.GetKey(KeyCode.D)) {
+			if (vcr.GetKey("d")) {
 				
 				//manipulates vertices of mesh to horizontal input
 				int i = 0;
@@ -161,7 +166,7 @@ public class keyboardInput : MonoBehaviour {
 				playSounds3.loop = false;
 			}
 
-			if (Input.GetKey(KeyCode.A)) {
+			if (vcr.GetKey("a")) {
 				
 				//manipulates vertices of mesh to horizontal input
 				int i = 0;
