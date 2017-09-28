@@ -9,29 +9,32 @@ public class diffVisFeedback : MonoBehaviour {
 	private ParticleSystem editParts;
 	private Material editMatColor;
 
+    public Specie specie;
+    InputVCR vcr;
+    public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
 
-	public AudioClip[] sounds;
-	public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
-
-	// Use this for initialization
-	void Start () {
+    void Start () {
 		editParts = GetComponent<ParticleSystem>();
 		editMatColor = GetComponent<Renderer>().material;
-		//GetComponent<ParticleSystem>().
-	}
+
+        playSounds = gameObject.AddComponent<AudioSource>();
+        playSounds2 = gameObject.AddComponent<AudioSource>();
+        playSounds3 = gameObject.AddComponent<AudioSource>();
+        playSounds4 = gameObject.AddComponent<AudioSource>();
+
+        playSounds.clip = specie.audioSchema["w"];
+        playSounds2.clip = specie.audioSchema["s"];
+        playSounds3.clip = specie.audioSchema["d"];
+        playSounds4.clip = specie.audioSchema["a"];
+
+    }
 	
-	// Update is called once per frame
 	void Update () {
 
-		playSounds.clip = sounds [0];
-		playSounds2.clip = sounds [1];
-		playSounds3.clip = sounds [2];
-		playSounds4.clip = sounds [3];
-
-		if (Input.GetKey (KeyCode.W)) {
-			speed = Mathf.Lerp (speed, (Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height), Time.deltaTime);
-			target = new Vector3 ((Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width)/5, (Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height)/5, transform.localScale.z);
-
+        if (vcr.GetKey("w")) {
+			speed = Mathf.Lerp (speed, (Camera.main.WorldToScreenPoint (vcr.mousePosition).y / Screen.height), Time.deltaTime);
+			target = new Vector3 ((Camera.main.WorldToScreenPoint (vcr.mousePosition).x / Screen.width)/5, (Camera.main.WorldToScreenPoint (vcr.mousePosition).y / Screen.height)/5, transform.localScale.z);
+            Debug.Log("CAN WORK");
 			transform.localScale = Vector3.Lerp (transform.localScale, target, Time.deltaTime);
 			//transform.localEulerAngles = new Vector3 ((Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width) * 10, (Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width) * 10, (Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width) * 10);
 
@@ -56,11 +59,11 @@ public class diffVisFeedback : MonoBehaviour {
 
 
 
-		if (Input.GetKey (KeyCode.A)) {
+		if (vcr.GetKey ("a")) {
 			
 			Color changeColor = editMatColor.color;
 
-			changeColor = Color.HSVToRGB((Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width) / 50, (Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height) / 50, .7f);
+			changeColor = Color.HSVToRGB((Camera.main.WorldToScreenPoint (vcr.mousePosition).x / Screen.width) / 50, (Camera.main.WorldToScreenPoint (vcr.mousePosition).y / Screen.height) / 50, .7f);
 
 			editMatColor.color = changeColor;
 
@@ -85,11 +88,11 @@ public class diffVisFeedback : MonoBehaviour {
 		}
 
 
-		if (Input.GetKey (KeyCode.S)) {
+		if (vcr.GetKey ("s")) {
 			var main = editParts.noise;
-			main.frequency = Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height / 18;
+			main.frequency = Camera.main.WorldToScreenPoint (vcr.mousePosition).y / Screen.height / 18;
 
-			main.strength = Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width / 18;
+			main.strength = Camera.main.WorldToScreenPoint (vcr.mousePosition).x / Screen.width / 18;
 			//sets audiosource loop setting to true because the key is held down
 			playSounds2.loop = true;
 			//checks to make sure only one instance of the sound is playing at once
@@ -107,12 +110,12 @@ public class diffVisFeedback : MonoBehaviour {
 
 
 
-		if (Input.GetKey (KeyCode.D)) {
+		if (vcr.GetKey ("d")) {
 			var main = editParts.emission;
-			main.rateOverTime = (Camera.main.WorldToScreenPoint (Input.mousePosition).y / Screen.height);
+			main.rateOverTime = (Camera.main.WorldToScreenPoint (vcr.mousePosition).y / Screen.height);
 
 			var main2 = editParts.main;
-			main2.startSpeed = (Camera.main.WorldToScreenPoint (Input.mousePosition).x / Screen.width) / 5;
+			main2.startSpeed = (Camera.main.WorldToScreenPoint (vcr.mousePosition).x / Screen.width) / 5;
 
 			//sets audiosource loop setting to true because the key is held down
 			playSounds3.loop = true;
