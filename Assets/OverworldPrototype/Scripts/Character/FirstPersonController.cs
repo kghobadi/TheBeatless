@@ -52,7 +52,7 @@ public class FirstPersonController : MonoBehaviour {
         player.Move(movement * Time.deltaTime);
 
 
-        Debug.Log(speed);
+
 
 
     }
