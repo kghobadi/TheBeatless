@@ -7,7 +7,7 @@ public class setInputRecording : MonoBehaviour {
 	public InstrumentObject instrumentObjectScript;
 	public InputVCR vcr;
 	public Specie specie;
-	public Recording rec;
+
 
 	FirstPersonController playerControl;
     diffVisFeedback instrumentControl;
@@ -27,8 +27,7 @@ public class setInputRecording : MonoBehaviour {
 
 		instrumentObjectScript = GetComponentInChildren<InstrumentObject>();
 		vcr = GetComponentInChildren<InputVCR>();
-		specie = GetComponentInChildren<Specie>();
-		rec = GetComponentInChildren<Recording>();
+        specie = GetComponentInChildren<Specie>();
         instrumentControl = GetComponentInChildren<diffVisFeedback>();
 
     }
@@ -64,10 +63,11 @@ public class setInputRecording : MonoBehaviour {
             //
             if (instrumentObjectScript.underPlayerControl && vcr.mode == InputVCRMode.Record && Input.GetKeyDown(KeyCode.T))
             {
-       
+
                 //		Recording inputSequence = vcr.GetRecording();
                 //Output to Species Track list 
                 //AnimalTracks.Instance.AddTrackToSpecies(specie.specieName, inputSequence);
+                
                 instrumentControl.playerIsPlaying = false;
                 playerControl.enabled = true;
                 cameraControl.enabled = true;
@@ -76,6 +76,7 @@ public class setInputRecording : MonoBehaviour {
 
 
                 vcr.Play();
+                instrumentObjectScript.dropAnimal = true;
 
             }
             //if (instrumentObjectScript.underPlayerControl && vcr.mode != InputVCRMode.Record && Input.GetKeyDown(KeyCode.Y))
