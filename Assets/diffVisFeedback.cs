@@ -85,7 +85,8 @@ public class diffVisFeedback : MonoBehaviour {
 
                 //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
                 playSounds.loop = false;
-            }
+            playSounds.Stop();
+        }
 
 
 
@@ -105,7 +106,7 @@ public class diffVisFeedback : MonoBehaviour {
                 {
                     //plays sound
                     playSounds4.Play();
-                }
+            }
 
             }
             else
@@ -118,7 +119,9 @@ public class diffVisFeedback : MonoBehaviour {
 
                 //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
                 playSounds4.loop = false;
-            }
+
+            playSounds4.Stop();
+        }
 
 
             if (vcr.GetKey("s"))
@@ -140,7 +143,8 @@ public class diffVisFeedback : MonoBehaviour {
             {
                 //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
                 playSounds2.loop = false;
-            }
+                playSounds2.Stop();
+        }
 
 
 
@@ -174,7 +178,8 @@ public class diffVisFeedback : MonoBehaviour {
 
                 //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
                 playSounds3.loop = false;
-            }
+            playSounds3.Stop();
+        }
         
     }
 
@@ -209,7 +214,8 @@ public class diffVisFeedback : MonoBehaviour {
 
                 //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
                 playSounds.loop = false;
-            }
+            playSounds.Stop();
+        }
 
 
 
@@ -242,7 +248,8 @@ public class diffVisFeedback : MonoBehaviour {
 
                 //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
                 playSounds4.loop = false;
-            }
+            playSounds4.Stop();
+        }
 
 
             if (vcr.GetKey("s"))
@@ -262,8 +269,9 @@ public class diffVisFeedback : MonoBehaviour {
             }
             else
             {
-                //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
-                playSounds2.loop = false;
+            //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+            playSounds2.Stop();
+            playSounds2.loop = false;
             }
 
 
@@ -296,7 +304,8 @@ public class diffVisFeedback : MonoBehaviour {
                 var main2 = editParts.main;
                 main2.startSpeed = 0;
 
-                //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+            //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+                playSounds3.Stop();
                 playSounds3.loop = false;
             }
         
