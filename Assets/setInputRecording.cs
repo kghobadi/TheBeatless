@@ -14,6 +14,7 @@ public class setInputRecording : MonoBehaviour {
     camMouseLook cameraControl;
 
     bool isRec = false;
+    bool canStop;
     
 	void Start () {
 
@@ -43,7 +44,7 @@ public class setInputRecording : MonoBehaviour {
 
             //Press button to enable music and recording 
             //Grab Input VCR and Recording for key presses, so we can loop
-            if (instrumentObjectScript.underPlayerControl && vcr.mode != InputVCRMode.Record && Input.GetKeyDown(KeyCode.R))
+            if (instrumentObjectScript.underPlayerControl && vcr.mode != InputVCRMode.Record && canStop == false && Input.GetKeyDown(KeyCode.R))
             {
                 //Find script for musical instrument, find sounds etc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 //Keyboard Controller and Instrument Controller should be attached to Player, activated when Animal is being Played, and filled in with sounds from Animal
@@ -61,7 +62,7 @@ public class setInputRecording : MonoBehaviour {
 
             // Stops recording, grab recorded frames and save to global storage of species track list
             //
-            if (instrumentObjectScript.underPlayerControl && vcr.mode == InputVCRMode.Record && Input.GetKeyDown(KeyCode.T))
+            if (instrumentObjectScript.underPlayerControl && vcr.mode == InputVCRMode.Record && canStop == true && Input.GetKeyDown(KeyCode.R) )
             {
 
                 //		Recording inputSequence = vcr.GetRecording();
@@ -83,6 +84,14 @@ public class setInputRecording : MonoBehaviour {
            // {
                 
            // }
+           if(isRec == true)
+            {
+                canStop = true;
+            }
+           if(isRec == false)
+            {
+                canStop = false;
+            }
         }
 	}
 
