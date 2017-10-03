@@ -5,43 +5,72 @@ using UnityEngine.Audio;
 //using HoloPlaySDK;
 
 public class pitchShift : MonoBehaviour{
-	public AudioSource[] audio = new AudioSource[4];
+    public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
     public float xPos;
     public float yPos;
     public int ambPriority = 0;
 	public AudioMixer LPF;
+
+    InputVCR vcr;
+    public bool playerIsPlaying = false;
+    diffVisFeedback instrumentControl;
 	// Use this for initialization
 	void Start () {
+        instrumentControl = GetComponent<diffVisFeedback>();
+        vcr = GetComponent<InputVCR>();
+        playSounds = instrumentControl.playSounds;
+        playSounds2 = instrumentControl.playSounds2;
+        playSounds3 = instrumentControl.playSounds3;
+        playSounds4 = instrumentControl.playSounds4;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-      //float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, 0.9f, 1.1f);
-		float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, -100, 4000f);
-       float yPos = ExtensionMethods.Remap(Input.mousePosition.y, 0, Screen.height, 0, 1);
+
+    // Update is called once per frame
+    void Update() {
+        if (playerIsPlaying)
+        {
+            playerPlaying();
+        }
+        else
+        {
+            recorderPlaying();
+        }
+    }
+        void playerPlaying()
+        {
+            //float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, 0.9f, 1.1f);
+        float xPos = ExtensionMethods.Remap(vcr.mousePosition.x, 0, Screen.width, -100, 4000f);
+        float yPos = ExtensionMethods.Remap(vcr.mousePosition.y, 0, Screen.height, 0, 1);
         //audio[0].pitch = xPos;
-        audio[0].volume = yPos;
+        playSounds.volume = yPos;
 
 		//audio[1].pitch = xPos;
-		audio[1].volume = yPos;
+		playSounds2.volume = yPos;
 
 		LPF.SetFloat ("lowPass", xPos);
 		print (xPos);
 
-		audio[2].volume = yPos;
+		playSounds3.volume = yPos;
+        
+		playSounds4.volume = yPos;
+            
+	    }
 
-		//audio[3].pitch = xPos;
-		audio[3].volume = yPos;
+        void recorderPlaying()
+        {
+            //float xPos = ExtensionMethods.Remap(Input.mousePosition.x, 0, Screen.width, 0.9f, 1.1f);
+        float xPos = ExtensionMethods.Remap(vcr.mousePosition.x, 0, Screen.width, -100, 4000f);
+        float yPos = ExtensionMethods.Remap(vcr.mousePosition.y, 0, Screen.height, 0, 1);
+        //audio[0].pitch = xPos;
+        playSounds.volume = yPos;
 
+        //audio[1].pitch = xPos;
+        playSounds2.volume = yPos;
 
-       // print(Input.mousePosition);
-	}
+        LPF.SetFloat("lowPass", xPos);
+        print(xPos);
 
-   /* public override void onDepthTouch(List<depthTouch> touches)
-    {
-        base.onDepthTouch(touches);
-        xPos = ExtensionMethods.Remap(touches[ambPriority].getLocalPos().x, 8, -8, 0, 1);
-        yPos = ExtensionMethods.Remap(touches[ambPriority].getLocalPos().y, -6, 4, 0, 1);
-        //zPos = ExtensionMethods.Remap(touches[ambPriority])
-    } */
+        playSounds3.volume = yPos;
+
+        playSounds4.volume = yPos;
+    }
 }
