@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class InstrumentObject : Interactable {
     public bool underPlayerControl;
+    public bool dropAnimal;
     public InputVCR inputVCR;
-    public Specie specie;
 
 
 
@@ -13,7 +13,7 @@ public class InstrumentObject : Interactable {
     {
         base.Start();
         inputVCR = GetComponent<InputVCR>();
-        specie = GetComponent<Specie>();
+        dropAnimal = false;
 
     }
 
@@ -36,12 +36,13 @@ public class InstrumentObject : Interactable {
         
 		//StartCoroutine(heldObjectActions());
 
-		if (Input.GetKeyDown(KeyCode.Space) && inputVCR.mode != InputVCRMode.Record)
+		if (dropAnimal )
 		{
 			underPlayerControl = false;
 			playerControl.isHoldingAnimal = false;
 			transform.SetParent(null);
 			interactable = true;
+            dropAnimal = false;
 		}
 
     }
@@ -64,39 +65,5 @@ public class InstrumentObject : Interactable {
 
     }
 
-	//IEnumerator heldObjectActions(){
-
-
-
-//		//Press button to enable music and recording 
-//		//Grab Input VCR and Recording for key presses, so we can loop
-//		if (underPlayerControl && inputVCR.mode != InputVCRMode.Record && Input.GetKeyDown(KeyCode.R))
-//		{
-//			//Find script for musical instrument, find sounds etc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//			//Keyboard Controller and Instrument Controller should be attached to Player, activated when Animal is being Played, and filled in with sounds from Animal
-//			// THis will reference an audio file: specie.audioSchema[KeyCode.W];
-//
-//			print("recording");
-//			inputVCR.Record();
-//
-//		}
-//
-//		yield return new WaitForEndOfFrame();
-//
-//		while(!Input.GetKeyDown(KeyCode.R))
-//			yield return null;
-//		// Stops recording, grab recorded frames and save to global storage of species track list
-//		//
-//		if (underPlayerControl && inputVCR.mode == InputVCRMode.Record && Input.GetKeyDown(KeyCode.R)) {
-//			inputVCR.Stop();
-//			List<Recording.RecordingFrame> inputSequence = GetComponent<Recording>().frames;
-//			//Output to Species Track list 
-//			AnimalTracks.Instance.AddTrackToSpecies(specie.specieName, inputSequence);
-//
-//			print("stopped recording");
-//		}
-
-
-
-	//}
+	
 }

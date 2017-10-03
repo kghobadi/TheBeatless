@@ -12,7 +12,7 @@ using System.Text;
 using System.IO;
 using LitJson;
 
-public class Recording : MonoBehaviour
+public class Recording 
 {
     public int frameRate;
     public List<RecordingFrame> frames = new List<RecordingFrame>();
@@ -304,6 +304,7 @@ public class Recording : MonoBehaviour
         if ( atFrame < 0 || atFrame >= frames.Count )
         {
             Debug.LogWarning( "Frame " + atFrame + " out of bounds" );
+            
             return null;
         }
         else
