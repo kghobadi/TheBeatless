@@ -12,6 +12,7 @@ public class setInputRecording : MonoBehaviour {
 	FirstPersonController playerControl;
     diffVisFeedback instrumentControl;
     camMouseLook cameraControl;
+    pitchShift pitchControl;
 
     bool isRec = false;
     bool canStop;
@@ -30,7 +31,7 @@ public class setInputRecording : MonoBehaviour {
 		vcr = GetComponentInChildren<InputVCR>();
         specie = GetComponentInChildren<Specie>();
         instrumentControl = GetComponentInChildren<diffVisFeedback>();
-
+        pitchControl = GetComponentInChildren<pitchShift>();
     }
 	
 	void Update () {
@@ -52,6 +53,7 @@ public class setInputRecording : MonoBehaviour {
                 playerControl.enabled = false;
                 cameraControl.enabled = false;
                 instrumentControl.playerIsPlaying = true;
+                pitchControl.playerIsPlaying = true;
                 print("recording");
                 vcr.Record();
                 isRec = true;
@@ -70,6 +72,7 @@ public class setInputRecording : MonoBehaviour {
                 //AnimalTracks.Instance.AddTrackToSpecies(specie.specieName, inputSequence);
                 
                 instrumentControl.playerIsPlaying = false;
+                pitchControl.playerIsPlaying = false;
                 playerControl.enabled = true;
                 cameraControl.enabled = true;
                 print("stopped recording");
