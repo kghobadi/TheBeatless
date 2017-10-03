@@ -11,12 +11,12 @@ public class diffVisFeedback : MonoBehaviour {
 
     private Specie specie;
     InputVCR vcr;
-    private AudioSource playSounds, playSounds2, playSounds3, playSounds4;
+    public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
     public AudioClip clip1, clip2, clip3, clip4;
 
     public bool playerIsPlaying;
 
-    void Start () {
+    void Awake () {
 		editParts = GetComponent<ParticleSystem>();
 		editMatColor = GetComponent<Renderer>().material;
         specie = GetComponent<Specie>();
