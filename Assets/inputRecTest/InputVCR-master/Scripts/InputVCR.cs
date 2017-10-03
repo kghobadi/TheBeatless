@@ -109,11 +109,6 @@ public class InputVCR : MonoBehaviour
 	
 	public event System.Action finishedPlayback;	// sent when playback finishes
 
-	void Start(){
-
-		currentRecording = GetComponent<Recording>();
-
-	}
 	
 	/// <summary>
 	/// Start recording. Will append to already started recording
@@ -258,7 +253,8 @@ public class InputVCR : MonoBehaviour
 				// end of recording
 				if ( finishedPlayback != null )
 					finishedPlayback( );
-				Stop ();
+              //  Stop ();
+                Play();
 			}
 			else
 			{
