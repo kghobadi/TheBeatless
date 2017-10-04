@@ -51,7 +51,7 @@ public class setInputRecording : MonoBehaviour {
                 //Keyboard Controller and Instrument Controller should be attached to Player, activated when Animal is being Played, and filled in with sounds from Animal
                 // THis will reference an audio file: specie.audioSchema[KeyCode.W];
                 playerControl.enabled = false;
-                cameraControl.enabled = false;
+                //cameraControl.enabled = false;
                 instrumentControl.playerIsPlaying = true;
                 pitchControl.playerIsPlaying = true;
                 print("recording");
@@ -74,7 +74,7 @@ public class setInputRecording : MonoBehaviour {
                 instrumentControl.playerIsPlaying = false;
                 pitchControl.playerIsPlaying = false;
                 playerControl.enabled = true;
-                cameraControl.enabled = true;
+                //cameraControl.enabled = true;
                 print("stopped recording");
                 isRec = false;
 
