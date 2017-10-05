@@ -28,6 +28,11 @@ public class InstrumentObject : Interactable {
             interactable = false;
             FindPlayerArm();
         }
+
+        if (playerControl.isHoldingFood)
+        {
+            // playerContro.child.Fruit.feedAnimal = true;
+        }
         // 
     }
 

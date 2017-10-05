@@ -10,6 +10,7 @@ public class FirstPersonController : MonoBehaviour {
     CharacterController player;
 
     public bool isHoldingAnimal;
+    public bool isHoldingFood;
 
     //public Animation pickAxe;
     //public AudioSource miner;
