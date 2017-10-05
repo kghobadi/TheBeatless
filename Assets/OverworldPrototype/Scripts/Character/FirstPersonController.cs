@@ -51,7 +51,7 @@ public class FirstPersonController : MonoBehaviour {
         movement = transform.rotation * movement;
         player.Move(movement * Time.deltaTime);
 
-
+        player.Move(new Vector3(0, -0.5f, 0));
 
 
 
