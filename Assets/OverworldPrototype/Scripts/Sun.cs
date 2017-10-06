@@ -16,7 +16,7 @@ public class Sun : MonoBehaviour {
         transform.RotateAround(Vector3.zero, Vector3.right, rotationSpeed * Time.deltaTime);
         transform.LookAt(Vector3.zero);
 
-        if(transform.position.y < 0.1f && transform.position.y > -0.1f)
+        if(transform.position.y < 0.25f && transform.position.y > -0.25f)
         {
             dayPassed = true;
             Debug.Log(dayPassed);

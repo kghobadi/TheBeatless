@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fruit : Interactable {
+public class Seed : Interactable {
     public bool underPlayerControl;
-    public bool feedAnimal;
-    public AudioClip animalEats;
+    public bool plantSeed;
+    public AudioClip plantedSeed;
+
+    public GameObject plant;
 
     public override void Start()
     {
@@ -15,12 +17,11 @@ public class Fruit : Interactable {
 
     public override void handleClickSuccess()
     {
-        if (!underPlayerControl && !playerControl.isHoldingAnimal)
+        if (!underPlayerControl && !playerControl.isHoldingAnimal && !playerControl.isHoldingFood && !playerControl.isHoldingSeed)
         {
             base.handleClickSuccess();
-            // move position to player's arm 
             underPlayerControl = true;
-            playerControl.isHoldingFood = true;
+            playerControl.isHoldingSeed = true;
             interactable = false;
             FindPlayerArm();
         }
@@ -30,12 +31,12 @@ public class Fruit : Interactable {
     void Update()
     {
 
-        if (feedAnimal)
+        if (plantSeed)
         {
             underPlayerControl = false;
-            playerControl.isHoldingFood = false;
+            playerControl.isHoldingSeed = false;
             Destroy(gameObject);
-            soundBoard.PlayOneShot(animalEats);
+            soundBoard.PlayOneShot(plantedSeed);
         }
 
     }
@@ -51,4 +52,6 @@ public class Fruit : Interactable {
         // Can show this with tiny animation and Arm movement
 
     }
+
+    
 }

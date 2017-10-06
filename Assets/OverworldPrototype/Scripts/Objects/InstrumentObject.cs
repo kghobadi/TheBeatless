@@ -19,7 +19,7 @@ public class InstrumentObject : Interactable {
 
     public override void handleClickSuccess()
     {
-		if (!underPlayerControl && !playerControl.isHoldingAnimal)
+		if (!underPlayerControl && !playerControl.isHoldingAnimal && !playerControl.isHoldingFood)
         {
             base.handleClickSuccess();
             // move position to player's arm 
@@ -31,7 +31,8 @@ public class InstrumentObject : Interactable {
 
         if (playerControl.isHoldingFood)
         {
-            // playerContro.child.Fruit.feedAnimal = true;
+            playerControl.GetComponentInChildren<Fruit>().feedAnimal = true;
+            //animal sound changes? size changes?
         }
         // 
     }
@@ -39,7 +40,6 @@ public class InstrumentObject : Interactable {
     void Update()
     {
         
-		//StartCoroutine(heldObjectActions());
 
 		if (dropAnimal )
 		{
