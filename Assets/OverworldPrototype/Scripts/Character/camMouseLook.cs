@@ -14,7 +14,7 @@ public class camMouseLook : MonoBehaviour {
 
 	void Start () {
         character = transform.parent.gameObject;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         sensitivityX = 3.0f;
         sensitivityY = 3.0f;
         

@@ -47,13 +47,9 @@ public class setInputRecording : MonoBehaviour {
             //Grab Input VCR and Recording for key presses, so we can loop
             if (instrumentObjectScript.underPlayerControl && vcr.mode != InputVCRMode.Record && canStop == false && Input.GetKeyDown(KeyCode.R))
             {
-                //Find script for musical instrument, find sounds etc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //Keyboard Controller and Instrument Controller should be attached to Player, activated when Animal is being Played, and filled in with sounds from Animal
                 // THis will reference an audio file: specie.audioSchema[KeyCode.W];
                 playerControl.enabled = false;
                 cameraControl.enabled = false;
-                instrumentControl.playerIsPlaying = true;
-                pitchControl.playerIsPlaying = true;
                 print("recording");
                 vcr.Record();
                 isRec = true;
@@ -70,9 +66,7 @@ public class setInputRecording : MonoBehaviour {
                 //		Recording inputSequence = vcr.GetRecording();
                 //Output to Species Track list 
                 //AnimalTracks.Instance.AddTrackToSpecies(specie.specieName, inputSequence);
-                
-                instrumentControl.playerIsPlaying = false;
-                pitchControl.playerIsPlaying = false;
+               
                 playerControl.enabled = true;
                 cameraControl.enabled = true;
                 print("stopped recording");
