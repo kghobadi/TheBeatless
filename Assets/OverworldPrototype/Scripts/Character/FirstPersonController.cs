@@ -10,6 +10,8 @@ public class FirstPersonController : MonoBehaviour {
     CharacterController player;
 
     public bool isHoldingAnimal;
+    public bool isHoldingFood;
+    public bool isHoldingSeed;
 
     //public Animation pickAxe;
     //public AudioSource miner;
@@ -51,7 +53,7 @@ public class FirstPersonController : MonoBehaviour {
         movement = transform.rotation * movement;
         player.Move(movement * Time.deltaTime);
 
-
+        player.Move(new Vector3(0, -0.5f, 0));
 
 
 
