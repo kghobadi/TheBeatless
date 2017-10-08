@@ -19,6 +19,7 @@ public class PlantLife : MonoBehaviour {
         sunScript = sun.GetComponent<Sun>();
         Instantiate(sapling, transform.position, Quaternion.identity);
         ageCounter = 0;
+        fruitAmount = 0;
         StartCoroutine(Growth());
 		
 	}
@@ -27,28 +28,25 @@ public class PlantLife : MonoBehaviour {
         switch (ageCounter)
         {
             case 1: //Young
-                Destroy(sapling);
+                sapling.SetActive(false); //need this to only affect one instance
                 Instantiate(young, transform.position, Quaternion.identity);
                 fruitAmount = 3;
-                SpawnFruits();
                 StartCoroutine(Growth());
                 break;
             case 2: //Adult
-                Destroy(young);
+                young.SetActive(false);
                 Instantiate(adult, transform.position, Quaternion.identity);
                 fruitAmount = 5;
-                SpawnFruits();
                 StartCoroutine(Growth());
                 break;
             case 3: // Old
-                Destroy(adult);
+                adult.SetActive(false);
                 Instantiate(old, transform.position, Quaternion.identity);
                 fruitAmount = 3;
-                SpawnFruits();
                 StartCoroutine(Growth());
                 break;
             case 4: // Dead
-                Destroy(old);
+                old.SetActive(false);
                 Instantiate(stump, transform.position, Quaternion.identity);
                 SpawnSeeds();
                 break;
@@ -62,7 +60,9 @@ public class PlantLife : MonoBehaviour {
 
     IEnumerator Growth()
     {
+        SpawnFruits();
         yield return new WaitUntil(() => sunScript.dayPassed == true);
+        SpawnFruits();
         yield return new WaitForSeconds(1);
         ageCounter += 1;
     }
