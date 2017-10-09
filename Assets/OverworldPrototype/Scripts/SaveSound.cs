@@ -12,7 +12,7 @@ public class SaveSound : MonoBehaviour
 	private int bufferSize;
 	private int numBuffers;
 	private int outputRate = 44100;
-	private String fileName = "recTest.wav";
+	public String fileName = "recTest.wav";
 	//this should be a pop-up which takes a typed name entry from player
 	private int headerSize = 44;
 	//default for uncompressed wav
@@ -26,6 +26,10 @@ public class SaveSound : MonoBehaviour
 	public GameObject enterNameObj, rToStopObj;
 	InputField enterName;
 
+    public bool newRec = false;
+
+    //public AudioClip audioC;
+
 	void Awake ()
 	{
 		AudioSettings.outputSampleRate = outputRate;
@@ -36,6 +40,8 @@ public class SaveSound : MonoBehaviour
 		AudioSettings.GetDSPBufferSize (out bufferSize, out numBuffers);
 
 		enterName = enterNameObj.GetComponent<InputField> ();
+
+        //audioC = AudioClip.Create(fileName, outputRate, 1, 440, true); //FIGURE THIS OUT
 	}
 
 	void Update ()
@@ -55,6 +61,7 @@ public class SaveSound : MonoBehaviour
 				WriteHeader ();
 				print ("rec stop");
 				rToStopObj.SetActive(false);
+                newRec = true;
 			}
 		}
 
@@ -69,11 +76,14 @@ public class SaveSound : MonoBehaviour
 				rToStopObj.SetActive(true);
 			}
 		}
+
+
+			 
 	}
 
 	void StartWriting (String name)
 	{
-		fileStream = new FileStream (name, FileMode.Create);
+        fileStream = new FileStream (Application.dataPath +name, FileMode.Create);
 		byte emptyByte = new byte ();
 
 		for (int i = 0; i < headerSize; i++) { //preparing the header
@@ -84,7 +94,8 @@ public class SaveSound : MonoBehaviour
 	void OnAudioFilterRead (float[] data, int channels)
 	{
 		if (recOutput) {
-			ConvertAndWrite (data); //audio data is interlaced
+			ConvertAndWrite (data);//audio data is interlaced
+
 		}
 	}
 
@@ -108,6 +119,7 @@ public class SaveSound : MonoBehaviour
 		}
 
 		fileStream.Write (bytesData, 0, bytesData.Length);
+        //audioC.SetData(dataSource, outputRate);
 	}
 
 	void WriteHeader ()
