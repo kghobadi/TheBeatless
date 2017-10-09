@@ -10,8 +10,8 @@ public class setInputRecording : MonoBehaviour {
 
 
 	FirstPersonController playerControl;
-    diffVisFeedback instrumentControl;
     camMouseLook cameraControl;
+    diffVisFeedback instrumentControl;
     pitchShift pitchControl;
 
     bool isRec = false;

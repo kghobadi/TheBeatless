@@ -22,7 +22,6 @@ public class InstrumentObject : Interactable {
 		if (!underPlayerControl && !playerControl.isHoldingAnimal && !playerControl.isHoldingFood)
         {
             base.handleClickSuccess();
-            // move position to player's arm 
             underPlayerControl = true;
 			playerControl.isHoldingAnimal = true;
             interactable = false;
