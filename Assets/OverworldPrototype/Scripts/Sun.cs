@@ -7,6 +7,7 @@ public class Sun : MonoBehaviour {
     public Transform rotation;
 
     public Light sun;
+    public bool dayPassed;
 
    
 	
@@ -15,17 +16,27 @@ public class Sun : MonoBehaviour {
         transform.RotateAround(Vector3.zero, Vector3.right, rotationSpeed * Time.deltaTime);
         transform.LookAt(Vector3.zero);
 
-        //deals with intensity of sun over time
-        float intensity = 0.01f * Time.deltaTime;
-        if (transform.rotation.x > 0)
+        if(transform.position.y < 3f && transform.position.y > -3f)
         {
-            sun.intensity += intensity;
+            dayPassed = true;
+            Debug.Log(dayPassed);
         }
-        if (transform.rotation.x < 0)
+        else
         {
-            sun.intensity -= intensity;
+            dayPassed = false;
+        }
+
+        //deals with intensity of sun over time
+        //float intensity = 0.01f * Time.deltaTime;
+        //if (transform.rotation.x > 0)
+        //{
+        //    sun.intensity += intensity;
+        //}
+        //if (transform.rotation.x < 0)
+        //{
+        //    sun.intensity -= intensity;
         }
 
 
     }
-}
+
