@@ -17,6 +17,8 @@ public class pitchShift : MonoBehaviour{
 	void Start () {
         instrumentControl = GetComponent<diffVisFeedback>();
         vcr = GetComponent<InputVCR>();
+
+        //Pulls sounds from Keyboard Controller of Animal
         playSounds = instrumentControl.playSounds;
         playSounds2 = instrumentControl.playSounds2;
         playSounds3 = instrumentControl.playSounds3;

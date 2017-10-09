@@ -8,53 +8,83 @@ public class PlantLife : MonoBehaviour {
     int fruitAmount;
     int ageCounter;
     public GameObject sapling, young, adult, old, stump;
-    public GameObject fruit, seed;
+    private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
+    public GameObject fruit;
+    GameObject fruitClone;
 
     private GameObject sun;
     private Sun sunScript;
+    bool hasGrown;
+
+    private AudioSource treeSounds;
+    public AudioClip growthSound;
 
 
     void Start () {
+        //grabs Sun ref
         sun = GameObject.FindGameObjectWithTag("Sun");
         sunScript = sun.GetComponent<Sun>();
-        Instantiate(sapling, transform.position, Quaternion.identity);
+
+        //grabs Audio 
+        treeSounds = gameObject.AddComponent<AudioSource>();
+
+        // Clone all prefabs and Instantiate
+        saplingClone = Instantiate(sapling, transform.position, Quaternion.identity);
+        youngClone = Instantiate(young, transform.position, Quaternion.identity);
+        adultClone = Instantiate(adult, transform.position, Quaternion.identity);
+        oldClone = Instantiate(old, transform.position, Quaternion.identity);
+        stumpClone = Instantiate(stump, transform.position, Quaternion.identity);
+
+        //Set inactive besides ~Sapling~
+        youngClone.SetActive(false);
+        adultClone.SetActive(false);
+        oldClone.SetActive(false);
+        stumpClone.SetActive(false);
+
+        //Set age and fruit
         ageCounter = 0;
         fruitAmount = 0;
+
         StartCoroutine(Growth());
-		
 	}
 	
 	void Update () {
-        switch (ageCounter)
+        if (hasGrown)
         {
-            case 1: //Young
-                sapling.SetActive(false); //need this to only affect one instance
-                Instantiate(young, transform.position, Quaternion.identity);
-                fruitAmount = 3;
-                StartCoroutine(Growth());
-                break;
-            case 2: //Adult
-                young.SetActive(false);
-                Instantiate(adult, transform.position, Quaternion.identity);
-                fruitAmount = 5;
-                StartCoroutine(Growth());
-                break;
-            case 3: // Old
-                adult.SetActive(false);
-                Instantiate(old, transform.position, Quaternion.identity);
-                fruitAmount = 3;
-                StartCoroutine(Growth());
-                break;
-            case 4: // Dead
-                old.SetActive(false);
-                Instantiate(stump, transform.position, Quaternion.identity);
-                SpawnSeeds();
-                break;
+            switch (ageCounter)
+            {
+                case 1: //Young
+                    hasGrown = false;
+                    Destroy(saplingClone);
+                    youngClone.SetActive(true);
+                    fruitAmount = 3;
+                    StartCoroutine(Growth());
+                    // treeSounds.Play()  -- loop youth track
+                    break;
+                case 2: //Adult
+                    hasGrown = false;
+                    Destroy(youngClone);
+                    adultClone.SetActive(true);
+                    fruitAmount = 5;
+                    StartCoroutine(Growth());
+                    // treeSounds.Play()  -- loop adult track
+                    break;
+                case 3: // Old
+                    hasGrown = false;
+                    Destroy(adultClone);
+                    oldClone.SetActive(true);
+                    fruitAmount = 3;
+                    StartCoroutine(Growth());
+                    // treeSounds.Play()  -- loop old track
+                    break;
+                case 4: // Dead
+                    hasGrown = false;
+                    Destroy(oldClone);
+                    stumpClone.SetActive(true);
+                    // silence after death or leftover ringing in Stump
+                    break;
+            }
         }
-        //if (fruitGrowing)
-        //{
-
-        //}
 		
 	}
 
@@ -62,25 +92,20 @@ public class PlantLife : MonoBehaviour {
     {
         SpawnFruits();
         yield return new WaitUntil(() => sunScript.dayPassed == true);
-        SpawnFruits();
         yield return new WaitForSeconds(1);
+        treeSounds.PlayOneShot(growthSound);
         ageCounter += 1;
+        hasGrown = true;
     }
 
     public void SpawnFruits()
     {
-        for(int i = 0; i < fruitAmount; i++)
+        for (int i = 0; i < fruitAmount; i++)
         {
-            Instantiate(fruit, Random.insideUnitCircle * 5, Quaternion.identity);
+            Vector3 xyz = Random.insideUnitSphere * 3;
+            Vector3 spawnPosition = xyz + transform.position + new Vector3(0, 3, 0);
+            fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
         }
-    }
-
-    public void SpawnSeeds()
-    {
-        int randoSeeds = Random.Range(2, 3);
-        for (int i = 0; i < randoSeeds; i++)
-        {
-            Instantiate(fruit, Random.insideUnitCircle * 5, Quaternion.identity);
-        }
+        
     }
 }
