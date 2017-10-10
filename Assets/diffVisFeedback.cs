@@ -13,6 +13,8 @@ public class diffVisFeedback : MonoBehaviour {
     InputVCR vcr;
     public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
     public AudioClip clip1, clip2, clip3, clip4;
+
+    AnimalLife animalAge;
     
 
     void Awake () {
@@ -20,6 +22,7 @@ public class diffVisFeedback : MonoBehaviour {
 		editMatColor = GetComponent<Renderer>().material;
         specie = GetComponent<Specie>();
         vcr = GetComponent<InputVCR>();
+        animalAge = GetComponent<AnimalLife>();
 
         playSounds = gameObject.AddComponent<AudioSource>();
         playSounds2 = gameObject.AddComponent<AudioSource>();
@@ -41,6 +44,26 @@ public class diffVisFeedback : MonoBehaviour {
     }
 	
 	void Update () {
+        // Simon Add your new sounds here. Just copy and paste stuff where you want it. Use vcr.Getkey(" ") to add a new keyboard key + sound
+
+        //if (animalAge.isBaby)
+        //{
+        //    //basic controller, or reduced
+        //}
+
+        //if (animalAge.isAdult)
+        //{
+        //    //controller grows and we accept more keys
+        //}
+        //if (animalAge.isOld)
+        //{
+        //    //controller grows/changes and we accept more/less keys
+        //}
+        //if (animalAge.isDead)
+        //{
+        //    //animal is dead, and we either loop some silent reverberations or let it seep into silence
+        //}
+
         if (vcr.GetKey("w"))
         {
             speed = Mathf.Lerp(speed, (Camera.main.WorldToScreenPoint(vcr.mousePosition).y / Screen.height), Time.deltaTime);
