@@ -42,6 +42,7 @@ public class Fruit : Interactable {
             underPlayerControl = false;
             playerControl.isHoldingFood = false;
             seedClone.SetActive(true);
+            seedClone.transform.localPosition = seedClone.transform.localPosition + new Vector3(-0.5f, 0, -0.5f);
             seedClone.transform.SetParent(null);
             Destroy(gameObject);
             soundBoard.PlayOneShot(animalEats);
