@@ -13,16 +13,35 @@ public class pitchShift : MonoBehaviour{
 
     InputVCR vcr;
     diffVisFeedback instrumentControl;
+    GrowingInstrument comboInstrument;
 	// Use this for initialization
 	void Start () {
-        instrumentControl = GetComponent<diffVisFeedback>();
+        if (gameObject.tag == "CapCap")
+        {
+            comboInstrument = GetComponent<GrowingInstrument>();
+
+            //Pulls sounds from Keyboard Controller of Animal
+            playSounds = comboInstrument.playSounds;
+            playSounds2 = comboInstrument.playSounds2;
+            playSounds3 = comboInstrument.playSounds3;
+            playSounds4 = comboInstrument.playSounds4;
+            
+
+        }
+        else
+        {
+            instrumentControl = GetComponent<diffVisFeedback>();
+
+            //Pulls sounds from Keyboard Controller of Animal
+            playSounds = instrumentControl.playSounds;
+            playSounds2 = instrumentControl.playSounds2;
+            playSounds3 = instrumentControl.playSounds3;
+            playSounds4 = instrumentControl.playSounds4;
+        }
         vcr = GetComponent<InputVCR>();
 
-        //Pulls sounds from Keyboard Controller of Animal
-        playSounds = instrumentControl.playSounds;
-        playSounds2 = instrumentControl.playSounds2;
-        playSounds3 = instrumentControl.playSounds3;
-        playSounds4 = instrumentControl.playSounds4;
+        
+
 	}
 
     // Update is called once per frame
