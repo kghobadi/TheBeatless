@@ -33,28 +33,28 @@ public class TrailColor : MonoBehaviour {
         {
             case 6:
                 trailRender.material.SetColor("_TintColor", Color.red);
-                Debug.Log("red");
+              //  Debug.Log("red");
                 break;
                 
             case 5:
                 trailRender.material.SetColor("_TintColor", Color.blue);
-                Debug.Log("blue");
+              //  Debug.Log("blue");
                 break;
             case 4:
                 trailRender.material.SetColor("_TintColor", Color.yellow);
-                Debug.Log("yellow");
+              //  Debug.Log("yellow");
                 break;
             case 3:
                 trailRender.material.SetColor("_TintColor", Color.green);
-                Debug.Log("green");
+              //  Debug.Log("green");
                 break;
             case 2:
                 trailRender.material.SetColor("_TintColor", Color.magenta);
-                Debug.Log("magenta");
+               // Debug.Log("magenta");
                 break;
             case 1:
                 trailRender.material.SetColor("_TintColor", Color.cyan);
-                Debug.Log("cyan");
+              //  Debug.Log("cyan");
                 break;
 
         }
