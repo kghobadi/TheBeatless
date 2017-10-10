@@ -6,6 +6,7 @@ public class loadAudioClips : MonoBehaviour {
 
     public AudioClip recordedFiles;
     SaveSound saveSoundScript;
+    int clipNumber;
 
 	// Use this for initialization
 	void Start () {
@@ -23,13 +24,18 @@ public class loadAudioClips : MonoBehaviour {
     }
 
     IEnumerator load(){
+        
+
         WWW www = new WWW("file://" + Application.dataPath + saveSoundScript.fileName);
         yield return www;
+
         recordedFiles = WWWAudioExtensions.GetAudioClip(www);
         recordedFiles.name = saveSoundScript.fileName;
         //recordedFiles = www.GetAudioClip();
 		
-		print(recordedFiles.name);
+//        print(recordedFiles.name);
+        clipNumber++;
 		saveSoundScript.newRec = false;
+
     }
 }
