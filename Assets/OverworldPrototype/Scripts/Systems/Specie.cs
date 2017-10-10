@@ -25,7 +25,7 @@ public class Specie : MonoBehaviour
     //Enum list of Species names 
     public enum AnimalSpecies
     {
-        FROG, DOG, DONKEY,
+        FROG, DOG, DONKEY, ROBIN,
     }
 }
 
