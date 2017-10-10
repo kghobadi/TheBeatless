@@ -14,7 +14,7 @@ public class diffVisFeedback : MonoBehaviour {
     private Specie specie;
     InputVCR vcr;
     public AudioSource playSounds, playSounds2, playSounds3, playSounds4, playSoundsComb;
-	public AudioClip clip1, clip2, clip3, clip4, comb1, comb2, comb3;
+    public AudioClip clip1, clip2, clip3, clip4;
 
     AnimalLife animalAge;
     
@@ -24,18 +24,13 @@ public class diffVisFeedback : MonoBehaviour {
 		editMatColor = GetComponent<Renderer>().material;
         specie = GetComponent<Specie>();
         vcr = GetComponent<InputVCR>();
-        animalAge = GetComponent<AnimalLife>();
+        animalAge = GetComponentInParent<AnimalLife>();
 
         playSounds = gameObject.AddComponent<AudioSource>();
         playSounds2 = gameObject.AddComponent<AudioSource>();
         playSounds3 = gameObject.AddComponent<AudioSource>();
         playSounds4 = gameObject.AddComponent<AudioSource>();
-		if (gameObject.name == "CapCap") {
-			playSoundsComb = gameObject.AddComponent<AudioSource> ();
-			playSoundsComb.playOnAwake = false;
-			playSoundsComb.clip = comb1;
-			playSoundsComb.playOnAwake = false;
-		}
+		
 
         playSounds.playOnAwake = false;
         playSounds2.playOnAwake = false;
@@ -53,52 +48,6 @@ public class diffVisFeedback : MonoBehaviour {
     }
 	
 	void Update () {
-        // Simon Add your new sounds here. Just copy and paste stuff where you want it. Use vcr.Getkey(" ") to add a new keyboard key + sound
-
-        if (animalAge.isBaby)
-        {
-        //    //basic controller, or reduced
-        }
-
-        if (animalAge.isAdult)
-        {
-			if (gameObject.name == "CapCap") {
-				if (vcr.GetKey ("w") && vcr.GetKey ("a")) {
-					
-					if (!clipChanged) {
-						playSoundsComb.clip = comb1;
-						clipChanged = true;
-					}
-					playSoundsComb.Play ();
-				}
-				if (vcr.GetKey ("w") && vcr.GetKey ("d")) {
-					if (!clipChanged) {
-						playSoundsComb.clip = comb2;
-						clipChanged = true;
-					}
-					playSoundsComb.Play ();
-				}
-
-				if (vcr.GetKey ("s") && vcr.GetKey ("a") || vcr.GetKey ("d")) {
-
-					if (!clipChanged) {
-						playSoundsComb.clip = comb3;
-						clipChanged = true;
-					}
-					playSoundsComb.Play ();
-				}
-			}
-        //    //controller grows and we accept more keys
-        }
-
-        //if (animalAge.isOld)
-        //{
-        //    //controller grows/changes and we accept more/less keys
-        //}
-        //if (animalAge.isDead)
-        //{
-        //    //animal is dead, and we either loop some silent reverberations or let it seep into silence
-        //}
 
         if (vcr.GetKey("w"))
         {
