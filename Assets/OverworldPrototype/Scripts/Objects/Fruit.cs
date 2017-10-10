@@ -7,10 +7,17 @@ public class Fruit : Interactable {
     public bool feedAnimal;
     public AudioClip animalEats;
 
+    public GameObject seed;
+    GameObject seedClone;
+
     public override void Start()
     {
         base.Start();
 
+        //Makes a seed clone of whichever Plant type player needs
+        seedClone = Instantiate(seed, transform.position, Quaternion.identity);
+        seedClone.transform.SetParent(gameObject.transform);
+        seedClone.SetActive(false);
     }
 
     public override void handleClickSuccess()
@@ -18,7 +25,6 @@ public class Fruit : Interactable {
         if (!underPlayerControl && !playerControl.isHoldingAnimal)
         {
             base.handleClickSuccess();
-            // move position to player's arm 
             underPlayerControl = true;
             playerControl.isHoldingFood = true;
             interactable = false;
@@ -29,11 +35,15 @@ public class Fruit : Interactable {
 
     void Update()
     {
+        transform.Rotate(0, 1, 0 * Time.deltaTime);
 
         if (feedAnimal)
         {
             underPlayerControl = false;
             playerControl.isHoldingFood = false;
+            seedClone.SetActive(true);
+            seedClone.transform.localPosition = seedClone.transform.localPosition + new Vector3(-0.5f, 0, -0.5f);
+            seedClone.transform.SetParent(null);
             Destroy(gameObject);
             soundBoard.PlayOneShot(animalEats);
         }
@@ -44,11 +54,13 @@ public class Fruit : Interactable {
     {
         transform.SetParent(_player.transform);
 
-        Vector3 armPosition = new Vector3(0.5f, 0f, 1f);
+        Vector3 armPosition = new Vector3(0.25f, 0f, 1.5f);
 
         transform.localPosition = armPosition;
 
         // Can show this with tiny animation and Arm movement
 
     }
+
+    
 }

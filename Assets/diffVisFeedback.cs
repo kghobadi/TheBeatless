@@ -9,10 +9,14 @@ public class diffVisFeedback : MonoBehaviour {
 	private ParticleSystem editParts;
 	private Material editMatColor;
 
+	private bool clipChanged = false;
+
     private Specie specie;
     InputVCR vcr;
-    public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
+    public AudioSource playSounds, playSounds2, playSounds3, playSounds4, playSoundsComb;
     public AudioClip clip1, clip2, clip3, clip4;
+
+    AnimalLife animalAge;
     
 
     void Awake () {
@@ -20,11 +24,13 @@ public class diffVisFeedback : MonoBehaviour {
 		editMatColor = GetComponent<Renderer>().material;
         specie = GetComponent<Specie>();
         vcr = GetComponent<InputVCR>();
+        animalAge = GetComponentInParent<AnimalLife>();
 
         playSounds = gameObject.AddComponent<AudioSource>();
         playSounds2 = gameObject.AddComponent<AudioSource>();
         playSounds3 = gameObject.AddComponent<AudioSource>();
         playSounds4 = gameObject.AddComponent<AudioSource>();
+		
 
         playSounds.playOnAwake = false;
         playSounds2.playOnAwake = false;
@@ -36,11 +42,13 @@ public class diffVisFeedback : MonoBehaviour {
         playSounds2.clip = clip2;
         playSounds3.clip = clip3;
         playSounds4.clip = clip4;
+
         
         
     }
 	
 	void Update () {
+
         if (vcr.GetKey("w"))
         {
             speed = Mathf.Lerp(speed, (Camera.main.WorldToScreenPoint(vcr.mousePosition).y / Screen.height), Time.deltaTime);

@@ -4,41 +4,61 @@ using UnityEngine;
 
 public class FertileGround : Interactable {
     public bool growingPlant;
-    public bool seedPlanted;
+    private bool seedPlanted;
+
+    GameObject plantClone;
 
     public override void Start()
     {
         base.Start();
-        interactable = false;
-
     }
 
     public override void handleClickSuccess()
     {
+        //Only runs if player is holding a Seed
         if (!growingPlant && playerControl.isHoldingSeed)
         {
             base.handleClickSuccess();
-            interactable = false;
             seedPlanted = true;
         }
-        // 
     }
 
     void Update()
     {
-        if (playerControl.isHoldingSeed)
+
+        if (seedPlanted)
+        {
+            playerControl.GetComponentInChildren<Seed>().plantSeed = true;
+
+            //creates Clone of plant contained in Seed
+            plantClone = Instantiate(playerControl.GetComponentInChildren<Seed>().plant, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
+            plantClone.SetActive(false);
+
+            //Waits until Seed reaches ground to Activate plantClone
+            StartCoroutine(SeedPlanted());
+            seedPlanted = false;
+            growingPlant = true;
+            
+        }
+
+        if (playerControl.isHoldingSeed && !growingPlant)
         {
             interactable = true;
         }
-        if (seedPlanted)
+        else
         {
-            Instantiate(playerControl.GetComponentInChildren<Seed>().plant, transform.position, Quaternion.identity);
-            playerControl.GetComponentInChildren<Seed>().plantSeed = true;
-            seedPlanted = false;
-            growingPlant = true;
-
+            interactable = false;
         }
 
+
+    }
+
+
+    //Waits for seed to spiral into the Ground 
+    IEnumerator SeedPlanted()
+    {
+        yield return new WaitUntil(() => playerControl.isHoldingSeed == false);
+        plantClone.SetActive(true);
     }
 
     
