@@ -9,7 +9,7 @@ public class GrowingInstrument : MonoBehaviour {
 	private ParticleSystem editParts;
 	private Material editMatColor;
 
-	private bool clipChanged = false;
+	private bool clipChanged, comboKeyPlaying = false;
 
     private Specie specie;
     InputVCR vcr;
@@ -84,101 +84,104 @@ public class GrowingInstrument : MonoBehaviour {
 
     public void BasicInstrument()
     {
-        if (vcr.GetKey("w"))
+        if (!comboKeyPlaying)
         {
-           
-
-            //sets audiosource loop setting to true because the key is held down
-            playSounds.loop = true;
-            //checks to make sure only one instance of the sound is playing at once
-            if (!playSounds.isPlaying)
+            if (vcr.GetKey("w"))
             {
-                //plays sound
-                playSounds.Play();
-                Debug.Log("music playing");
+
+
+                //sets audiosource loop setting to true because the key is held down
+                playSounds.loop = true;
+                //checks to make sure only one instance of the sound is playing at once
+                if (!playSounds.isPlaying)
+                {
+                    //plays sound
+                    playSounds.Play();
+                    Debug.Log("music playing");
+                }
+
+            }
+            else
+            {
+
+
+                //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+                playSounds.loop = false;
+                playSounds.Stop();
             }
 
-        }
-        else
-        {
-            
-
-            //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
-            playSounds.loop = false;
-            playSounds.Stop();
-        }
 
 
-
-        if (vcr.GetKey("a"))
-        {
-
-
-            //sets audiosource loop setting to true because the key is held down
-            playSounds4.loop = true;
-            //checks to make sure only one instance of the sound is playing at once
-            if (!playSounds4.isPlaying)
+            if (vcr.GetKey("a"))
             {
-                //plays sound
-                playSounds4.Play();
+
+
+                //sets audiosource loop setting to true because the key is held down
+                playSounds4.loop = true;
+                //checks to make sure only one instance of the sound is playing at once
+                if (!playSounds4.isPlaying)
+                {
+                    //plays sound
+                    playSounds4.Play();
+                }
+
+            }
+            else
+            {
+
+
+                //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+                playSounds4.loop = false;
+
+                playSounds4.Stop();
             }
 
-        }
-        else
-        {
-            
 
-            //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
-            playSounds4.loop = false;
-
-            playSounds4.Stop();
-        }
-
-
-        if (vcr.GetKey("s"))
-        {
-          
-            //sets audiosource loop setting to true because the key is held down
-            playSounds2.loop = true;
-            //checks to make sure only one instance of the sound is playing at once
-            if (!playSounds2.isPlaying)
+            if (vcr.GetKey("s"))
             {
-                //plays sound
-                playSounds2.Play();
+
+                //sets audiosource loop setting to true because the key is held down
+                playSounds2.loop = true;
+                //checks to make sure only one instance of the sound is playing at once
+                if (!playSounds2.isPlaying)
+                {
+                    //plays sound
+                    playSounds2.Play();
+                }
             }
-        }
-        else
-        {
-            //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
-            playSounds2.loop = false;
-            playSounds2.Stop();
-        }
-
-
-
-
-
-        if (vcr.GetKey("d"))
-        {
-           
-
-            //sets audiosource loop setting to true because the key is held down
-            playSounds3.loop = true;
-            //checks to make sure only one instance of the sound is playing at once
-            if (!playSounds3.isPlaying)
+            else
             {
-                //plays sound
-                playSounds3.Play();
+                //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+                playSounds2.loop = false;
+                playSounds2.Stop();
             }
 
-        }
-        else
-        {
-          
 
-            //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
-            playSounds3.loop = false;
-            playSounds3.Stop();
+
+
+
+            if (vcr.GetKey("d"))
+            {
+
+
+                //sets audiosource loop setting to true because the key is held down
+                playSounds3.loop = true;
+                //checks to make sure only one instance of the sound is playing at once
+                if (!playSounds3.isPlaying)
+                {
+                    //plays sound
+                    playSounds3.Play();
+                }
+
+            }
+            else
+            {
+
+
+                //if keys aren't pressed or keys pressed opposite, sets clip to none and looping to false
+                playSounds3.loop = false;
+                playSounds3.Stop();
+            }
         }
         
     }
@@ -199,6 +202,7 @@ public class GrowingInstrument : MonoBehaviour {
                 {
                     playSoundsComb.Play();
                 }
+                comboKeyPlaying = true;
             }
             else if (vcr.GetKey("w") && vcr.GetKey("d"))
             {
@@ -209,6 +213,7 @@ public class GrowingInstrument : MonoBehaviour {
                     clipChanged = true;
                 }
                 playSoundsComb.Play();
+                comboKeyPlaying = true;
             }
 
             else if (vcr.GetKey("s") && vcr.GetKey("a") || vcr.GetKey("d"))
@@ -220,11 +225,13 @@ public class GrowingInstrument : MonoBehaviour {
                     clipChanged = true;
                 }
                 playSoundsComb.Play();
+                comboKeyPlaying = true;
             }
             else
             {
                 clipChanged = false;
                 playSoundsComb.Stop();
+                comboKeyPlaying = false;
             }
         }
     }
