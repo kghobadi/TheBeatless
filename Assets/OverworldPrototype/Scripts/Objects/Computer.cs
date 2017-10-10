@@ -30,7 +30,7 @@ public class Computer : Interactable {
                 aSource.Play();
             }else
                 Debug.Log("no recording to play");
-            interactable = false;
+            interactable = true;
         }
     }
 
