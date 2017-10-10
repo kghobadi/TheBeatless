@@ -56,7 +56,7 @@ public class pitchShift : MonoBehaviour{
         playSounds2.volume = yPos;
 
         LPF.SetFloat("lowPass", xPos);
-        print(xPos);
+//        print(xPos);
 
         playSounds3.volume = yPos;
 
