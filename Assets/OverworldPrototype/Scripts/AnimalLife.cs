@@ -8,9 +8,6 @@ public class AnimalLife : MonoBehaviour {
     int fruitAmount;
     int ageCounter;
 
-    //If we want to instantiate different Models for animals as they grow (like plants)
-    public GameObject baby, adult, old, skeleton;
-    private GameObject babyClone, adultClone, oldClone, skeletonClone;
 
     private GameObject sun;
     private Sun sunScript;
@@ -31,17 +28,6 @@ public class AnimalLife : MonoBehaviour {
         // ref for Animal Interactable
         objectScript = GetComponent<InstrumentObject>();
 
-        // Clone all prefabs and Instantiate
-        babyClone = Instantiate(baby, transform.position, Quaternion.identity);
-        adultClone = Instantiate(adult, transform.position, Quaternion.identity);
-        oldClone = Instantiate(old, transform.position, Quaternion.identity);
-        skeletonClone = Instantiate(skeleton, transform.position, Quaternion.identity);
-
-        //Set inactive besides ~Baby~
-        adultClone.SetActive(false);
-        oldClone.SetActive(false);
-        skeletonClone.SetActive(false);
-
         //Set age 
         ageCounter = 0;
         isBaby = true;
@@ -50,28 +36,27 @@ public class AnimalLife : MonoBehaviour {
 	}
 	
 	void Update () {
+      
+
         if (hasGrown)
         {
             switch (ageCounter)
             {
                 case 1: //Adult
                     hasGrown = false;
-                    Destroy(babyClone);
-                    adultClone.SetActive(true);
+                    transform.localScale = transform.localScale + new Vector3(0.3f, 0.3f, 0.3f);
                     isAdult = true;
                     StartCoroutine(Growth());
                     break;
                 case 2: // Old
                     hasGrown = false;
-                    Destroy(adultClone);
-                    oldClone.SetActive(true);
+                    transform.localScale = transform.localScale + new Vector3(0.3f, 0.3f, 0.3f);
                     isOld = true;
                     StartCoroutine(Growth());
                     break;
                 case 3: // Dead
                     hasGrown = false;
-                    Destroy(oldClone);
-                    skeletonClone.SetActive(true);
+                    transform.localScale = transform.localScale - new Vector3(0.8f, 0.7f, 0.8f);
                     isDead = true;
                     break;
             }
