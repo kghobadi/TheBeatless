@@ -13,8 +13,7 @@ public class diffVisFeedback : MonoBehaviour {
 
     private Specie specie;
     InputVCR vcr;
-    public AudioSource playSounds, playSounds2, playSounds3, playSounds4, playSoundsComb;
-    public AudioClip clip1, clip2, clip3, clip4;
+    public AudioSource playSounds, playSounds2, playSounds3, playSounds4;
 
     AnimalLife animalAge;
     
@@ -30,24 +29,29 @@ public class diffVisFeedback : MonoBehaviour {
         playSounds2 = gameObject.AddComponent<AudioSource>();
         playSounds3 = gameObject.AddComponent<AudioSource>();
         playSounds4 = gameObject.AddComponent<AudioSource>();
-		
+<<<<<<< HEAD
+
+=======
+		playSounds.spatialBlend = 1;
+		playSounds2.spatialBlend = 1;
+		playSounds3.spatialBlend = 1;
+		playSounds4.spatialBlend = 1;
+>>>>>>> master
 
         playSounds.playOnAwake = false;
         playSounds2.playOnAwake = false;
         playSounds3.playOnAwake = false;
-        playSounds4.playOnAwake = false;
-
-
-        playSounds.clip = clip1;
-        playSounds2.clip = clip2;
-        playSounds3.clip = clip3;
-        playSounds4.clip = clip4;
-
-        
-        
+        playSounds4.playOnAwake = false;      
     }
-	
-	void Update () {
+
+    void Start()
+    {
+        playSounds.clip = specie.audioSchema["w"];
+        playSounds2.clip = specie.audioSchema["s"];
+        playSounds3.clip = specie.audioSchema["d"];
+        playSounds4.clip = specie.audioSchema["a"];
+    }
+    void Update () {
 
         if (vcr.GetKey("w"))
         {
