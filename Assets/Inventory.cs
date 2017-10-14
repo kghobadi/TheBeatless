@@ -33,6 +33,7 @@ public class Inventory : MonoBehaviour {
         {
             playerControl.enabled = false;
             cameraControl.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
             inventory.SetActive(true);
             cameraControl.transform.LookAt(inventory.transform.position);
             inventoryOpen = true;
@@ -43,6 +44,7 @@ public class Inventory : MonoBehaviour {
         {
             playerControl.enabled = true ;
             cameraControl.enabled = true ;
+            Cursor.lockState = CursorLockMode.Locked;
             inventory.SetActive(false);
             inventoryOpen = false;
             soundBoard.PlayOneShot(bagClose);
@@ -56,5 +58,8 @@ public class Inventory : MonoBehaviour {
         {
             canOpen = true;
         }
+
+        //want to make a real-time grid, child items to Inventory, send them to space, if space is taken check object tag, if dif object move to new space
+        //if inventory is full, play inv full sound
     }
 }

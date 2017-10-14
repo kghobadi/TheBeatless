@@ -10,6 +10,8 @@ public class Fruit : Interactable {
     public GameObject seed;
     GameObject seedClone;
 
+    //need architecture for different seed types -- Plant Species?
+
     public override void Start()
     {
         base.Start();
