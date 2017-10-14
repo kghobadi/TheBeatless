@@ -7,6 +7,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Need ability to delete exported audio files within unity/ on recording device
+
 public class SaveSound : MonoBehaviour
 {
 	private int bufferSize;
