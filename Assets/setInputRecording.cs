@@ -49,6 +49,7 @@ public class setInputRecording : MonoBehaviour {
             {
                 // THis will reference an audio file: specie.audioSchema[KeyCode.W];
                 playerControl.enabled = false;
+                Cursor.lockState = CursorLockMode.None;
                 cameraControl.enabled = false;
                 print("recording");
                 vcr.Record();
@@ -69,6 +70,7 @@ public class setInputRecording : MonoBehaviour {
                
                 playerControl.enabled = true;
                 cameraControl.enabled = true;
+                Cursor.lockState = CursorLockMode.Locked;
                 print("stopped recording");
                 isRec = false;
 
