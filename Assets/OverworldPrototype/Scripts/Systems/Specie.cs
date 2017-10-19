@@ -7,6 +7,7 @@ using UnityEngine;
 public class Specie : MonoBehaviour
 {
     public AnimalSpecies specieName;
+    public PlantSpecies specieType;
     public Dictionary<string, AudioClip> audioSchema;
 
     string keyCodeString;
@@ -48,6 +49,11 @@ public class Specie : MonoBehaviour
         FROG, DOG, DONKEY, ROBIN,
     }
 
+    public enum PlantSpecies
+    {
+        OAK, WALNUT, APPLE,
+    }
+
 
     //public virtual void ThirtySecond() { }
     //public virtual void Sixteenth() { }
@@ -61,7 +67,7 @@ public class Specie : MonoBehaviour
     //Make plant species
 
     // This script needs to be associated with a Fruit/plant species so animal knows what it eats
-   
+
 
 }
 
