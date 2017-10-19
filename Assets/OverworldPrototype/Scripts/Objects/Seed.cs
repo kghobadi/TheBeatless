@@ -10,49 +10,88 @@ public class Seed : Interactable {
     public GameObject plant;
     float counter; // for planting 'animation'
 
+    public bool inInventory, canEquip;
+    Inventory invent;
+
     public override void Start()
     {
         base.Start();
         counter = 2;
+        invent = playerControl.gameObject.GetComponent<Inventory>();
     }
 
     public override void handleClickSuccess()
     {
         //Picks up seed
-        if (!underPlayerControl && !playerControl.isHoldingAnimal && !playerControl.isHoldingFood && !playerControl.isHoldingSeed)
+        if (!underPlayerControl && !inInventory)
         {
             base.handleClickSuccess();
+
+
+            putThisInInvent();
+
+
+        }
+        if(inInventory && canEquip){
+            print("kas SUCKS");
+            base.handleClickSuccess();
+
+            invent.takeFromInventory(int.Parse(transform.parent.name), true);
+            inInventory = false;
+           
             underPlayerControl = true;
             playerControl.isHoldingSeed = true;
             interactable = false;
-            playerControl.gameObject.GetComponent<Inventory>().saveToInventory(this.transform, true);
+            FindPlayerArm();
+
+
         }
+
     }
 
     void Update()
     {
-        //rotates seed constantly
-        transform.Rotate(0, 1, 0 * Time.deltaTime);
+  
+        if (inInventory)
+            canEquip = true;
+        else
+            canEquip = false;
 
-        //Process of planting seed
-        if (plantSeed)
+        if (underPlayerControl)
         {
-            underPlayerControl = false;
-            transform.SetParent(null);
-            if(counter > 0) //spirals seed downward into the ground
+            //Process of planting seed
+            if (plantSeed)
             {
-                transform.Translate(0,-0.01f, 0);
-                counter -= 1 * Time.deltaTime;
+                underPlayerControl = false;
+                transform.SetParent(null);
+                if (counter > 0) //spirals seed downward into the ground
+                {
+                    transform.Translate(0, -0.01f, 0);
+                    counter -= 1 * Time.deltaTime;
+                }
+                else
+                {
+                    playerControl.isHoldingSeed = false;
+                    soundBoard.PlayOneShot(plantedSeed);
+                    Destroy(gameObject);
+                }
+                Debug.Log(playerControl.isHoldingSeed);
             }
-            else
-            {
-                playerControl.isHoldingSeed = false;
-                soundBoard.PlayOneShot(plantedSeed);
-                Destroy(gameObject);
-            }
-            Debug.Log(playerControl.isHoldingSeed);
+
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+                putThisInInvent();
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                dropItem();
+
+        } else{
+            transform.Rotate(0, 1, 0 * Time.deltaTime);
         }
 
+
+
+     
     }
 
     void FindPlayerArm()
@@ -66,5 +105,28 @@ public class Seed : Interactable {
         // Can show this with tiny animation and Arm movement
 
     }
-    
+
+    void putThisInInvent(){
+        if (!invent.isFull)
+        {
+
+            invent.saveToInventory(this.transform, true);
+
+            inInventory = true;
+            underPlayerControl = false;
+            interactable = true;
+        }
+        else
+            Debug.Log("inventory full");
+
+    }
+
+
+    void dropItem(){
+
+        this.transform.parent = null;
+        interactable = true;
+        underPlayerControl = false;
+
+    }
 }

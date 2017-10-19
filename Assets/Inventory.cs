@@ -21,6 +21,7 @@ public class Inventory : MonoBehaviour {
     public bool[] isEmpty;
 
     public Transform testObj;
+    public bool isFull;
 
     void Start () {
         playerControl = GetComponent<FirstPersonController>();
@@ -35,10 +36,15 @@ public class Inventory : MonoBehaviour {
         for (int i = 0; i < isEmpty.Length;i++){
             isEmpty[i] = true;
         }
+
+
 	}
 	
 
 	void Update () {
+
+        isFull = checkFull();
+
         if (Input.GetKeyDown(KeyCode.Tab) && canOpen)
         {
             openInventory();
@@ -52,27 +58,17 @@ public class Inventory : MonoBehaviour {
         if (inventoryOpen)
         {
             canOpen = false;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                takeFromInventory(1, true);
-
-            }
     
         }
         else
         {
             canOpen = true;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                saveToInventory(testObj, true);
-
-            }
         }
 
         //want to make a real-time grid, child items to Inventory, send them to space, if space is taken check object tag, if dif object move to new space
         //if inventory is full, play inv full sound
+
+
 
 
     }
@@ -108,7 +104,7 @@ public class Inventory : MonoBehaviour {
                 print(indexToSaveIn);
                 if(isEmpty[i]){
                     objectToSave.parent = slots[indexToSaveIn];
-                    objectToSave.localPosition = Vector3.up;
+                    objectToSave.localPosition = Vector3.up * 10;
                     isEmpty[indexToSaveIn] = false;
                 } else{
                     indexToSaveIn++;
@@ -129,12 +125,21 @@ public class Inventory : MonoBehaviour {
         if(isSingle){
             closeInventory();
             Transform takeOut = slots[slotNumber].GetChild(0);
-            takeOut.parent = this.transform;
-            takeOut.localPosition = new Vector3(0, 0, 1);
+            //takeOut.parent = this.transform;
+            //takeOut.localPosition = new Vector3(0, 0, 1);
             isEmpty[slotNumber] = true;
 
         }
 
+    }
+
+    bool checkFull(){
+        for (int i = 0; i < isEmpty.Length; i++)
+        {
+            if (isEmpty[i])
+                return false;
+        }
+        return true;
     }
 
 
