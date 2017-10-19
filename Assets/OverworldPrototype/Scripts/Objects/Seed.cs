@@ -25,7 +25,7 @@ public class Seed : Interactable {
             underPlayerControl = true;
             playerControl.isHoldingSeed = true;
             interactable = false;
-            FindPlayerArm();
+            playerControl.gameObject.GetComponent<Inventory>().saveToInventory(this.transform, true);
         }
     }
 
