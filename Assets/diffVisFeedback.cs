@@ -29,14 +29,14 @@ public class diffVisFeedback : MonoBehaviour {
         playSounds2 = gameObject.AddComponent<AudioSource>();
         playSounds3 = gameObject.AddComponent<AudioSource>();
         playSounds4 = gameObject.AddComponent<AudioSource>();
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
-=======
+//=======
 		playSounds.spatialBlend = 1;
 		playSounds2.spatialBlend = 1;
 		playSounds3.spatialBlend = 1;
 		playSounds4.spatialBlend = 1;
->>>>>>> master
+//>>>>>>> master
 
         playSounds.playOnAwake = false;
         playSounds2.playOnAwake = false;
