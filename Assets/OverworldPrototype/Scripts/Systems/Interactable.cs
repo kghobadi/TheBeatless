@@ -16,8 +16,9 @@ public abstract class Interactable : MonoBehaviour
     public AudioClip InteractSound;
 
     public bool interactable;
+    public bool isEquipped;
 
-	protected FirstPersonController playerControl;
+    protected FirstPersonController playerControl;
 
     public virtual void Start()
     {

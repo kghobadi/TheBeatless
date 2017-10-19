@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Shovel : Interactable {
-    public bool isEquipped;
 
 
     public GameObject fertileGround;
