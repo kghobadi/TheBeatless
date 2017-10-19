@@ -8,6 +8,10 @@ public class FertileGround : Interactable {
 
     GameObject plantClone;
 
+
+    // Rework this script so it can be attached to Terrain or larger land mass
+    // Plant will spawn at player's mouse position Raycast Screenpoint to World
+
     public override void Start()
     {
         base.Start();
