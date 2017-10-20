@@ -6,6 +6,8 @@ public class clickToFarm : MonoBehaviour {
 
 	public GameObject hoedTile;
 
+	public bool isNight = false;
+
 	public int numRows = 4;
 	public int numColumns = 4;
 
@@ -20,14 +22,31 @@ public class clickToFarm : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			isNight = true;
+			print ("yeah");
+		} else { 
+			isNight = false;
+		}
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 
 		RaycastHit rayHit = new RaycastHit ();
 
-		if (Physics.Raycast (ray, out rayHit) && Input.GetMouseButtonDown(0)) {
+		if (Physics.Raycast (ray, out rayHit) && Input.GetMouseButtonDown (0)) {
 			Debug.DrawRay (Camera.main.transform.position, rayHit.point);
-			rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber++;
-			rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
+			//rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber++;
+			if (rayHit.collider.gameObject.GetComponent<growPlants> ().toGrow == false && rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber == 0) {
+				rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
+				rayHit.collider.gameObject.GetComponent<playAudio> ().clipsSwitched = false;
+				rayHit.collider.gameObject.GetComponent<growPlants> ().toGrow = true;
+			}
+
+		} else if (Physics.Raycast (ray, out rayHit) && Input.GetMouseButtonDown (1)) {
+			Debug.DrawRay (Camera.main.transform.position, rayHit.point);
+			rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber = 0;
+			//rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
+			//rayHit.collider.gameObject.GetComponent<playAudio> ().clipsSwitched = false;
 
 		}
 	}
