@@ -8,6 +8,7 @@ public class Shovel : Interactable {
     public GameObject fertileGround;
     GameObject fertileGroundClone;
     Vector3 targetPosition;
+    bool isEquipped;
 
 
     // Rework this script so it can be attached to Terrain or larger land mass

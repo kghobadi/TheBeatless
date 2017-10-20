@@ -10,15 +10,14 @@ public abstract class Interactable : MonoBehaviour
     public Sprite sprite; 
 
     protected float withinDistance = 10f;
-    protected float withinDistanceActive = 5f;
+    protected float withinDistanceActive = 10f;
 
     protected AudioSource soundBoard;
     public AudioClip InteractSound;
 
     public bool interactable;
-    public bool isEquipped;
 
-    protected FirstPersonController playerControl;
+	protected FirstPersonController playerControl;
 
     public virtual void Start()
     {
@@ -57,22 +56,16 @@ public abstract class Interactable : MonoBehaviour
         Play();
     }
 
-    public virtual void handleClickFailure()
-    {
-        // handlea click that's too far away or delete this method.
-    }
+   
 
     void OnMouseDown()
     {
-		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable && !playerControl.isHoldingAnimal)
+		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable)
         {
             handleClickSuccess();
 
         }
-        else
-        {
-            handleClickFailure();
-        }
+       
     }
 
     void Play()
