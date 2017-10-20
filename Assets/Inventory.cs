@@ -101,7 +101,7 @@ public class Inventory : MonoBehaviour {
             int indexToSaveIn = 0;
 
             for (int i = 0; i < indexToSaveIn +1;i++){
-                print(indexToSaveIn);
+//                print(indexToSaveIn);
                 if(isEmpty[i]){
                     objectToSave.parent = slots[indexToSaveIn];
                     objectToSave.localPosition = Vector3.up * 10;
