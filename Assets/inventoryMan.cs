@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//HOW TO USE: place on same object as objects that can go in inventory, 
+//make reference of it in its behavior script and make it only do stuff if underPlayerControl
+//is true. ALSO: set if isSingle on the behavior script (probably on start)
+
+//IF IN DOUBT, LOOK AT SEED.CS FOR REFERENCE.  
+
+
+
 public class inventoryMan : Interactable {
     public bool underPlayerControl;
     public bool inInventory, canEquip;
@@ -33,7 +42,7 @@ public class inventoryMan : Interactable {
             base.handleClickSuccess();
 
             takeFromInvent();
-            print("kas SUCKS");
+//            print("kas SUCKS");
            
 
 
@@ -59,7 +68,7 @@ public class inventoryMan : Interactable {
                 dropItem();
         }
 
-        Debug.Log(inInventory);
+//        Debug.Log(inInventory);
 
     }
 

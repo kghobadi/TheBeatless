@@ -8,7 +8,8 @@ public class Shovel : Interactable {
     public GameObject fertileGround;
     GameObject fertileGroundClone;
     Vector3 targetPosition;
-    bool isEquipped;
+
+    inventoryMan inventMan;
 
 
     // Rework this script so it can be attached to Terrain or larger land mass
@@ -17,19 +18,10 @@ public class Shovel : Interactable {
     public override void Start()
     {
         base.Start();
-        isEquipped = true;
+        inventMan = GetComponent<inventoryMan>();
+        inventMan.isSingle = true;
     }
 
-    public override void handleClickSuccess()
-    {
-        //Only runs if player is holding a Seed
-        if (!isEquipped && interactable)
-        {
-            FindPlayerArm();
-            interactable = false;
-            isEquipped = true;
-        }
-    }
 
     void Update()
     {
@@ -38,7 +30,7 @@ public class Shovel : Interactable {
         // need some way to put this shit on a grid
         // need a way to unequip
 
-        if (isEquipped)
+        if (inventMan.underPlayerControl)
         {
             if (Input.GetMouseButton(0))
             {
@@ -57,22 +49,6 @@ public class Shovel : Interactable {
 
             }
         }
-        else
-        {
-            interactable = true;
-        }
-
-    }
-
- void FindPlayerArm()
-    {
-        transform.SetParent(_player.transform);
-
-        Vector3 armPosition = new Vector3(0.25f, 0f, 1f);
-
-        transform.localPosition = armPosition;
-
-        // Can show this with tiny animation and Arm movement
 
     }
 

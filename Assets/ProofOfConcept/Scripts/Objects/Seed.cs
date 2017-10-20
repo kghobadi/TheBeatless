@@ -8,7 +8,7 @@ public class Seed : Interactable {
     public AudioClip plantedSeed;
 
     public GameObject plant;
-    float counter; // for planting 'animation'
+    public float counter; // for planting 'animation'
 
     inventoryMan inventMan;
 
@@ -27,14 +27,14 @@ public class Seed : Interactable {
     void Update()
     {
 
-
         if (inventMan.underPlayerControl)
         {
+            print("kas sucks");
             playerControl.isHoldingSeed = true;
             //Process of planting seed
             if (plantSeed)
             {
-                inventMan.underPlayerControl = false;
+                //inventMan.underPlayerControl = false;
                 transform.SetParent(null);
                 if (counter > 0) //spirals seed downward into the ground
                 {
@@ -45,6 +45,7 @@ public class Seed : Interactable {
                 {
                     playerControl.isHoldingSeed = false;
                     soundBoard.PlayOneShot(plantedSeed);
+                    inventMan.underPlayerControl = false;
                     Destroy(gameObject);
                 }
                 Debug.Log(playerControl.isHoldingSeed);
