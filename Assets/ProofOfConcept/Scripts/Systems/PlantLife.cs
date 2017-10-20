@@ -7,6 +7,8 @@ public class PlantLife : MonoBehaviour {
     bool fruitGrowing;
     int fruitAmount;
     int ageCounter;
+    public int growthDay;
+
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
     public GameObject fruit;
@@ -90,10 +92,15 @@ public class PlantLife : MonoBehaviour {
 
     IEnumerator Growth()
     {
-        SpawnFruits();
-        yield return new WaitUntil(() => sunScript.dayPassed == true);
-        yield return new WaitForSeconds(1);
-        treeSounds.PlayOneShot(growthSound);
+        for(int i = 0; i < growthDay; i++)
+        {
+            Debug.Log(i);
+            SpawnFruits();
+            if(fruitAmount > 0)
+                treeSounds.PlayOneShot(growthSound);
+            yield return new WaitUntil(() => sunScript.dayPassed == true);
+            yield return new WaitForSeconds(1);
+        }
         ageCounter += 1;
         hasGrown = true;
     }
@@ -105,7 +112,13 @@ public class PlantLife : MonoBehaviour {
             Vector3 xyz = Random.insideUnitSphere * 3;
             Vector3 spawnPosition = xyz + transform.position + new Vector3(0, 3, 0);
             fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
+            fruitClone.transform.localScale = new Vector3 (0.3f, 0.3f, 0.3f);
         }
         
     }
+
+    //public void FruitGrowth()
+    //{
+
+    //}
 }
