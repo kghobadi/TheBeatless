@@ -21,11 +21,15 @@ public class PlantLife : MonoBehaviour {
     private AudioSource treeSounds;
     public AudioClip growthSound;
 
-
-    void Start () {
+    void Awake()
+    {
         //grabs Sun ref
         sun = GameObject.FindGameObjectWithTag("Sun");
         sunScript = sun.GetComponent<Sun>();
+    }
+
+    void Start () {
+        
 
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
@@ -117,8 +121,5 @@ public class PlantLife : MonoBehaviour {
         
     }
 
-    //public void FruitGrowth()
-    //{
-
-    //}
+  
 }

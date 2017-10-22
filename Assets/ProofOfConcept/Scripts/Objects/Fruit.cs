@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Fruit : Interactable {
-    public bool underPlayerControl;
     public bool feedAnimal;
     public AudioClip animalEats;
     public bool hasFallen;
@@ -16,34 +15,40 @@ public class Fruit : Interactable {
     public float growthMetric;
 
     Rigidbody rbody;
+    public int decompositionDay;
 
-    //need architecture for different seed types -- Plant Species?
+    inventoryMan inventMan;
+
+    private GameObject sun;
+    private Sun sunScript;
+
+
+    void Awake()
+    {
+        //what do about NullReference?
+        rbody.GetComponent<Rigidbody>();
+        rbody.isKinematic = true;
+    }
 
     public override void Start()
     {
         base.Start();
+
+        //grabs Sun ref
+        sun = GameObject.FindGameObjectWithTag("Sun");
+        sunScript = sun.GetComponent<Sun>();
 
         //Makes a seed clone of whichever Plant type player needs
         seedClone = Instantiate(seed, transform.position, Quaternion.identity);
         seedClone.transform.SetParent(gameObject.transform);
         seedClone.SetActive(false);
 
-        rbody.GetComponent<Rigidbody>();
-        rbody.isKinematic = true;
+       
 
-    }
+        inventMan = GetComponent<inventoryMan>();
+        inventMan.isSingle = true;
+        interactable = false;
 
-    public override void handleClickSuccess()
-    {
-        if (!underPlayerControl && hasFallen)
-        {
-            base.handleClickSuccess();
-            underPlayerControl = true;
-            playerControl.isHoldingFood = true;
-            interactable = false;
-            FindPlayerArm();
-        }
-        // 
     }
 
     void Update()
@@ -60,13 +65,21 @@ public class Fruit : Interactable {
             
         }
 
-        if (feedAnimal && onGround)
+        if (onGround)
         {
-            underPlayerControl = false;
+            interactable = true;
+        }
+
+        if (feedAnimal && inventMan.underPlayerControl)
+        {
+            inventMan.underPlayerControl = false;
             playerControl.isHoldingFood = false;
+            
+            //NEED TO find a way to set parent to animal, carry it around a while, then poop it out (set active)
             seedClone.SetActive(true);
             seedClone.transform.localPosition = seedClone.transform.localPosition + new Vector3(-0.5f, 0, -0.5f);
             seedClone.transform.SetParent(null);
+            
             Destroy(gameObject);
             soundBoard.PlayOneShot(animalEats);
         }
@@ -88,17 +101,6 @@ public class Fruit : Interactable {
         }
     }
 
-    void FindPlayerArm()
-    {
-        transform.SetParent(_player.transform);
-
-        Vector3 armPosition = new Vector3(0.25f, 0f, 1.5f);
-
-        transform.localPosition = armPosition;
-
-        // Can show this with tiny animation and Arm movement
-
-    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -107,6 +109,27 @@ public class Fruit : Interactable {
             onGround = true;
             Destroy(rbody);
         }
+
+        //if it hit FertileGround, it will decompose and plant itself
+        else if(collision.gameObject.tag == "FertileGround")
+        {
+            onGround = true;
+            Destroy(rbody);
+            StartCoroutine(Decompose());
+        }
+    }
+
+    IEnumerator Decompose()
+    {
+        for(int i = 0; i < decompositionDay; i++)
+        {
+            yield return new WaitUntil(() => sunScript.dayPassed == true);
+        }
+
+        seedClone.SetActive(true);
+        Destroy(gameObject);
+        seedClone.GetComponent<Seed>().plantSeed = true;
+
     }
 
 }

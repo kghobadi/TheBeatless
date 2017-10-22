@@ -19,7 +19,7 @@ public class Sun : MonoBehaviour {
         if(transform.position.y < 3f && transform.position.y > -3f)
         {
             dayPassed = true;
-            Debug.Log(dayPassed);
+
         }
         else
         {
