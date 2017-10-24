@@ -14,7 +14,7 @@ public class Fruit : Interactable {
     public float fullyGrownXScale;
     public float growthMetric;
 
-    Rigidbody rbody;
+    Rigidbody rb;
     public int decompositionDay;
 
     inventoryMan inventMan;
@@ -23,12 +23,7 @@ public class Fruit : Interactable {
     private Sun sunScript;
 
 
-    void Awake()
-    {
-        //what do about NullReference?
-        rbody.GetComponent<Rigidbody>();
-        rbody.isKinematic = true;
-    }
+
 
     public override void Start()
     {
@@ -49,47 +44,53 @@ public class Fruit : Interactable {
         inventMan.isSingle = true;
         interactable = false;
 
+        rb = GetComponent<Rigidbody>();
+
     }
 
     void Update()
     {
-        transform.Rotate(0, 1, 0 * Time.deltaTime);
-
-        if(!onGround)
-            FruitGrowth();
-
-        if (hasFallen && !onGround)
+   
+        if (inventMan.underPlayerControl)
         {
-            rbody.isKinematic = false;
-            hasFallen = false;
-            
-        }
+            if (feedAnimal)
+            {
+                inventMan.underPlayerControl = false;
+                playerControl.isHoldingFood = false;
 
-        if (onGround)
-        {
-            interactable = true;
-        }
+                //NEED TO find a way to set parent to animal, carry it around a while, then poop it out (set active)
+                seedClone.SetActive(true);
+                seedClone.transform.localPosition = seedClone.transform.localPosition + new Vector3(-0.5f, 0, -0.5f);
+                seedClone.transform.SetParent(null);
 
-        if (feedAnimal && inventMan.underPlayerControl)
-        {
-            inventMan.underPlayerControl = false;
-            playerControl.isHoldingFood = false;
-            
-            //NEED TO find a way to set parent to animal, carry it around a while, then poop it out (set active)
-            seedClone.SetActive(true);
-            seedClone.transform.localPosition = seedClone.transform.localPosition + new Vector3(-0.5f, 0, -0.5f);
-            seedClone.transform.SetParent(null);
-            
-            Destroy(gameObject);
-            soundBoard.PlayOneShot(animalEats);
-        }
+                Destroy(gameObject);
+                soundBoard.PlayOneShot(animalEats);
+            }
+        }else{
+            transform.Rotate(0, 1, 0 * Time.deltaTime);
 
+            if (!onGround)
+                FruitGrowth();
+
+            if (hasFallen && !onGround)
+            {
+                rb.isKinematic = false;
+               // transform.position -= new Vector3(0, 10 * Time.deltaTime, 0);
+                hasFallen = false;
+
+            }
+
+            if (onGround)
+            {
+                interactable = true;
+            }
+
+        }
     }
 
     void FruitGrowth()
     {
-        if (!hasFallen)
-        {
+     
             if (transform.localScale.x < fullyGrownXScale)
             {
                 transform.localScale *= growthMetric;
@@ -98,24 +99,26 @@ public class Fruit : Interactable {
             {
                 hasFallen = true;
             }
-        }
+
     }
 
 
     void OnCollisionEnter(Collision collision)
     {
+        rb.isKinematic = true;
         if(collision.gameObject.tag == "Ground")
         {
             onGround = true;
-            Destroy(rbody);
+
         }
 
         //if it hit FertileGround, it will decompose and plant itself
         else if(collision.gameObject.tag == "FertileGround")
         {
             onGround = true;
-            Destroy(rbody);
+
             StartCoroutine(Decompose());
+            Debug.Log("collided");
         }
     }
 
@@ -124,9 +127,11 @@ public class Fruit : Interactable {
         for(int i = 0; i < decompositionDay; i++)
         {
             yield return new WaitUntil(() => sunScript.dayPassed == true);
+            Debug.Log("kasSucks"+i);
         }
 
         seedClone.SetActive(true);
+        seedClone.transform.SetParent(null); 
         Destroy(gameObject);
         seedClone.GetComponent<Seed>().plantSeed = true;
 
