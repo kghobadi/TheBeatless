@@ -32,17 +32,10 @@ public class FertileGround : Interactable {
 
         if (seedPlanted)
         {
+            playerControl.GetComponentInChildren<Seed>().gameObject.transform.position = transform.position + new Vector3(0, 2, 0);
             playerControl.GetComponentInChildren<Seed>().plantSeed = true;
-
-            //creates Clone of plant contained in Seed
-            plantClone = Instantiate(playerControl.GetComponentInChildren<Seed>().plant, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
-            plantClone.SetActive(false);
-
-            //Waits until Seed reaches ground to Activate plantClone
-            StartCoroutine(SeedPlanted());
-            seedPlanted = false;
             growingPlant = true;
-            
+            seedPlanted = false;
         }
 
         if (playerControl.isHoldingSeed && !growingPlant)
@@ -57,13 +50,6 @@ public class FertileGround : Interactable {
 
     }
 
-
-    //Waits for seed to spiral into the Ground 
-    IEnumerator SeedPlanted()
-    {
-        yield return new WaitUntil(() => playerControl.isHoldingSeed == false);
-        plantClone.SetActive(true);
-    }
 
     
 }

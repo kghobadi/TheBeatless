@@ -7,6 +7,7 @@ public class AnimalLife : MonoBehaviour {
     bool fruitGrowing;
     int fruitAmount;
     int ageCounter;
+    public int growthDay;
 
 
     private GameObject sun;
@@ -66,9 +67,14 @@ public class AnimalLife : MonoBehaviour {
 
     IEnumerator Growth()
     {
-        yield return new WaitUntil(() => sunScript.dayPassed == true);
-        yield return new WaitForSeconds(1);
-        //animalSounds.PlayOneShot(growthSound); need a ref to an audioSource for the animal
+        for (int i = 0; i < growthDay; i++)
+        {
+            Debug.Log(i);
+            //animal growth sound?
+            yield return new WaitUntil(() => sunScript.dayPassed == true);
+            yield return new WaitForSeconds(1);
+        }
+
         if (objectScript.hasBeenFed)
         {
             ageCounter += 1;

@@ -19,8 +19,7 @@ public class Inventory : MonoBehaviour {
     public Transform[] slots;
 
     public bool[] isEmpty;
-
-    public Transform testObj;
+    
     public bool isFull;
 
     void Start () {
@@ -104,7 +103,7 @@ public class Inventory : MonoBehaviour {
 //                print(indexToSaveIn);
                 if(isEmpty[i]){
                     objectToSave.parent = slots[indexToSaveIn];
-                    objectToSave.localPosition = Vector3.up * 10;
+                    objectToSave.localPosition = Vector3.up * 1;
                     isEmpty[indexToSaveIn] = false;
                 } else{
                     indexToSaveIn++;
