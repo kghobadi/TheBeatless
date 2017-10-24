@@ -10,15 +10,14 @@ public abstract class Interactable : MonoBehaviour
     public Sprite sprite; 
 
     protected float withinDistance = 10f;
-    protected float withinDistanceActive = 5f;
+    protected float withinDistanceActive = 10f;
 
     protected AudioSource soundBoard;
     public AudioClip InteractSound;
 
     public bool interactable;
-    public bool isEquipped;
 
-    protected FirstPersonController playerControl;
+	protected FirstPersonController playerControl;
 
     public virtual void Start()
     {
@@ -52,27 +51,20 @@ public abstract class Interactable : MonoBehaviour
     public virtual void handleClickSuccess()
     {
         symbol.GetComponent<SpriteRenderer>().enabled = true;
-        cammy.GetComponent<camMouseLook>().sensitivityX = 0.5f;
-        cammy.GetComponent<camMouseLook>().sensitivityY = 0.5f;
         Play();
+        symbol.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    public virtual void handleClickFailure()
-    {
-        // handlea click that's too far away or delete this method.
-    }
+   
 
     void OnMouseDown()
     {
-		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable && !playerControl.isHoldingAnimal)
+		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable)
         {
             handleClickSuccess();
 
         }
-        else
-        {
-            handleClickFailure();
-        }
+       
     }
 
     void Play()
