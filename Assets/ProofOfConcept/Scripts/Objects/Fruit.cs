@@ -131,6 +131,7 @@ public class Fruit : Interactable {
         }
 
         seedClone.SetActive(true);
+        seedClone.transform.localPosition = new Vector3(0, 2, 0);
         seedClone.transform.SetParent(null); 
         Destroy(gameObject);
         seedClone.GetComponent<Seed>().plantSeed = true;
