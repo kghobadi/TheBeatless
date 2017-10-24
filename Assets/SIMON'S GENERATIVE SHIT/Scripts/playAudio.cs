@@ -16,8 +16,12 @@ public class playAudio : MonoBehaviour {
 
 	public bool sprVisisble = false;
 
+
+
 	private	void Awake() {
 		timerStartVal = timer;
+
+
 
 		SimpleClock.ThirtySecond += OnThirtySecond;
 		//audio.clip = clips [Random.Range (0, 1)];
