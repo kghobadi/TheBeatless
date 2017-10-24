@@ -27,7 +27,7 @@ public class inventoryMan : Interactable {
     public override void handleClickSuccess()
     {
         //inventory stuff
-        if (!underPlayerControl && !inInventory)
+        if (!underPlayerControl && !inInventory && interactable)
         {
             base.handleClickSuccess();
 

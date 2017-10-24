@@ -51,9 +51,8 @@ public abstract class Interactable : MonoBehaviour
     public virtual void handleClickSuccess()
     {
         symbol.GetComponent<SpriteRenderer>().enabled = true;
-        cammy.GetComponent<camMouseLook>().sensitivityX = 0.5f;
-        cammy.GetComponent<camMouseLook>().sensitivityY = 0.5f;
         Play();
+        symbol.GetComponent<SpriteRenderer>().enabled = false;
     }
 
    
