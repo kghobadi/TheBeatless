@@ -19,7 +19,7 @@ public class AnimalLife : MonoBehaviour {
     public bool isOld;
     public bool isDead;
 
-    InstrumentObject objectScript;
+    //InstrumentObject objectScript;
 
     void Start () {
         //grabs Sun ref
@@ -27,7 +27,7 @@ public class AnimalLife : MonoBehaviour {
         sunScript = sun.GetComponent<Sun>();
 
         // ref for Animal Interactable
-        objectScript = GetComponent<InstrumentObject>();
+        //objectScript = GetComponent<InstrumentObject>();
 
         //Set age 
         ageCounter = 0;
@@ -75,15 +75,13 @@ public class AnimalLife : MonoBehaviour {
             yield return new WaitForSeconds(1);
         }
 
-        if (objectScript.hasBeenFed)
-        {
-            ageCounter += 1;
-            hasGrown = true;
-        }
-        else
-        {
-            StartCoroutine(Growth()); //hopefully this works
-        }
+        //if (objectScript.hasBeenFed)
+  
+        ageCounter += 1;
+        hasGrown = true;
+ 
+        StartCoroutine(Growth()); //hopefully this works
+        
     }
     
 }

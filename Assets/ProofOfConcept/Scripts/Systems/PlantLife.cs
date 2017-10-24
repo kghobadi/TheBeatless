@@ -6,7 +6,7 @@ public class PlantLife : MonoBehaviour {
 
     bool fruitGrowing;
     int fruitAmount;
-    int ageCounter;
+    public int ageCounter;
     public int growthDay;
 
     public GameObject sapling, young, adult, old, stump;
