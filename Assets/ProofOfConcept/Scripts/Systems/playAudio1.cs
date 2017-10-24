@@ -77,7 +77,7 @@ public class playAudio1 : MonoBehaviour
         }
         switch (plantlife.ageCounter)
         {
-            case 1:
+            case 0:
                 if (!clipsSwitched)
                 {
                     audioSource.clip = clips[Random.Range(0, 7)];
@@ -110,10 +110,10 @@ public class playAudio1 : MonoBehaviour
                 }
                     break;
 
-            case 2:
+            case 1:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = switchedClips[Random.Range(0, 3)];
+                    audioSource.clip = switchedClips[Random.Range(0, 2)];
                     clipsSwitched = true;
                 }
                 if (!audioSource.isPlaying)
@@ -140,10 +140,42 @@ public class playAudio1 : MonoBehaviour
                 }
                 break;
 
+            case 2:
+                if (!clipsSwitched)
+                {
+                    audioSource.clip = secondClips[Random.Range(0, 3)];
+                    clipsSwitched = true;
+                }
+
+                if (!audioSource.isPlaying)
+                {
+                    //timeScale = Random.Range (0, 4);
+                    switch (timeScale)
+                    {
+                        case 1:
+                            audioSource.PlayScheduled(SimpleClock.AtNextEighth());
+                            audioSource.SetScheduledEndTime(SimpleClock.AtNextHalf() + SimpleClock.AtNextBeat());
+                            break;
+                        case 2:
+                            audioSource.PlayScheduled(SimpleClock.AtNextHalf());
+                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextHalf());
+                            break;
+                        case 3:
+                            audioSource.PlayScheduled(SimpleClock.AtNextQuarter());
+                            audioSource.SetScheduledEndTime(SimpleClock.AtNextQuarter() + SimpleClock.AtNextHalf());
+                            break;
+                        case 4:
+                            audioSource.PlayScheduled(SimpleClock.AtNextMeasure());
+                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextMeasure());
+                            break;
+                    }
+
+                }
+                break;
             case 3:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = secondClips[Random.Range(0, 4)];
+                    audioSource.clip = secondClips[Random.Range(0, 3)];
                     clipsSwitched = true;
                 }
 

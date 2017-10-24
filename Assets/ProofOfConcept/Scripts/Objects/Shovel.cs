@@ -10,6 +10,7 @@ public class Shovel : Interactable {
     Vector3 targetPosition;
 
     inventoryMan inventMan;
+    
 
 
     // Rework this script so it can be attached to Terrain or larger land mass
@@ -39,7 +40,7 @@ public class Shovel : Interactable {
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if(hit.transform.gameObject.tag == "Ground")
+                    if(hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.transform.position) <= withinDistanceActive)
                     {
                         targetPosition = hit.point;
                         fertileGroundClone = Instantiate(fertileGround, targetPosition, Quaternion.identity);
