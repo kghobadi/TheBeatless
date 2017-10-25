@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TGS;
 
 public class Fruit : Interactable {
     public bool feedAnimal;
@@ -22,7 +23,7 @@ public class Fruit : Interactable {
     private GameObject sun;
     private Sun sunScript;
 
-
+    TerrainGridSystem tgs;
 
 
     public override void Start()
@@ -45,6 +46,8 @@ public class Fruit : Interactable {
         interactable = false;
 
         rb = GetComponent<Rigidbody>();
+
+        tgs = TerrainGridSystem.instance;
 
     }
 
@@ -109,31 +112,35 @@ public class Fruit : Interactable {
         if(collision.gameObject.tag == "Ground")
         {
             onGround = true;
+            Vector3 collisionPoint = collision.contacts[0].point;
+            Cell groundTile = tgs.CellGetAtPosition(collisionPoint,true);
+            int cellIndex = tgs.CellGetIndex(groundTile);
+            if (tgs.CellGetTag(cellIndex) == 1)
+            {
+                StartCoroutine(Decompose(groundTile, cellIndex));
+            }
 
         }
 
-        //if it hit FertileGround, it will decompose and plant itself
-        else if(collision.gameObject.tag == "FertileGround")
-        {
-            onGround = true;
-
-            StartCoroutine(Decompose());
-            Debug.Log("collided");
-        }
+       
     }
 
-    IEnumerator Decompose()
+    IEnumerator Decompose(Cell newTile, int index)
     {
         for(int i = 0; i < decompositionDay; i++)
         {
             yield return new WaitUntil(() => sunScript.dayPassed == true);
-            Debug.Log("kasSucks"+i);
+
         }
 
         seedClone.SetActive(true);
         seedClone.transform.SetParent(null); 
+        seedClone.transform.position = new Vector3(tgs.CellGetPosition(index).x, transform.position.y, tgs.CellGetPosition(index).z);
+        yield return new WaitForSeconds(0.5f);
+        seedClone.GetComponent<Seed>().counter = 0;
+        seedClone.GetComponent<Seed>().PlantSeed(newTile);
         Destroy(gameObject);
-        seedClone.GetComponent<Seed>().plantSeed = true;
+       
 
     }
 

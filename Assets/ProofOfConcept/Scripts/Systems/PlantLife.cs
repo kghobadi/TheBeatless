@@ -20,6 +20,7 @@ public class PlantLife : MonoBehaviour {
 
     private AudioSource treeSounds;
     public AudioClip growthSound;
+    playAudio1 playAud;
 
     void Awake()
     {
@@ -29,7 +30,8 @@ public class PlantLife : MonoBehaviour {
     }
 
     void Start () {
-        
+
+        playAud = GetComponent<playAudio1>();
 
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
@@ -61,6 +63,7 @@ public class PlantLife : MonoBehaviour {
             {
                 case 1: //Young
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(saplingClone);
                     youngClone.SetActive(true);
                     fruitAmount = 3;
@@ -69,6 +72,7 @@ public class PlantLife : MonoBehaviour {
                     break;
                 case 2: //Adult
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(youngClone);
                     adultClone.SetActive(true);
                     fruitAmount = 5;
@@ -77,6 +81,7 @@ public class PlantLife : MonoBehaviour {
                     break;
                 case 3: // Old
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(adultClone);
                     oldClone.SetActive(true);
                     fruitAmount = 3;
@@ -85,6 +90,7 @@ public class PlantLife : MonoBehaviour {
                     break;
                 case 4: // Dead
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(oldClone);
                     stumpClone.SetActive(true);
                     // silence after death or leftover ringing in Stump
