@@ -51,8 +51,8 @@ public class playAudio1 : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = clips[Random.Range(0, 6)];
-        timeScale = Random.Range(1, 4);
+        audioSource.clip = clips[Random.Range(0, 7)];
+        timeScale = Random.Range(1, 5);
     }
 
     // Update is called once per frame
@@ -78,9 +78,10 @@ public class playAudio1 : MonoBehaviour
         switch (plantlife.ageCounter)
         {
             case 0:
+                
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = clips[Random.Range(0, 7)];
+                    audioSource.clip = clips[Random.Range(0,7)];
                     clipsSwitched = true;
                 }
                 if (!audioSource.isPlaying)
@@ -113,7 +114,7 @@ public class playAudio1 : MonoBehaviour
             case 1:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = switchedClips[Random.Range(0, 2)];
+                    audioSource.clip = switchedClips[Random.Range(0, 3)];
                     clipsSwitched = true;
                 }
                 if (!audioSource.isPlaying)
@@ -143,7 +144,7 @@ public class playAudio1 : MonoBehaviour
             case 2:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = secondClips[Random.Range(0, 3)];
+                    audioSource.clip = secondClips[Random.Range(0, 4)];
                     clipsSwitched = true;
                 }
 
@@ -175,7 +176,7 @@ public class playAudio1 : MonoBehaviour
             case 3:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = secondClips[Random.Range(0, 3)];
+                    audioSource.clip = secondClips[Random.Range(0, 4)];
                     clipsSwitched = true;
                 }
 

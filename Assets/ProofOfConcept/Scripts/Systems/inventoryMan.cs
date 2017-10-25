@@ -108,10 +108,12 @@ public class inventoryMan : Interactable {
         invent.takeFromInventory(slotNum, true);
         inInventory = false;
 
-        underPlayerControl = true;
+        //underPlayerControl = true;//delay this for a frame
+
 
         interactable = false;
         FindPlayerArm();
+        StartCoroutine(waitFrame());
 
     }
 
@@ -122,6 +124,12 @@ public class inventoryMan : Interactable {
         this.transform.parent = null;
         interactable = true;
         underPlayerControl = false;
+
+    }
+
+    IEnumerator waitFrame(){
+        yield return new WaitForSeconds(1);
+        underPlayerControl = true;
 
     }
 
