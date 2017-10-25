@@ -51,7 +51,7 @@ public class SaveSound : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space) && !isWritingName)
+        if (Input.GetKeyDown(KeyCode.R) && !isWritingName)
 		{
 
 			if (recOutput == false)
