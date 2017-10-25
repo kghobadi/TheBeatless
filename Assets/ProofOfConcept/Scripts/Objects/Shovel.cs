@@ -40,7 +40,7 @@ public class Shovel : Interactable {
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if(hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.transform.position) <= withinDistanceActive)
+                    if(hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinDistanceActive)
                     {
                         targetPosition = hit.point;
                         fertileGroundClone = Instantiate(fertileGround, targetPosition, Quaternion.identity);
