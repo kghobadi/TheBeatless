@@ -17,7 +17,9 @@ public class Seed : Interactable
     Vector3 targetPos;
 
     TerrainGridSystem tgs;
+    public Texture2D fertileTexture;
     public Texture2D plantedTexture;
+    public Texture2D canClickTexture;
 
     public override void Start()
     {
@@ -41,22 +43,28 @@ public class Seed : Interactable
 
         if (inventMan.underPlayerControl)
         {
-            //playerControl.isHoldingSeed = true;
-            //Process of planting seed
-
-            if (Input.GetMouseButtonDown(0))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit))
+                if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinDistanceActive)
                 {
-                    if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinDistanceActive)
+                    Cell fertile = tgs.CellGetAtPosition(hit.point, true);
+                    int cellIndex = tgs.CellGetIndex(fertile);
+                    if (tgs.CellGetTag(cellIndex) == 1)
                     {
-                        plantSeed = true;
-                        targetPos = hit.point;
-                        playerControl.isHoldingSeed = false;
-                        inventMan.underPlayerControl = false;
+                        tgs.CellToggleRegionSurface(cellIndex, true, canClickTexture);
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            plantSeed = true;
+                            targetPos = hit.point;
+                            playerControl.isHoldingSeed = false;
+                            inventMan.underPlayerControl = false;
+                        }
+                        else
+                        {
+                            StartCoroutine(ChangeTexture(cellIndex, fertileTexture));
+                        }
                     }
                 }
             }
@@ -83,11 +91,7 @@ public class Seed : Interactable
 
         }
         transform.Rotate(0, 1, 0 * Time.deltaTime);
-
-
-
-
-
+        
     }
 
 
@@ -113,6 +117,12 @@ public class Seed : Interactable
             tgs.CellToggleRegionSurface(tgs.CellGetIndex(tile), true, plantedTexture);
             Destroy(gameObject);
         }
+    }
+    
+    IEnumerator ChangeTexture(int index, Texture2D texture)
+    {
+        yield return new WaitForSeconds(0.3f);
+        tgs.CellToggleRegionSurface(index, true, texture);
     }
 
 

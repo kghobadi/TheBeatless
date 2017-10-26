@@ -14,6 +14,8 @@ public class Shovel : Interactable {
 
     TerrainGridSystem tgs;
 
+    public Texture2D groundTexture;
+    public Texture2D canClickTexture;
     public Texture2D fertileTexture;
 
 
@@ -38,32 +40,44 @@ public class Shovel : Interactable {
 
         if (inventMan.underPlayerControl)
         {
-            if (Input.GetMouseButtonDown(0))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit))
+                if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinDistanceActive)
                 {
-                    
-                    if(hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinDistanceActive)
-                    {
-                        //targetPosition = hit.point;
-                        Cell fertile = tgs.CellGetAtPosition(hit.point, true);
-                        int cellIndex = tgs.CellGetIndex(fertile);
-                        if (tgs.CellGetTag(cellIndex) == 0)
-                        {
-                            tgs.CellSetTag(fertile, 1);
-                            tgs.CellToggleRegionSurface(cellIndex, true, fertileTexture);
-                        }
-                        //fertileGroundClone = Instantiate(fertileGround, targetPosition, Quaternion.identity);
-                        soundBoard.PlayOneShot(InteractSound);
-                    }
-                }
+                    Cell fertile = tgs.CellGetAtPosition(hit.point, true);
+                    int cellIndex = tgs.CellGetIndex(fertile);
 
+                    if (tgs.CellGetTag(cellIndex) == 0)
+                    {
+                        tgs.CellToggleRegionSurface(cellIndex, true, canClickTexture);
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            {
+                                tgs.CellSetTag(fertile, 1);
+                                StartCoroutine(ChangeTexture(cellIndex, fertileTexture));
+                            }
+                            soundBoard.PlayOneShot(InteractSound);
+
+                        }
+                        else
+                        {
+                            StartCoroutine(ChangeTexture(cellIndex, groundTexture));
+                        }
+                    }
+
+                   
+                }
             }
         }
 
+    }
+
+    IEnumerator ChangeTexture(int index, Texture2D texture)
+    {
+        yield return new WaitForSeconds(0.3f);
+        tgs.CellToggleRegionSurface(index, true, texture);
     }
 
     
