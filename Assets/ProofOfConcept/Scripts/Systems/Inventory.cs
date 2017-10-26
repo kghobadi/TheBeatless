@@ -22,6 +22,9 @@ public class Inventory : MonoBehaviour {
     
     public bool isFull;
 
+    public GameObject inventCam;
+
+
     void Start () {
         playerControl = GetComponent<FirstPersonController>();
         cameraControl = GetComponentInChildren<camMouseLook>();
@@ -80,15 +83,19 @@ public class Inventory : MonoBehaviour {
         cameraControl.transform.LookAt(inventory.transform.position);
         inventoryOpen = true;
         soundBoard.PlayOneShot(bagOpen);
+
+        inventCam.SetActive(true);
+        //add other cam functionaility
     }
 
     public void closeInventory(){
         playerControl.enabled = true;
         cameraControl.enabled = true;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         inventory.SetActive(false);
         inventoryOpen = false;
         soundBoard.PlayOneShot(bagClose);
+        inventCam.SetActive(false);
     }
 
 
@@ -103,7 +110,11 @@ public class Inventory : MonoBehaviour {
 //                print(indexToSaveIn);
                 if(isEmpty[i]){
                     objectToSave.parent = slots[indexToSaveIn];
-                    objectToSave.localPosition = Vector3.up * 1;
+                    objectToSave.localPosition = Vector3.up * 0.05f;
+                    objectToSave.localScale = objectToSave.localScale / 2f;
+
+                    objectToSave.gameObject.layer = 11;
+
                     isEmpty[indexToSaveIn] = false;
                 } else{
                     indexToSaveIn++;
