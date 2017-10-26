@@ -8,6 +8,11 @@ public class playAudio : MonoBehaviour {
 	public AudioClip[] clips, switchedClips, secondClips;
 	public bool clipsSwitched = false;
 	public bool playedAudio = false;
+
+	public AudioMixerGroup silentMix;
+	public AudioMixerGroup regularMix;
+
+	AudioClip lastClip;
 	AudioSource audio;
 	public int timeScale = 0;
 
@@ -68,67 +73,183 @@ public class playAudio : MonoBehaviour {
 				audio.clip = clips [Random.Range (0, 7)];
 				clipsSwitched = true;
 			}
-			if (!audio.isPlaying) {
+			if (!playedAudio) {
 				//timeScale = Random.Range (0, 4);
 				
 				if (timeScale == 1) {
-					audio.PlayScheduled (SimpleClock.AtNextEighth ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextBeat ());
-				} else if (timeScale == 2) {
-					audio.PlayScheduled (SimpleClock.AtNextHalf ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextMeasure () + SimpleClock.AtNextHalf ());
-				} else if (timeScale == 3) {
-					audio.PlayScheduled (SimpleClock.AtNextQuarter ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextQuarter () + SimpleClock.AtNextHalf ());
-				} else if (timeScale == 0) {
 					audio.PlayScheduled (SimpleClock.AtNextMeasure ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextMeasure () + SimpleClock.AtNextMeasure ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+					playedAudio = true;
+				} else if (timeScale == 2) {
+					audio.PlayScheduled (SimpleClock.AtNextMeasure());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+					playedAudio = true;
+				} else if (timeScale == 3) {
+					audio.PlayScheduled (SimpleClock.AtNextMeasure());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+					playedAudio = true;
+				} else if (timeScale == 0) {
+					audio.PlayScheduled (SimpleClock.AtNextMeasure());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+					playedAudio = true;
 				}
+			} else {
+				if (!audio.isPlaying && audio.outputAudioMixerGroup == regularMix) {
+					audio.outputAudioMixerGroup = silentMix;
+					//lastClip = audio.clip;
+
+					//audio.clip = null;
+
+					if (timeScale == 1) {
+						audio.PlayScheduled (SimpleClock.AtNextMeasure());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+						//playedAudio = true;
+					} else if (timeScale == 2) {
+						audio.PlayScheduled (SimpleClock.AtNextEighthTriplet ());
+						audio.SetScheduledEndTime (SimpleClock.AtNextEighthTriplet() + SimpleClock.AtNextHalf ());
+						//playedAudio = true;
+					} else if (timeScale == 3) {
+						audio.PlayScheduled (SimpleClock.AtNextSixteenth ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+						//playedAudio = true;
+					} else if (timeScale == 0) {
+						audio.PlayScheduled (SimpleClock.AtNextQuarterTriplet ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+						//playedAudio = true;
+					}
+
+					//playedAudio = false;
+
+				} else if (!audio.isPlaying && audio.outputAudioMixerGroup == silentMix) {
+					audio.outputAudioMixerGroup = regularMix;
+					playedAudio = false;
+				} else {
+					
+
+				}
+
 			}
 		} else if (GetComponent<growPlants> ().growthNumber == 2) {
 			if (!clipsSwitched) {
 				audio.clip = switchedClips [Random.Range (0, 3)];
 				clipsSwitched = true;
 			}
-			if (!audio.isPlaying) {
+			if (!playedAudio) {
 				//timeScale = Random.Range (0, 4);
-				if (timeScale == 1) {
-					audio.PlayScheduled (SimpleClock.AtNextSixteenth ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextSixteenth () + SimpleClock.AtNextBeat ());
-				} else if (timeScale == 2) {
-					audio.PlayScheduled (SimpleClock.AtNextHalf ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextBeat () + SimpleClock.AtNextHalf ());
-				} else if (timeScale == 3) {
-					audio.PlayScheduled (SimpleClock.AtNextQuarter ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextQuarter () + SimpleClock.AtNextMeasure ());
-				} else if (timeScale == 0) {
-					audio.PlayScheduled (SimpleClock.AtNextMeasure ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextMeasure () + SimpleClock.AtNextMeasure ());
-				}
-			}
 
+				if (timeScale == 1) {
+					audio.PlayScheduled (SimpleClock.AtNextEighth ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+					playedAudio = true;
+				} else if (timeScale == 2) {
+					audio.PlayScheduled (SimpleClock.AtNextEighthTriplet ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+					playedAudio = true;
+				} else if (timeScale == 3) {
+					audio.PlayScheduled (SimpleClock.AtNextSixteenth ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+					playedAudio = true;
+				} else if (timeScale == 0) {
+					audio.PlayScheduled (SimpleClock.AtNextQuarterTriplet ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+					playedAudio = true;
+				}
+			} else {
+				if (!audio.isPlaying && audio.outputAudioMixerGroup == regularMix) {
+					audio.outputAudioMixerGroup = silentMix;
+					//lastClip = audio.clip;
+
+					//audio.clip = null;
+
+					if (timeScale == 1) {
+						audio.PlayScheduled (SimpleClock.AtNextEighth ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+						//playedAudio = true;
+					} else if (timeScale == 2) {
+						audio.PlayScheduled (SimpleClock.AtNextEighthTriplet ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+						//playedAudio = true;
+					} else if (timeScale == 3) {
+						audio.PlayScheduled (SimpleClock.AtNextSixteenth ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+						//playedAudio = true;
+					} else if (timeScale == 0) {
+						audio.PlayScheduled (SimpleClock.AtNextQuarterTriplet ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+						//playedAudio = true;
+					}
+
+					//playedAudio = false;
+
+				} else if (!audio.isPlaying && audio.outputAudioMixerGroup == silentMix) {
+					audio.outputAudioMixerGroup = regularMix;
+					playedAudio = false;
+				} else {
+
+
+				}
+
+			}
 		} else if (GetComponent<growPlants> ().growthNumber == 3) {
 			if (!clipsSwitched) {
 				audio.clip = secondClips [Random.Range (0, 4)];
 				clipsSwitched = true;
 			}
-
-			if (!audio.isPlaying) {
+			if (!playedAudio) {
 				//timeScale = Random.Range (0, 4);
 
 				if (timeScale == 1) {
 					audio.PlayScheduled (SimpleClock.AtNextEighth ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextBeat ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+					playedAudio = true;
 				} else if (timeScale == 2) {
-					audio.PlayScheduled (SimpleClock.AtNextHalf ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextMeasure () + SimpleClock.AtNextHalf ());
+					audio.PlayScheduled (SimpleClock.AtNextEighthTriplet ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+					playedAudio = true;
 				} else if (timeScale == 3) {
-					audio.PlayScheduled (SimpleClock.AtNextQuarter ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextQuarter () + SimpleClock.AtNextHalf ());
+					audio.PlayScheduled (SimpleClock.AtNextSixteenth ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+					playedAudio = true;
 				} else if (timeScale == 0) {
-					audio.PlayScheduled (SimpleClock.AtNextMeasure ());
-					audio.SetScheduledEndTime (SimpleClock.AtNextMeasure () + SimpleClock.AtNextMeasure ());
+					audio.PlayScheduled (SimpleClock.AtNextQuarterTriplet ());
+					//audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+					playedAudio = true;
 				}
+			} else {
+				if (!audio.isPlaying && audio.outputAudioMixerGroup == regularMix) {
+					audio.outputAudioMixerGroup = silentMix;
+					//lastClip = audio.clip;
+
+					//audio.clip = null;
+
+					if (timeScale == 1) {
+						audio.PlayScheduled (SimpleClock.AtNextEighth ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+						//playedAudio = true;
+					} else if (timeScale == 2) {
+						audio.PlayScheduled (SimpleClock.AtNextEighthTriplet ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+						//playedAudio = true;
+					} else if (timeScale == 3) {
+						audio.PlayScheduled (SimpleClock.AtNextSixteenth ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+						//playedAudio = true;
+					} else if (timeScale == 0) {
+						audio.PlayScheduled (SimpleClock.AtNextQuarterTriplet ());
+						//audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+						//playedAudio = true;
+					}
+
+					//playedAudio = false;
+
+				} else if (!audio.isPlaying && audio.outputAudioMixerGroup == silentMix) {
+					audio.outputAudioMixerGroup = regularMix;
+					playedAudio = false;
+				} else {
+
+
+				}
+
 			}
 
 		}

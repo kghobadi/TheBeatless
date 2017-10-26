@@ -30,7 +30,6 @@ public class SaveSound : MonoBehaviour
 
 	public bool newRec = false;
 
-	//public AudioClip audioC;
 
 	void Awake()
 	{
@@ -46,7 +45,7 @@ public class SaveSound : MonoBehaviour
         if (GetComponent<AudioListener>() == null)
             print("put audiolistener on recorder!");
 
-		//audioC = AudioClip.Create(fileName, outputRate, 1, 440, true); //FIGURE THIS OUT
+		
 	}
 
 	void Update()
