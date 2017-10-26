@@ -10,11 +10,13 @@ public class camMouseLook : MonoBehaviour {
     public float sensitivityY;
     public float smoothing = 2.0f;
 
+
+
     GameObject character;
 
 	void Start () {
         character = transform.parent.gameObject;
-        Cursor.lockState = CursorLockMode.Locked;
+
         sensitivityX = 3.0f;
         sensitivityY = 3.0f;
         
@@ -22,6 +24,9 @@ public class camMouseLook : MonoBehaviour {
 	}
 	
 	void Update () {
+
+        Cursor.lockState = CursorLockMode.Locked;
+
         var newRotate = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
         newRotate = Vector2.Scale(newRotate, new Vector2(sensitivityX * smoothing, sensitivityY * smoothing));

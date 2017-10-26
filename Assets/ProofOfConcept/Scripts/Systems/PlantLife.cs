@@ -20,6 +20,9 @@ public class PlantLife : MonoBehaviour {
 
     private AudioSource treeSounds;
     public AudioClip growthSound;
+    playAudio1 playAud;
+
+    public float fruitYpos;
 
     void Awake()
     {
@@ -29,17 +32,20 @@ public class PlantLife : MonoBehaviour {
     }
 
     void Start () {
-        
+
+        playAud = GetComponent<playAudio1>();
 
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
 
+        int randomRotation = 60 * Random.Range(0, 6);
+
         // Clone all prefabs and Instantiate
-        saplingClone = Instantiate(sapling, transform.position, Quaternion.identity);
-        youngClone = Instantiate(young, transform.position, Quaternion.identity);
-        adultClone = Instantiate(adult, transform.position, Quaternion.identity);
-        oldClone = Instantiate(old, transform.position, Quaternion.identity);
-        stumpClone = Instantiate(stump, transform.position, Quaternion.identity);
+        saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0));
+        youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
+        adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0));
+        oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0));
+        stumpClone = Instantiate(stump, transform.position, Quaternion.Euler(0, randomRotation, 0));
 
         //Set inactive besides ~Sapling~
         youngClone.SetActive(false);
@@ -61,30 +67,34 @@ public class PlantLife : MonoBehaviour {
             {
                 case 1: //Young
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(saplingClone);
                     youngClone.SetActive(true);
-                    fruitAmount = 3;
+                    fruitAmount = Random.Range(0, 2);
                     StartCoroutine(Growth());
                     // treeSounds.Play()  -- loop youth track
                     break;
                 case 2: //Adult
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(youngClone);
                     adultClone.SetActive(true);
-                    fruitAmount = 5;
+                    fruitAmount = Random.Range(0, 4);
                     StartCoroutine(Growth());
                     // treeSounds.Play()  -- loop adult track
                     break;
                 case 3: // Old
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(adultClone);
                     oldClone.SetActive(true);
-                    fruitAmount = 3;
+                    fruitAmount = Random.Range(0, 2);
                     StartCoroutine(Growth());
                     // treeSounds.Play()  -- loop old track
                     break;
                 case 4: // Dead
                     hasGrown = false;
+                    playAud.clipsSwitched = false;
                     Destroy(oldClone);
                     stumpClone.SetActive(true);
                     // silence after death or leftover ringing in Stump
@@ -113,10 +123,14 @@ public class PlantLife : MonoBehaviour {
     {
         for (int i = 0; i < fruitAmount; i++)
         {
+            //fruit starting pos and Instantiate
             Vector3 xyz = Random.insideUnitSphere * 3;
-            Vector3 spawnPosition = xyz + transform.position + new Vector3(0, 3, 0);
+            Vector3 spawnPosition = xyz + transform.position + new Vector3(0, fruitYpos, 0);
             fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
-            fruitClone.transform.localScale = new Vector3 (0.3f, 0.3f, 0.3f);
+
+            //random starting scale for fruit
+            float randomStartScale = Random.Range(0.1f, 0.3f);
+            fruitClone.transform.localScale = new Vector3 (randomStartScale, randomStartScale, randomStartScale);
         }
         
     }
