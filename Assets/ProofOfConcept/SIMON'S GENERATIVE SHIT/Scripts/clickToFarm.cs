@@ -37,7 +37,7 @@ public class clickToFarm : MonoBehaviour {
 			Debug.DrawRay (Camera.main.transform.position, rayHit.point);
 			//rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber++;
 			if (rayHit.collider.gameObject.GetComponent<growPlants> ().toGrow == false && rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber == 0) {
-				rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
+				//rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
 				rayHit.collider.gameObject.GetComponent<playAudio> ().clipsSwitched = false;
 				rayHit.collider.gameObject.GetComponent<growPlants> ().toGrow = true;
 			}
