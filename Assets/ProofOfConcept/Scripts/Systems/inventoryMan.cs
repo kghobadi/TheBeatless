@@ -18,16 +18,20 @@ public class inventoryMan : Interactable {
 
     public bool isSingle;
 
+    int originalLayer;
+
     public override void Start()
     {
         base.Start();
         invent = playerControl.gameObject.GetComponent<Inventory>();
+
+        originalLayer = gameObject.layer;
     }
 
     public override void handleClickSuccess()
     {
         //inventory stuff
-        if (!underPlayerControl && !inInventory && interactable)
+        if (!underPlayerControl && !inInventory && interactable && !invent.inventoryOpen)
         {
             base.handleClickSuccess();
 
@@ -81,7 +85,7 @@ public class inventoryMan : Interactable {
 
         transform.localPosition = armPosition;
         transform.localScale = transform.localScale * 2;
-
+        gameObject.layer = originalLayer;
         // Can show this with tiny animation and Arm movement
 
     }
