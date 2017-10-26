@@ -8,12 +8,14 @@ public class cellManager : MonoBehaviour {
     TerrainGridSystem tgs;
     public Vector3 cellCenter;
 
+    public Texture2D groundTexture;
+
     void Start()
     {
         tgs = TerrainGridSystem.instance;
 
         for (int i = 0; i < tgs.cells.Count;i++){
-            
+            tgs.CellToggleRegionSurface(i, true, groundTexture);
         }
 	}
 	
