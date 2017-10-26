@@ -80,6 +80,7 @@ public class inventoryMan : Interactable {
         Vector3 armPosition = new Vector3(0.25f, 0f, 1f);
 
         transform.localPosition = armPosition;
+        transform.localScale = transform.localScale * 2;
 
         // Can show this with tiny animation and Arm movement
 
@@ -128,7 +129,7 @@ public class inventoryMan : Interactable {
     }
 
     IEnumerator waitFrame(){
-        yield return new WaitForSeconds(1);
+        yield return new WaitForEndOfFrame();
         underPlayerControl = true;
 
     }

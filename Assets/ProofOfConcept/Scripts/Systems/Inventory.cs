@@ -85,7 +85,7 @@ public class Inventory : MonoBehaviour {
     public void closeInventory(){
         playerControl.enabled = true;
         cameraControl.enabled = true;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         inventory.SetActive(false);
         inventoryOpen = false;
         soundBoard.PlayOneShot(bagClose);
@@ -103,7 +103,8 @@ public class Inventory : MonoBehaviour {
 //                print(indexToSaveIn);
                 if(isEmpty[i]){
                     objectToSave.parent = slots[indexToSaveIn];
-                    objectToSave.localPosition = Vector3.up * 1;
+                    objectToSave.localPosition = Vector3.up * 0.05f;
+                    objectToSave.localScale = objectToSave.localScale / 2f;
                     isEmpty[indexToSaveIn] = false;
                 } else{
                     indexToSaveIn++;
