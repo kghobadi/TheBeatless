@@ -16,7 +16,9 @@ public class Fruit : Interactable {
     public float growthMetric;
 
     Rigidbody rb;
-    public int decompositionDay;
+    public int decompositionDaysMin;
+    public int decompositionDaysMax;
+    int decompositionDay;
 
     inventoryMan inventMan;
 
@@ -39,13 +41,19 @@ public class Fruit : Interactable {
         seedClone.transform.SetParent(gameObject.transform);
         seedClone.SetActive(false);
 
-       
+        //randomizes fullyGrown
+        float randomAdd = Random.Range(-0.1f, 0.1f);
+        fullyGrownXScale += randomAdd;
+
+        //Random decompDay
+        decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
 
         inventMan = GetComponent<inventoryMan>();
         inventMan.isSingle = true;
         interactable = false;
 
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
 
         tgs = TerrainGridSystem.instance;
 
@@ -72,14 +80,13 @@ public class Fruit : Interactable {
         }else{
             transform.Rotate(0, 1, 0 * Time.deltaTime);
 
-            if (!onGround)
+            if (!onGround && !hasFallen)
                 FruitGrowth();
 
             if (hasFallen && !onGround)
             {
                 rb.isKinematic = false;
                // transform.position -= new Vector3(0, 10 * Time.deltaTime, 0);
-                hasFallen = false;
 
             }
 
@@ -93,10 +100,10 @@ public class Fruit : Interactable {
 
     void FruitGrowth()
     {
-     
+        
             if (transform.localScale.x < fullyGrownXScale)
             {
-                transform.localScale *= growthMetric;
+                transform.localScale *= (growthMetric);
             }
             else if (transform.localScale.x > fullyGrownXScale)
             {
@@ -115,32 +122,35 @@ public class Fruit : Interactable {
             Vector3 collisionPoint = collision.contacts[0].point;
             Cell groundTile = tgs.CellGetAtPosition(collisionPoint,true);
             int cellIndex = tgs.CellGetIndex(groundTile);
-            if (tgs.CellGetTag(cellIndex) == 1)
-            {
-                StartCoroutine(Decompose(groundTile, cellIndex));
-            }
+            StartCoroutine(Decompose(groundTile, cellIndex, tgs.CellGetTag(cellIndex)));
+            
 
         }
 
        
     }
 
-    IEnumerator Decompose(Cell newTile, int index)
+    IEnumerator Decompose(Cell newTile, int index, int tagIndex)
     {
         for(int i = 0; i < decompositionDay; i++)
         {
             yield return new WaitUntil(() => sunScript.dayPassed == true);
 
         }
-
-        seedClone.SetActive(true);
-        seedClone.transform.SetParent(null); 
-        seedClone.transform.position = new Vector3(tgs.CellGetPosition(index).x, transform.position.y, tgs.CellGetPosition(index).z);
-        yield return new WaitForSeconds(0.5f);
-        seedClone.GetComponent<Seed>().counter = 0;
-        seedClone.GetComponent<Seed>().PlantSeed(newTile);
-        Destroy(gameObject);
-       
+        if (tagIndex == 1)
+        {
+            seedClone.SetActive(true);
+            seedClone.transform.SetParent(null);
+            seedClone.transform.position = new Vector3(tgs.CellGetPosition(index).x, transform.position.y, tgs.CellGetPosition(index).z);
+            yield return new WaitForSeconds(0.5f);
+            seedClone.GetComponent<Seed>().counter = 0;
+            seedClone.GetComponent<Seed>().PlantSeed(newTile);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
     }
 
