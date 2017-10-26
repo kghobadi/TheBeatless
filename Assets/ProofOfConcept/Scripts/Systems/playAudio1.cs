@@ -9,8 +9,12 @@ public class playAudio1 : MonoBehaviour
     public AudioClip[] clips, switchedClips, secondClips;
     public bool clipsSwitched = false;
     public bool playedAudio = false;
-    AudioSource audioSource;
+    AudioSource audio;
     public int timeScale = 0;
+
+    public AudioMixerGroup silentMix;
+    public AudioMixerGroup regularMix;
+
 
     public float timer = 1;
     float timerStartVal = 1;
@@ -50,8 +54,8 @@ public class playAudio1 : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = clips[Random.Range(0, 7)];
+        audio = GetComponent<AudioSource>();
+        audio.clip = clips[Random.Range(0, 7)];
         timeScale = Random.Range(1, 5);
     }
 
@@ -59,7 +63,7 @@ public class playAudio1 : MonoBehaviour
     void Update()
     {
 
-        if (audioSource.isPlaying)
+        if (audio.isPlaying)
         {
             timer -= Time.deltaTime;
             if (timer > 0)
@@ -78,170 +82,129 @@ public class playAudio1 : MonoBehaviour
         switch (plantlife.ageCounter)
         {
             case 0:
-                
+
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = clips[Random.Range(0,7)];
+                    audio.clip = clips[Random.Range(0, 7)];
                     clipsSwitched = true;
                 }
-                if (!audioSource.isPlaying)
-                {
-                    //timeScale = Random.Range (0, 4);
 
-                    switch (timeScale)
-                    {
-                        case 1:
-                            audioSource.PlayScheduled(SimpleClock.AtNextEighth());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextHalf() + SimpleClock.AtNextBeat());
-                            break;
-                        case 2:
-                            audioSource.PlayScheduled(SimpleClock.AtNextHalf());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextHalf());
-                            break;
-                        case 3:
-                            audioSource.PlayScheduled(SimpleClock.AtNextQuarter());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextQuarter() + SimpleClock.AtNextHalf());
-                            break;
-                        case 4:
-                            audioSource.PlayScheduled(SimpleClock.AtNextMeasure());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextMeasure());
-                            break;
-                    }
-
-                }
-                    break;
+                AudioCycler();
+                break;
 
             case 1:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = switchedClips[Random.Range(0, 3)];
+                    audio.clip = switchedClips[Random.Range(0, 3)];
                     clipsSwitched = true;
                 }
-                if (!audioSource.isPlaying)
-                {
-                    switch (timeScale)
-                    {
-                        case 1:
-                            audioSource.PlayScheduled(SimpleClock.AtNextSixteenth());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextSixteenth() + SimpleClock.AtNextBeat());
-                            break;
-                        case 2:
-                            audioSource.PlayScheduled(SimpleClock.AtNextHalf());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextBeat() + SimpleClock.AtNextHalf());
-                            break;
-                        case 3:
-                            audioSource.PlayScheduled(SimpleClock.AtNextQuarter());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextQuarter() + SimpleClock.AtNextMeasure());
-                            break;
-                        case 4:
-                            audioSource.PlayScheduled(SimpleClock.AtNextMeasure());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextMeasure());
-                            break;
-                    }
-                }
+
+                AudioCycler();
+
                 break;
 
             case 2:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = secondClips[Random.Range(0, 4)];
+                    audio.clip = secondClips[Random.Range(0, 4)];
                     clipsSwitched = true;
                 }
 
-                if (!audioSource.isPlaying)
-                {
-                    //timeScale = Random.Range (0, 4);
-                    switch (timeScale)
-                    {
-                        case 1:
-                            audioSource.PlayScheduled(SimpleClock.AtNextEighth());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextHalf() + SimpleClock.AtNextBeat());
-                            break;
-                        case 2:
-                            audioSource.PlayScheduled(SimpleClock.AtNextHalf());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextHalf());
-                            break;
-                        case 3:
-                            audioSource.PlayScheduled(SimpleClock.AtNextQuarter());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextQuarter() + SimpleClock.AtNextHalf());
-                            break;
-                        case 4:
-                            audioSource.PlayScheduled(SimpleClock.AtNextMeasure());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextMeasure());
-                            break;
-                    }
 
-                }
+                AudioCycler();
+
                 break;
             case 3:
                 if (!clipsSwitched)
                 {
-                    audioSource.clip = secondClips[Random.Range(0, 4)];
+                    audio.clip = secondClips[Random.Range(0, 4)];
                     clipsSwitched = true;
                 }
 
-                if (!audioSource.isPlaying)
-                {
-                    //timeScale = Random.Range (0, 4);
-                    switch (timeScale)
-                    {
-                        case 1:
-                            audioSource.PlayScheduled(SimpleClock.AtNextEighth());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextHalf() + SimpleClock.AtNextBeat());
-                            break;
-                        case 2:
-                            audioSource.PlayScheduled(SimpleClock.AtNextHalf());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextHalf());
-                            break;
-                        case 3:
-                            audioSource.PlayScheduled(SimpleClock.AtNextQuarter());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextQuarter() + SimpleClock.AtNextHalf());
-                            break;
-                        case 4:
-                            audioSource.PlayScheduled(SimpleClock.AtNextMeasure());
-                            audioSource.SetScheduledEndTime(SimpleClock.AtNextMeasure() + SimpleClock.AtNextMeasure());
-                            break;
-                    }
+                AudioCycler();
 
-                }
                 break;
             case 4:
-                audioSource.Stop();
+                audio.Stop();
                 break;
 
 
-                //audio.PlayScheduled (SimpleClock.AtNextEighth());
-                /*	if (GetComponent<growPlants> ().growthNumber == 1) {
-                    if (!playedAudio) {
-                        audio.clip = clips [Random.Range (0, 1)];
-                        playedAudio = true;
-                    }
-                    //print ("playing");
-                    }
-                    if (GetComponent<growPlants> ().growthNumber == 2) {
-                    if (!playedAudio) {
-                        audio.clip = clips [Random.Range (1, 2)];
-                        playedAudio = true;
-                    }
-                    }
-                    if (GetComponent<growPlants> ().growthNumber == 3) {
-                    if (!playedAudio) {
-                        audio.clip = clips [Random.Range (2, 3)];
-                        playedAudio = true;
-                    }
-                    } else {
-                    if (!playedAudio) {
-                        audio.clip = null;
-                        playedAudio = true;
-                    }
-                    }
-
-                //}
-
-                if (!audio.isPlaying) {
-                    audio.Play ();
-                }
-                */
         }
+    }
+
+        void AudioCycler()
+        {
+            if (!playedAudio)
+            {
+                //timeScale = Random.Range (0, 4);
+
+                if (timeScale == 1)
+                {
+                    audio.PlayScheduled(SimpleClock.AtNextEighth());
+                    //audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+                    playedAudio = true;
+                }
+                else if (timeScale == 2)
+                {
+                    audio.PlayScheduled(SimpleClock.AtNextEighthTriplet());
+                    //audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+                    playedAudio = true;
+                }
+                else if (timeScale == 3)
+                {
+                    audio.PlayScheduled(SimpleClock.AtNextSixteenth());
+                    //audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+                    playedAudio = true;
+                }
+                else if (timeScale == 0)
+                {
+                    audio.PlayScheduled(SimpleClock.AtNextQuarterTriplet());
+                    //audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+                    playedAudio = true;
+                }
+            }
+            else
+            {
+                if (!audio.isPlaying && audio.outputAudioMixerGroup == regularMix)
+                {
+                    audio.outputAudioMixerGroup = silentMix;
+                    //lastClip = audio.clip;
+
+                    //audio.clip = null;
+
+                    if (timeScale == 1)
+                    {
+                        audio.PlayScheduled(SimpleClock.AtNextEighth());
+                        //audio.SetScheduledEndTime (SimpleClock.AtNextSixteenthTriplet () + SimpleClock.AtNextHalf ());
+                        //playedAudio = true;
+                    }
+                    else if (timeScale == 2)
+                    {
+                        audio.PlayScheduled(SimpleClock.AtNextEighthTriplet());
+                        //audio.SetScheduledEndTime (SimpleClock.AtNextEighth() + SimpleClock.AtNextHalf ());
+                        //playedAudio = true;
+                    }
+                    else if (timeScale == 3)
+                    {
+                        audio.PlayScheduled(SimpleClock.AtNextSixteenth());
+                        //audio.SetScheduledEndTime (SimpleClock.AtNextHalf () + SimpleClock.AtNextSixteenth());
+                        //playedAudio = true;
+                    }
+                    else if (timeScale == 0)
+                    {
+                        audio.PlayScheduled(SimpleClock.AtNextQuarterTriplet());
+                        //audio.SetScheduledEndTime (SimpleClock.AtNextQuarter() + SimpleClock.AtNextBeat());
+                        //playedAudio = true;
+                    }
+
+                    //playedAudio = false;
+
+                }
+                else if (!audio.isPlaying && audio.outputAudioMixerGroup == silentMix)
+                {
+                    audio.outputAudioMixerGroup = regularMix;
+                    playedAudio = false;
+                }
+            }
     }
 }
