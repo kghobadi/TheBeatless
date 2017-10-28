@@ -17,41 +17,60 @@ public class Shovel : Interactable {
     public Texture2D groundTexture;
     public Texture2D canClickTexture;
     public Texture2D fertileTexture;
+    
+    public float shovelDistance;
 
+    bool textureShowing;
+    bool hasChangedTag;
 
-    // Rework this script so it can be attached to Terrain or larger land mass
-    // Plant will spawn at player's mouse position Raycast Screenpoint to World
+    int previousCellIndex;
+    int currentCellIndex;
 
     public override void Start()
     {
         base.Start();
+
+        //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
         inventMan.isSingle = true;
+
+        //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
     }
 
 
     void Update()
     {
-
-        //could also attach Interactable to Terrain and only turn it on if shovel is equipped and within distance of water source
-        // need some way to put this shit on a grid
-        // need a way to unequip
-
+        //Checks if has been picked up and equipped 
         if (inventMan.underPlayerControl)
         {
+            //Sends out raycast
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
+            //Checks if raycast hits
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinDistanceActive)
+                //Checks if the hit is a ground tile and within Distance for hoeing
+                if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= shovelDistance && !textureShowing)
                 {
+                    //grabs Cell tile and index
                     Cell fertile = tgs.CellGetAtPosition(hit.point, true);
                     int cellIndex = tgs.CellGetIndex(fertile);
+                    currentCellIndex = cellIndex;
 
+                    if (currentCellIndex != previousCellIndex)
+                    {
+                        previousCellIndex = currentCellIndex;
+                    }
+
+                    //checks if cell is normal Ground
                     if (tgs.CellGetTag(cellIndex) == 0)
                     {
+                        //Sets texture to clickable
                         tgs.CellToggleRegionSurface(cellIndex, true, canClickTexture);
+
+                        //Takes click, sets tile to Fertile
                         if (Input.GetMouseButtonDown(0))
                         {
                             {
@@ -61,23 +80,28 @@ public class Shovel : Interactable {
                             soundBoard.PlayOneShot(InteractSound);
 
                         }
-                        else
-                        {
-                            StartCoroutine(ChangeTexture(cellIndex, groundTexture));
-                        }
+                        //Switches tile back to normal Ground
+                        
+                       
                     }
 
-                   
+                    if (tgs.CellGetTag(previousCellIndex) == 0)
+                        StartCoroutine(ChangeTexture(currentCellIndex, groundTexture));
+                    
                 }
             }
         }
 
     }
 
+
+    //Sets texture of a tile
     IEnumerator ChangeTexture(int index, Texture2D texture)
     {
-        yield return new WaitForSeconds(0.3f);
+        textureShowing = true;
+        yield return new WaitForEndOfFrame();
         tgs.CellToggleRegionSurface(index, true, texture);
+        textureShowing = false;
     }
 
     

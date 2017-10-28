@@ -30,7 +30,7 @@ public abstract class Interactable : MonoBehaviour
 
         //loads Cursor Sprites
         normalSprite = Resources.Load<Sprite>("CursorSprites/crosshair");
-        interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairselected") ;
+        interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked") ;
         clickSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
         Debug.Log(normalSprite);
         symbol.sprite = normalSprite;
@@ -45,17 +45,19 @@ public abstract class Interactable : MonoBehaviour
     {
 		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable && !playerControl.isHoldingAnimal)
         {
-            cammy.GetComponent<camMouseLook>().sensitivityX = 1f;
-            cammy.GetComponent<camMouseLook>().sensitivityY = 1f;
+            cammy.GetComponent<camMouseLook>().sensitivityX = 1.5f;
+            cammy.GetComponent<camMouseLook>().sensitivityY = 1.5f;
             symbol.sprite = interactSprite;
+            transform.localScale *= 1.5f;
         }
     }
 
     void OnMouseExit()
     {
         symbol.sprite = normalSprite;
-        cammy.GetComponent<camMouseLook>().sensitivityX = 3f;
-        cammy.GetComponent<camMouseLook>().sensitivityY = 3f;
+        cammy.GetComponent<camMouseLook>().sensitivityX = 2f;
+        cammy.GetComponent<camMouseLook>().sensitivityY = 2f;
+        transform.localScale /= 1.5f;
     }
 
     public virtual void handleClickSuccess()
@@ -63,6 +65,7 @@ public abstract class Interactable : MonoBehaviour
         symbol.sprite = clickSprite;
         Play();
         symbol.sprite = normalSprite;
+        transform.localScale /= 1.5f;
     }
 
    

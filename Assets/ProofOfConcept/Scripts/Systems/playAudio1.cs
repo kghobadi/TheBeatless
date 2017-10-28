@@ -23,6 +23,9 @@ public class playAudio1 : MonoBehaviour
 
     PlantLife plantlife;
 
+    //Revise this script so that all AudioClips are taken from Species
+    //In order to do this^ must create dictionaries for each stage of PlantLife
+
     private void Awake()
     {
         timerStartVal = timer;
