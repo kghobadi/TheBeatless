@@ -11,6 +11,8 @@ public abstract class Interactable : MonoBehaviour
     private Sprite interactSprite;
     private Sprite clickSprite;
 
+    private Vector3 startScale;
+
 
     protected float withinDistance = 10f;
     protected float withinDistanceActive = 10f;
@@ -39,6 +41,7 @@ public abstract class Interactable : MonoBehaviour
         interactable = true;
 
         playerControl = _player.GetComponent<FirstPersonController>();
+        startScale = transform.localScale;
     }
     
     void OnMouseEnter()
@@ -57,7 +60,7 @@ public abstract class Interactable : MonoBehaviour
         symbol.sprite = normalSprite;
         cammy.GetComponent<camMouseLook>().sensitivityX = 2f;
         cammy.GetComponent<camMouseLook>().sensitivityY = 2f;
-        transform.localScale /= 1.5f;
+        transform.localScale = startScale;
     }
 
     public virtual void handleClickSuccess()
@@ -65,7 +68,7 @@ public abstract class Interactable : MonoBehaviour
         symbol.sprite = clickSprite;
         Play();
         symbol.sprite = normalSprite;
-        transform.localScale /= 1.5f;
+        transform.localScale = startScale;
     }
 
    

@@ -14,6 +14,7 @@ public class Seed : Interactable
     GameObject plantClone;
 
     public float counter; // for planting 'animation'
+    public float fallSpeed;
 
     inventoryMan inventMan;
     Vector3 targetPos;
@@ -26,7 +27,7 @@ public class Seed : Interactable
     public Texture2D canClickTexture;
 
     //controls plant Instant y pos
-    Transform plantSpawnPos;
+    Vector3 plantSpawnPos;
 
     public float withinPlantingRange;
 
@@ -136,7 +137,7 @@ public class Seed : Interactable
         //spirals seed downward into the ground
         if (counter > 0) 
         {
-            transform.Translate(0, -0.01f, 0);
+            transform.Translate(0, fallSpeed, 0);
             counter -= 1 * Time.deltaTime;
         }
         else
@@ -148,8 +149,8 @@ public class Seed : Interactable
             soundBoard.PlayOneShot(plantedSeed);
 
             //Instantiate Plant and set position
-            plantSpawnPos.position = tgs.CellGetPosition(index);
-            plantClone = Instantiate(plant, plantSpawnPos.position, Quaternion.identity);
+            plantSpawnPos = tgs.CellGetPosition(index);
+            plantClone = Instantiate(plant, plantSpawnPos, Quaternion.identity);
 
             //Set tile tag to planted
             tgs.CellSetTag(tile, 2);
