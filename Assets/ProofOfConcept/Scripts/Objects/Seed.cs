@@ -40,9 +40,12 @@ public class Seed : Interactable
     {
         base.Start();
 
+
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
         inventMan.isSingle = true;
+
+        inventMan.interactable = true;
 
         //TerrainGridSystem Reference
         tgs = TerrainGridSystem.instance;

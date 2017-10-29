@@ -33,6 +33,7 @@ public class Shovel : Interactable {
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
         inventMan.isSingle = true;
+        inventMan.interactable = true;
 
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
@@ -80,11 +81,10 @@ public class Shovel : Interactable {
                             soundBoard.PlayOneShot(InteractSound);
 
                         }
-                        //Switches tile back to normal Ground
-                        
                        
                     }
 
+                    //Switches tile back to normal Ground
                     if (tgs.CellGetTag(previousCellIndex) == 0)
                         StartCoroutine(ChangeTexture(currentCellIndex, groundTexture));
                     

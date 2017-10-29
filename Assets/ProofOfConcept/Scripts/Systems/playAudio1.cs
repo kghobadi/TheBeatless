@@ -139,7 +139,7 @@ public class playAudio1 : MonoBehaviour
         {
             if (!playedAudio)
             {
-                //timeScale = Random.Range (0, 4);
+                timeScale = Random.Range (0, 4);
 
                 if (timeScale == 1)
                 {
