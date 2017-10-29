@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TGS;
 
 public class PlantLife : MonoBehaviour {
 
@@ -23,6 +24,11 @@ public class PlantLife : MonoBehaviour {
     playAudio1 playAud;
 
     public float fruitYpos;
+    int randomRotation;
+
+    TerrainGridSystem tgs;
+
+    public Texture2D groundTexture;
 
     void Awake()
     {
@@ -38,21 +44,14 @@ public class PlantLife : MonoBehaviour {
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
 
-        int randomRotation = 60 * Random.Range(0, 6);
+        //TerrainGridSystem ref
+        tgs = TerrainGridSystem.instance;
 
-        // Clone all prefabs and Instantiate
+        randomRotation = 60 * Random.Range(0, 6);
+
+        // Clone Sapling prefabs and Instantiate
         saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0));
-        youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
-        adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0));
-        oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0));
-        stumpClone = Instantiate(stump, transform.position, Quaternion.Euler(0, randomRotation, 0));
-
-        //Set inactive besides ~Sapling~
-        youngClone.SetActive(false);
-        adultClone.SetActive(false);
-        oldClone.SetActive(false);
-        stumpClone.SetActive(false);
-
+       
         //Set age and fruit
         ageCounter = 0;
         fruitAmount = 0;
@@ -69,35 +68,42 @@ public class PlantLife : MonoBehaviour {
                     hasGrown = false;
                     playAud.clipsSwitched = false;
                     Destroy(saplingClone);
-                    youngClone.SetActive(true);
+                    youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     fruitAmount = Random.Range(0, 2);
                     StartCoroutine(Growth());
-                    // treeSounds.Play()  -- loop youth track
                     break;
                 case 2: //Adult
                     hasGrown = false;
                     playAud.clipsSwitched = false;
                     Destroy(youngClone);
-                    adultClone.SetActive(true);
+                    adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     fruitAmount = Random.Range(0, 4);
                     StartCoroutine(Growth());
-                    // treeSounds.Play()  -- loop adult track
                     break;
                 case 3: // Old
                     hasGrown = false;
                     playAud.clipsSwitched = false;
                     Destroy(adultClone);
-                    oldClone.SetActive(true);
+                    oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     fruitAmount = Random.Range(0, 2);
                     StartCoroutine(Growth());
-                    // treeSounds.Play()  -- loop old track
                     break;
                 case 4: // Dead
                     hasGrown = false;
                     playAud.clipsSwitched = false;
                     Destroy(oldClone);
-                    stumpClone.SetActive(true);
+
+                    //Takes current cell and sets it back to normal Ground for tree death
+                    Cell groundTile = tgs.CellGetAtPosition(transform.position);
+                    int cellIndex = tgs.CellGetIndex(groundTile);
+                    tgs.CellSetTag(groundTile, 0);
+                    tgs.CellToggleRegionSurface(cellIndex, true, groundTexture);
+
+                    //Death
+                    Destroy(gameObject);
+                    //stumpClone = Instantiate(stump, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     // silence after death or leftover ringing in Stump
+                    //THIS IS WHERE I SHOULD INCORPORATE POSSIBILITY OF ANCIENT
                     break;
             }
         }
@@ -106,16 +112,18 @@ public class PlantLife : MonoBehaviour {
 
     IEnumerator Growth()
     {
+        //for loop waits a number of days 
         for(int i = 0; i < growthDay; i++)
         {
             Debug.Log(i);
             SpawnFruits();
             if(fruitAmount > 0)
-                treeSounds.PlayOneShot(growthSound);
-            yield return new WaitUntil(() => sunScript.dayPassed == true);
+                treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
+            yield return new WaitUntil(() => sunScript.dayPassed == true); //Can be changed so that it is not real time
             yield return new WaitForSeconds(1);
         }
         ageCounter += 1;
+        randomRotation = 60 * Random.Range(0, 6);
         hasGrown = true;
     }
 

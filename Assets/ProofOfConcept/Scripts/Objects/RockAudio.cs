@@ -5,9 +5,11 @@ using UnityEngine;
 public class RockAudio : MonoBehaviour {
 
     AudioSource audioSource;
+    GameObject _player;
 
-	void Start () {
+    void Start () {
         audioSource = GetComponent<AudioSource>();
+        _player = GameObject.FindGameObjectWithTag("Player");
 
         if (!audioSource.isPlaying)
         {
@@ -19,6 +21,15 @@ public class RockAudio : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(Vector3.Distance(transform.position, _player.transform.position) > audioSource.maxDistance)
+        {
+            audioSource.Stop();
+        }
+        else if(Vector3.Distance(transform.position, _player.transform.position) < audioSource.maxDistance && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+            audioSource.loop = true;
+        }
 		
 	}
 }
