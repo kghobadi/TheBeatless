@@ -97,7 +97,7 @@ public class PlantLife : MonoBehaviour {
                     Cell groundTile = tgs.CellGetAtPosition(transform.position);
                     int cellIndex = tgs.CellGetIndex(groundTile);
                     tgs.CellSetTag(groundTile, 0);
-                    tgs.CellToggleRegionSurface(tgs.CellGetIndex(groundTile), true, groundTexture);
+                    tgs.CellToggleRegionSurface(cellIndex, true, groundTexture);
 
                     //Death
                     Destroy(gameObject);
