@@ -26,7 +26,7 @@ public class Seed : Interactable
         base.Start();
         //counter = 2.5f;
         inventMan = GetComponent<inventoryMan>();
-        inventMan.isSingle = true;
+        inventMan.isSingle = false;
 
         //spawns plant and sets false
         plantClone = Instantiate(plant, transform.position, Quaternion.identity);
@@ -91,13 +91,13 @@ public class Seed : Interactable
 
         }
         transform.Rotate(0, 1, 0 * Time.deltaTime);
-        
+
     }
 
 
     public void PlantSeed(Cell tile)
     {
-           
+
         transform.SetParent(null);
         if (counter > 0) //spirals seed downward into the ground
         {
@@ -106,7 +106,7 @@ public class Seed : Interactable
         }
         else
         {
-            if(plantClone != null)
+            if (plantClone != null)
                 Debug.Log(plantClone.name);
             //awaken plant & destroy seed
             soundBoard.PlayOneShot(plantedSeed);
@@ -118,7 +118,7 @@ public class Seed : Interactable
             Destroy(gameObject);
         }
     }
-    
+
     IEnumerator ChangeTexture(int index, Texture2D texture)
     {
         yield return new WaitForSeconds(0.3f);

@@ -32,7 +32,7 @@ public abstract class Interactable : MonoBehaviour
         normalSprite = Resources.Load<Sprite>("CursorSprites/crosshair");
         interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairselected") ;
         clickSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
-        Debug.Log(normalSprite);
+//        Debug.Log(normalSprite);
         symbol.sprite = normalSprite;
 
         soundBoard = cammy.GetComponent<AudioSource>(); //assigns audio source

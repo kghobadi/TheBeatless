@@ -11,7 +11,8 @@ using UnityEngine;
 
 
 
-public class inventoryMan : Interactable {
+public class inventoryMan : Interactable
+{
     public bool underPlayerControl;
     public bool inInventory, canEquip;
     Inventory invent;
@@ -42,12 +43,12 @@ public class inventoryMan : Interactable {
         }
         if (inInventory && canEquip)
         {
-            
+
             base.handleClickSuccess();
 
             takeFromInvent();
-//            print("kas SUCKS");
-           
+            //            print("kas SUCKS");
+
 
 
         }
@@ -56,7 +57,7 @@ public class inventoryMan : Interactable {
 
     void Update()
     {
-        
+
         if (inInventory)
             canEquip = true;
         else
@@ -67,12 +68,12 @@ public class inventoryMan : Interactable {
 
             if (Input.GetKeyDown(KeyCode.Tab))
                 putThisInInvent();
-            
+
             if (Input.GetKeyDown(KeyCode.Space))
                 dropItem();
         }
 
-//        Debug.Log(inInventory);
+        //        Debug.Log(inInventory);
 
     }
 
@@ -106,11 +107,17 @@ public class inventoryMan : Interactable {
 
     }
 
-    void takeFromInvent(){
+    void takeFromInvent()
+    {
         int slotNum;
-        int.TryParse(transform.parent.name,out slotNum);
-//        print(slotNum);
-        invent.takeFromInventory(slotNum, true);
+        int.TryParse(transform.parent.name, out slotNum);
+        //        print(slotNum);
+        int childIndex;
+        childIndex = transform.GetSiblingIndex();
+        int slotChildCount;
+        slotChildCount = transform.parent.childCount;
+
+        invent.takeFromInventory(slotNum, isSingle, childIndex, slotChildCount);
         inInventory = false;
 
         //underPlayerControl = true;//delay this for a frame
@@ -132,7 +139,8 @@ public class inventoryMan : Interactable {
 
     }
 
-    IEnumerator waitFrame(){
+    IEnumerator waitFrame()
+    {
         yield return new WaitForEndOfFrame();
         underPlayerControl = true;
 

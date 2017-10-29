@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class Shovel : Interactable {
+public class Shovel : Interactable
+{
 
 
     public GameObject fertileGround;
@@ -38,6 +39,8 @@ public class Shovel : Interactable {
         // need some way to put this shit on a grid
         // need a way to unequip
 
+
+
         if (inventMan.underPlayerControl)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -67,7 +70,7 @@ public class Shovel : Interactable {
                         }
                     }
 
-                   
+
                 }
             }
         }
@@ -80,5 +83,5 @@ public class Shovel : Interactable {
         tgs.CellToggleRegionSurface(index, true, texture);
     }
 
-    
+
 }
