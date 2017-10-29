@@ -35,12 +35,7 @@ public class Fruit : Interactable {
         //grabs Sun ref
         sun = GameObject.FindGameObjectWithTag("Sun");
         sunScript = sun.GetComponent<Sun>();
-
-        //Makes a seed clone of whichever Plant type player needs
-        seedClone = Instantiate(seed, transform.position, Quaternion.identity);
-        seedClone.transform.SetParent(gameObject.transform);
-        seedClone.SetActive(false);
-
+        
         //randomizes fullyGrown
         float randomAdd = Random.Range(-0.1f, 0.1f);
         fullyGrownXScale += randomAdd;
@@ -48,56 +43,66 @@ public class Fruit : Interactable {
         //Random decompDay
         decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
 
+        //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
         inventMan.isSingle = true;
+        inventMan.interactable = false;
         interactable = false;
 
+        //Grabs rigidbody and sets to kinematic
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
 
+        //TerrainGridSystem ref
         tgs = TerrainGridSystem.instance;
 
     }
 
     void Update()
     {
-   
+        //Checks if it has been picked up and equipped
         if (inventMan.underPlayerControl)
         {
+            //If player clicks on animal. May need to restructure this so that it's a raycast as well, we'll see.
             if (feedAnimal)
             {
                 inventMan.underPlayerControl = false;
                 playerControl.isHoldingFood = false;
 
                 //NEED TO find a way to set parent to animal, carry it around a while, then poop it out (set active)
-                seedClone.SetActive(true);
-                seedClone.transform.localPosition = seedClone.transform.localPosition + new Vector3(-0.5f, 0, -0.5f);
-                seedClone.transform.SetParent(null);
+                seedClone = Instantiate(seed, transform.position, Quaternion.identity);
+                seedClone.transform.position = seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
 
                 Destroy(gameObject);
-                soundBoard.PlayOneShot(animalEats);
+                soundBoard.PlayOneShot(animalEats); //THIS SHOULD BE MUSICAL AND ON CLOCK
             }
-        }else{
+        }
+        else {
+            //always rotates in worldspace
             transform.Rotate(0, 1, 0 * Time.deltaTime);
 
+            //Checks if it has not fallen yet, and grows fruit
             if (!onGround && !hasFallen)
                 FruitGrowth();
 
+            //When it has fallen, we turn on rigidbody
             if (hasFallen && !onGround)
             {
                 rb.isKinematic = false;
-               // transform.position -= new Vector3(0, 10 * Time.deltaTime, 0);
 
             }
-
+            
+            //when it has hit the ground, we want it to be interactable
             if (onGround)
             {
+                inventMan.interactable = true;
                 interactable = true;
             }
 
         }
     }
 
+    //this function will grow Fruit by local scale in update at growthMetric until it reaches fullyGrownXScale
     void FruitGrowth()
     {
         
@@ -112,16 +117,20 @@ public class Fruit : Interactable {
 
     }
 
-
+    //Checks if fruit has collided with ground
     void OnCollisionEnter(Collision collision)
     {
         rb.isKinematic = true;
         if(collision.gameObject.tag == "Ground")
         {
             onGround = true;
+            
+            //Checks what ground tile this is using collision point
             Vector3 collisionPoint = collision.contacts[0].point;
             Cell groundTile = tgs.CellGetAtPosition(collisionPoint,true);
             int cellIndex = tgs.CellGetIndex(groundTile);
+
+            //Starts Decompose using ground tile
             StartCoroutine(Decompose(groundTile, cellIndex, tgs.CellGetTag(cellIndex)));
             
 
@@ -130,8 +139,10 @@ public class Fruit : Interactable {
        
     }
 
+    //Causes fruit to decay and either plant a seed on a fertile tile, or leave behind a seed for pick up
     IEnumerator Decompose(Cell newTile, int index, int tagIndex)
     {
+        //for loops waits given # of days
         for(int i = 0; i < decompositionDay; i++)
         {
             yield return new WaitUntil(() => sunScript.dayPassed == true);
@@ -139,16 +150,22 @@ public class Fruit : Interactable {
         }
         if (tagIndex == 1)
         {
-            seedClone.SetActive(true);
-            seedClone.transform.SetParent(null);
+            seedClone = Instantiate(seed, transform.position, Quaternion.identity);
+            //may need to alter seed Y pos here
             seedClone.transform.position = new Vector3(tgs.CellGetPosition(index).x, transform.position.y, tgs.CellGetPosition(index).z);
             yield return new WaitForSeconds(0.5f);
+
+            //Sets seed counter to 0, skipping animation, and plants seed on tile
             seedClone.GetComponent<Seed>().counter = 0;
-            seedClone.GetComponent<Seed>().PlantSeed(newTile);
+            seedClone.GetComponent<Seed>().PlantSeed(newTile, index);
+
+            //Destroys fruit
             Destroy(gameObject);
         }
         else
         {
+            //Spawns seed on normal tile
+            seedClone = Instantiate(seed, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 

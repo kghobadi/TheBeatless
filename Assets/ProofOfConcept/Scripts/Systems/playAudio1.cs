@@ -23,6 +23,9 @@ public class playAudio1 : MonoBehaviour
 
     PlantLife plantlife;
 
+    //Revise this script so that all AudioClips are taken from Species
+    //In order to do this^ must create dictionaries for each stage of PlantLife
+
     private void Awake()
     {
         timerStartVal = timer;
@@ -136,7 +139,7 @@ public class playAudio1 : MonoBehaviour
         {
             if (!playedAudio)
             {
-                //timeScale = Random.Range (0, 4);
+                timeScale = Random.Range (0, 4);
 
                 if (timeScale == 1)
                 {
