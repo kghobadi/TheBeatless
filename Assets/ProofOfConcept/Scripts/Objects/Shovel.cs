@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class Shovel : Interactable {
+public class Shovel : Interactable
+{
 
 
     public GameObject fertileGround;
@@ -103,6 +104,3 @@ public class Shovel : Interactable {
         tgs.CellToggleRegionSurface(index, true, texture);
         textureShowing = false;
     }
-
-    
-}

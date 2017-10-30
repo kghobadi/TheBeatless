@@ -43,7 +43,7 @@ public class Seed : Interactable
 
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
-        inventMan.isSingle = true;
+        inventMan.isSingle = false;
 
         inventMan.interactable = true;
 
@@ -145,7 +145,7 @@ public class Seed : Interactable
         }
         else
         {
-            if(plantClone != null)
+            if (plantClone != null)
                 Debug.Log(plantClone.name);
 
             //This SHOULD be musical and on Clock
