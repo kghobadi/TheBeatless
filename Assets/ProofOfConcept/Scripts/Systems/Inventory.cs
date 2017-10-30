@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
 
     public GameObject inventCam;
 
-
+    //public bool usedNowTakeAgain;
 
     void Start()
     {
@@ -74,8 +74,6 @@ public class Inventory : MonoBehaviour
 
         //want to make a real-time grid, child items to Inventory, send them to space, if space is taken check object tag, if dif object move to new space
         //if inventory is full, play inv full sound
-
-
 
 
     }
@@ -146,7 +144,7 @@ public class Inventory : MonoBehaviour
                 // Debug.Log(slots[i].name);
                 if (!isEmpty[i])
                 {
-                    if (slots[i].GetChild(0).tag == objectToSave.tag)
+                    if (slots[i].GetChild(0).tag == objectToSave.tag && slots[i].GetChild(0).name == objectToSave.name)
                     {
                         objectToSave.parent = slots[indexToSaveInNew];
                         objectToSave.localPosition = new Vector3(Random.Range(-0.3f, 0.3f), 0.05f, Random.Range(-0.3f, 0.3f));
@@ -188,6 +186,8 @@ public class Inventory : MonoBehaviour
                             objectToSave.localScale = objectToSave.localScale / 2f;
 
                             objectToSave.gameObject.layer = 11;
+
+                            objectToSave.GetComponent<inventoryMan>().slotNumRetake = indexToSaveIn;
 
                             isEmpty[indexToSaveIn] = false;
                         }
@@ -235,5 +235,12 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+
+    public void usedNowTakeAgain(int slotNumber)
+    {
+
+        slots[slotNumber].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
+
+    }
 
 }

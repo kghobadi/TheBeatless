@@ -43,7 +43,7 @@ public class leftArmManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && shovel != null)
         {
-            if (!recorder.activeSelf && !holdingSomething)
+            if (!shovel.activeSelf && !holdingSomething)
             {
                 shovel.SetActive(true);
                 holdingSomething = true;

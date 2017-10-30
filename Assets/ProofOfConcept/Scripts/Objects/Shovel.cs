@@ -11,14 +11,13 @@ public class Shovel : Interactable
     GameObject fertileGroundClone;
     Vector3 targetPosition;
 
-    inventoryMan inventMan;
 
     TerrainGridSystem tgs;
 
     public Texture2D groundTexture;
     public Texture2D canClickTexture;
     public Texture2D fertileTexture;
-    
+
     public float shovelDistance;
 
     bool textureShowing;
@@ -32,9 +31,7 @@ public class Shovel : Interactable
         base.Start();
 
         //Inventory Manager reference
-        inventMan = GetComponent<inventoryMan>();
-        inventMan.isSingle = true;
-        inventMan.interactable = true;
+
 
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
@@ -44,54 +41,53 @@ public class Shovel : Interactable
     void Update()
     {
         //Checks if has been picked up and equipped 
-        if (inventMan.underPlayerControl)
+
+        //Sends out raycast
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        //Checks if raycast hits
+        if (Physics.Raycast(ray, out hit))
         {
-            //Sends out raycast
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            //Checks if raycast hits
-            if (Physics.Raycast(ray, out hit))
+            //Checks if the hit is a ground tile and within Distance for hoeing
+            if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= shovelDistance && !textureShowing)
             {
-                //Checks if the hit is a ground tile and within Distance for hoeing
-                if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= shovelDistance && !textureShowing)
+                //grabs Cell tile and index
+                Cell fertile = tgs.CellGetAtPosition(hit.point, true);
+                int cellIndex = tgs.CellGetIndex(fertile);
+                currentCellIndex = cellIndex;
+
+                if (currentCellIndex != previousCellIndex)
                 {
-                    //grabs Cell tile and index
-                    Cell fertile = tgs.CellGetAtPosition(hit.point, true);
-                    int cellIndex = tgs.CellGetIndex(fertile);
-                    currentCellIndex = cellIndex;
-
-                    if (currentCellIndex != previousCellIndex)
-                    {
-                        previousCellIndex = currentCellIndex;
-                    }
-
-                    //checks if cell is normal Ground
-                    if (tgs.CellGetTag(cellIndex) == 0)
-                    {
-                        //Sets texture to clickable
-                        tgs.CellToggleRegionSurface(cellIndex, true, canClickTexture);
-
-                        //Takes click, sets tile to Fertile
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            {
-                                tgs.CellSetTag(fertile, 1);
-                                StartCoroutine(ChangeTexture(cellIndex, fertileTexture));
-                            }
-                            soundBoard.PlayOneShot(InteractSound);
-
-                        }
-                       
-                    }
-
-                    //Switches tile back to normal Ground
-                    if (tgs.CellGetTag(previousCellIndex) == 0)
-                        StartCoroutine(ChangeTexture(currentCellIndex, groundTexture));
-                    
+                    previousCellIndex = currentCellIndex;
                 }
+
+                //checks if cell is normal Ground
+                if (tgs.CellGetTag(cellIndex) == 0)
+                {
+                    //Sets texture to clickable
+                    tgs.CellToggleRegionSurface(cellIndex, true, canClickTexture);
+
+                    //Takes click, sets tile to Fertile
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        {
+                            tgs.CellSetTag(fertile, 1);
+                            StartCoroutine(ChangeTexture(cellIndex, fertileTexture));
+                        }
+                        soundBoard.PlayOneShot(InteractSound);
+
+                    }
+
+                }
+
+                //Switches tile back to normal Ground
+                if (tgs.CellGetTag(previousCellIndex) == 0)
+                    StartCoroutine(ChangeTexture(currentCellIndex, groundTexture));
+
             }
         }
+
 
     }
 
@@ -104,3 +100,4 @@ public class Shovel : Interactable
         tgs.CellToggleRegionSurface(index, true, texture);
         textureShowing = false;
     }
+}

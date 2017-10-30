@@ -36,6 +36,15 @@ public class pickUpTool : Interactable
             GetComponent<loadAudioClips>().enabled = true;
             this.enabled = false;
         }
+        if (isShovel)
+        {
+            transform.parent = leftArmObj;
+            lArmMan.shovel = this.gameObject;
+            transform.localPosition = Vector3.zero;
+            transform.localEulerAngles = Vector3.zero;
+            GetComponent<Shovel>().enabled = true;
+            this.enabled = false;
+        }
     }
 
 

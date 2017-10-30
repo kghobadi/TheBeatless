@@ -19,6 +19,8 @@ public class Seed : Interactable
     inventoryMan inventMan;
     Vector3 targetPos;
 
+    Inventory invent;
+
     TerrainGridSystem tgs;
 
     //All possible texture references. Can use resources.Load for this stuff. 
@@ -36,6 +38,7 @@ public class Seed : Interactable
     int currentCellIndex;
     int previousCellIndex;
 
+
     public override void Start()
     {
         base.Start();
@@ -49,6 +52,10 @@ public class Seed : Interactable
 
         //TerrainGridSystem Reference
         tgs = TerrainGridSystem.instance;
+
+        gameObject.name = "seed" + plant.name;
+
+        invent = playerControl.gameObject.GetComponent<Inventory>();
 
     }
 
@@ -91,6 +98,8 @@ public class Seed : Interactable
                             targetPos = hit.point;
                             playerControl.isHoldingSeed = false;
                             inventMan.underPlayerControl = false;
+
+                            invent.usedNowTakeAgain(inventMan.slotNumRetake);
                         }
 
                     }
@@ -138,7 +147,7 @@ public class Seed : Interactable
         transform.SetParent(null);
 
         //spirals seed downward into the ground
-        if (counter > 0) 
+        if (counter > 0)
         {
             transform.Translate(0, fallSpeed, 0);
             counter -= 1 * Time.deltaTime;
@@ -164,7 +173,7 @@ public class Seed : Interactable
         }
     }
 
-    
+
 
     //Sets texture back to normals
     IEnumerator ChangeTexture(int index, Texture2D texture)
