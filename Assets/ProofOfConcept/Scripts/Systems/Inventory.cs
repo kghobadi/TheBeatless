@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour {
-    
+public class Inventory : MonoBehaviour
+{
+
     FirstPersonController playerControl;
     camMouseLook cameraControl;
 
@@ -19,13 +20,15 @@ public class Inventory : MonoBehaviour {
     public Transform[] slots;
 
     public bool[] isEmpty;
-    
+
     public bool isFull;
 
     public GameObject inventCam;
 
 
-    void Start () {
+
+    void Start()
+    {
         playerControl = GetComponent<FirstPersonController>();
         cameraControl = GetComponentInChildren<camMouseLook>();
 
@@ -35,15 +38,17 @@ public class Inventory : MonoBehaviour {
         inventory.SetActive(false);
         inventoryOpen = false;
         isEmpty = new bool[slots.Length];
-        for (int i = 0; i < isEmpty.Length;i++){
+        for (int i = 0; i < isEmpty.Length; i++)
+        {
             isEmpty[i] = true;
         }
 
 
-	}
-	
+    }
 
-	void Update () {
+
+    void Update()
+    {
 
         isFull = checkFull();
 
@@ -54,13 +59,13 @@ public class Inventory : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Tab) && !canOpen)
         {
-            closeInventory();   
+            closeInventory();
         }
 
         if (inventoryOpen)
         {
             canOpen = false;
-    
+
         }
         else
         {
@@ -75,7 +80,8 @@ public class Inventory : MonoBehaviour {
 
     }
 
-    public void openInventory(){
+    public void openInventory()
+    {
         playerControl.enabled = false;
         cameraControl.enabled = false;
         Cursor.lockState = CursorLockMode.None;
@@ -88,7 +94,8 @@ public class Inventory : MonoBehaviour {
         //add other cam functionaility
     }
 
-    public void closeInventory(){
+    public void closeInventory()
+    {
         playerControl.enabled = true;
         cameraControl.enabled = true;
         //Cursor.lockState = CursorLockMode.Locked;
@@ -100,15 +107,19 @@ public class Inventory : MonoBehaviour {
 
 
 
-    public void saveToInventory(Transform objectToSave,bool isSingle){
+    public void saveToInventory(Transform objectToSave, bool isSingle)
+    {
 
-        if(isSingle){
-            
+        if (isSingle)
+        {
+
             int indexToSaveIn = 0;
 
-            for (int i = 0; i < indexToSaveIn +1;i++){
-//                print(indexToSaveIn);
-                if(isEmpty[i]){
+            for (int i = 0; i < indexToSaveIn + 1; i++)
+            {
+                //                print(indexToSaveIn);
+                if (isEmpty[i])
+                {
                     objectToSave.parent = slots[indexToSaveIn];
                     objectToSave.localPosition = Vector3.up * 0.05f;
                     objectToSave.localScale = objectToSave.localScale / 2f;
@@ -116,34 +127,106 @@ public class Inventory : MonoBehaviour {
                     objectToSave.gameObject.layer = 11;
 
                     isEmpty[indexToSaveIn] = false;
-                } else{
+                }
+                else
+                {
                     indexToSaveIn++;
                 }
             }
 
 
-        }else{
-
-
-
         }
+        else
+        {
+            int indexToSaveInNew = 0;
+            bool saveNew = false;
 
+            for (int i = 0; i < indexToSaveInNew + 1; i++)
+            {
+                // Debug.Log(slots[i].name);
+                if (!isEmpty[i])
+                {
+                    if (slots[i].GetChild(0).tag == objectToSave.tag)
+                    {
+                        objectToSave.parent = slots[indexToSaveInNew];
+                        objectToSave.localPosition = new Vector3(Random.Range(-0.3f, 0.3f), 0.05f, Random.Range(-0.3f, 0.3f));
+                        objectToSave.localScale = objectToSave.localScale / 2f;
+
+                        objectToSave.gameObject.layer = 11;
+                    }
+                    else
+                    {
+                        if (indexToSaveInNew < 9)
+                        {
+                            indexToSaveInNew++;
+                        }
+                        else
+                            saveNew = true;
+                    }
+                }
+                else
+                {
+                    if (indexToSaveInNew < 8)
+                    {
+                        indexToSaveInNew++;
+                    }
+                    else
+                        saveNew = true;
+                }
+
+                if (saveNew)
+                {
+                    int indexToSaveIn = 0;
+
+                    for (int j = 0; j < indexToSaveIn + 1; j++)
+                    {
+                        //                print(indexToSaveIn);
+                        if (isEmpty[j])
+                        {
+                            objectToSave.parent = slots[indexToSaveIn];
+                            objectToSave.localPosition = Vector3.up * 0.05f;
+                            objectToSave.localScale = objectToSave.localScale / 2f;
+
+                            objectToSave.gameObject.layer = 11;
+
+                            isEmpty[indexToSaveIn] = false;
+                        }
+                        else
+                        {
+                            indexToSaveIn++;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    public void takeFromInventory(int slotNumber, bool isSingle){
+    public void takeFromInventory(int slotNumber, bool isSingle, int childIndex, int slotChildCount)
+    {
 
-        if(isSingle){
+        if (isSingle)
+        {
             closeInventory();
-            Transform takeOut = slots[slotNumber].GetChild(0);
+            Transform takeOut = slots[slotNumber].GetChild(childIndex);
             //takeOut.parent = this.transform;
             //takeOut.localPosition = new Vector3(0, 0, 1);
             isEmpty[slotNumber] = true;
 
         }
+        else
+        {
+            closeInventory();
+            Transform takeOut = slots[slotNumber].GetChild(childIndex);
+            //takeOut.parent = this.transform;
+            //takeOut.localPosition = new Vector3(0, 0, 1);
+            if (slotChildCount == 1)
+                isEmpty[slotNumber] = true;
+        }
 
     }
 
-    bool checkFull(){
+    bool checkFull()
+    {
         for (int i = 0; i < isEmpty.Length; i++)
         {
             if (isEmpty[i])
