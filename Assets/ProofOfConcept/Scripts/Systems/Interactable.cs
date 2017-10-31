@@ -30,7 +30,7 @@ public abstract class Interactable : MonoBehaviour
 
         //loads Cursor Sprites
         normalSprite = Resources.Load<Sprite>("CursorSprites/crosshair");
-        interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairselected") ;
+        interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked") ;
         clickSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
         Debug.Log(normalSprite);
         symbol.sprite = normalSprite;
