@@ -30,6 +30,9 @@ public class PlantLife : MonoBehaviour {
     Cell groundTile;
     int cellIndex;
 
+    public List<Cell> neighbors = new List<Cell>();
+    public List<int> neighborIndexes = new List<int>();
+
     public Texture2D growingTexture;
     public Texture2D groundTexture;
 
@@ -55,13 +58,20 @@ public class PlantLife : MonoBehaviour {
         // Clone Sapling prefabs and Instantiate
         groundTile = tgs.CellGetAtPosition(transform.position, true);
         cellIndex = tgs.CellGetIndex(groundTile);
+        neighbors = tgs.CellGetNeighbours(groundTile);
 
-        Debug.Log(tgs.CellGetPosition(cellIndex));
+        //fills up neighborIndexes with the proper cell indexes
+        for(int i = 0; i < neighbors.Count; i++)
+        {
+            int index = tgs.CellGetIndex(neighbors[i]);
+            neighborIndexes.Add(index);
+        }
 
         //Set age and fruit
         ageCounter = -1;
         fruitAmount = 0;
         growthDay = 1;
+
 
         StartCoroutine(Growth());
 	}
@@ -145,11 +155,11 @@ public class PlantLife : MonoBehaviour {
 
     public void SpawnFruits()
     {
-        for (int i = 0; i < fruitAmount; i++)
+        for (int i = 0; i < fruitAmount; i += Random.Range(1,2))
         {
             //fruit starting pos and Instantiate
-            Vector3 xyz = Random.insideUnitSphere * 3;
-            Vector3 spawnPosition = xyz + transform.position + new Vector3(0, fruitYpos, 0);
+            Vector3 xyz = Random.insideUnitSphere * 1;
+            Vector3 spawnPosition = xyz + tgs.CellGetPosition(neighborIndexes[i]) + new Vector3(0, fruitYpos, 0);
             fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
 
             //random starting scale for fruit
