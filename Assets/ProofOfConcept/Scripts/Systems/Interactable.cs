@@ -11,7 +11,7 @@ public abstract class Interactable : MonoBehaviour
     private Sprite interactSprite;
     private Sprite clickSprite;
 
-    private Vector3 startScale;
+    public Vector3 startScale;
 
 
     protected float withinDistance = 10f;

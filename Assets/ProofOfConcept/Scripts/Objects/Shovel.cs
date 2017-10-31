@@ -18,7 +18,7 @@ public class Shovel : Interactable
     public Texture2D groundTexture;
     public Texture2D canClickTexture;
     public Texture2D fertileTexture;
-    
+
     public float shovelDistance;
 
     bool textureShowing;
@@ -82,13 +82,13 @@ public class Shovel : Interactable
                             soundBoard.PlayOneShot(InteractSound);
 
                         }
-                       
+
                     }
 
                     //Switches tile back to normal Ground
                     if (tgs.CellGetTag(previousCellIndex) == 0)
                         StartCoroutine(ChangeTexture(currentCellIndex, groundTexture));
-                    
+
                 }
             }
         }
@@ -104,3 +104,4 @@ public class Shovel : Interactable
         tgs.CellToggleRegionSurface(index, true, texture);
         textureShowing = false;
     }
+}

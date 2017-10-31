@@ -63,6 +63,8 @@ public class Fruit : Interactable {
         //Checks if it has been picked up and equipped
         if (inventMan.underPlayerControl)
         {
+            onGround = false;
+            //should turn On rb when drop from Invent
             //If player clicks on animal. May need to restructure this so that it's a raycast as well, we'll see.
             if (feedAnimal)
             {
@@ -88,6 +90,8 @@ public class Fruit : Interactable {
             //When it has fallen, we turn on rigidbody
             if (hasFallen && !onGround)
             {
+                startScale = transform.localScale;
+                inventMan.startScale = transform.localScale;
                 rb.isKinematic = false;
 
             }
