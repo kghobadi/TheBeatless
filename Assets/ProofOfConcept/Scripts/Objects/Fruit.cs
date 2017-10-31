@@ -45,9 +45,11 @@ public class Fruit : Interactable {
 
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
-        inventMan.isSingle = true;
+        inventMan.isSingle = false;
         inventMan.interactable = false;
         interactable = false;
+
+        gameObject.name = "fruit" + seed.name;
 
         //Grabs rigidbody and sets to kinematic
         rb = GetComponent<Rigidbody>();
@@ -55,7 +57,7 @@ public class Fruit : Interactable {
 
         //TerrainGridSystem ref
         tgs = TerrainGridSystem.instance;
-
+        
     }
 
     void Update()
@@ -90,8 +92,6 @@ public class Fruit : Interactable {
             //When it has fallen, we turn on rigidbody
             if (hasFallen && !onGround)
             {
-                startScale = transform.localScale;
-                inventMan.startScale = transform.localScale;
                 rb.isKinematic = false;
 
             }
@@ -101,6 +101,7 @@ public class Fruit : Interactable {
             {
                 inventMan.interactable = true;
                 interactable = true;
+
             }
 
         }
@@ -117,7 +118,7 @@ public class Fruit : Interactable {
             else if (transform.localScale.x > fullyGrownXScale)
             {
                 hasFallen = true;
-            }
+        }
 
     }
 
