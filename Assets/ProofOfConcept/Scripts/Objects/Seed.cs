@@ -7,6 +7,7 @@ public class Seed : Interactable
 {
 
     public bool plantSeed;
+    public bool planting;
     public AudioClip plantedSeed;
 
     //which plant does this seed create?
@@ -121,7 +122,7 @@ public class Seed : Interactable
             int cellIndex = tgs.CellGetIndex(plantTile);
 
             //checks if cell is Fertile
-            if (tgs.CellGetTag(cellIndex) == 1)
+            if (tgs.CellGetTag(cellIndex) == 1 || planting)
             {
                 Debug.Log("planter");
                 //Centers seed on tile
@@ -146,6 +147,10 @@ public class Seed : Interactable
         //unparents from player control   
         transform.SetParent(null);
 
+        planting = true;
+        //Set tile tag to planted
+        tgs.CellSetTag(tile, 2);
+
         //spirals seed downward into the ground
         if (counter > 0)
         {
@@ -164,8 +169,6 @@ public class Seed : Interactable
             plantSpawnPos = tgs.CellGetPosition(index);
             plantClone = Instantiate(plant, plantSpawnPos, Quaternion.identity);
 
-            //Set tile tag to planted
-            tgs.CellSetTag(tile, 2);
             tgs.CellToggleRegionSurface(tgs.CellGetIndex(tile), true, plantedTexture);
 
             //Destroy seed

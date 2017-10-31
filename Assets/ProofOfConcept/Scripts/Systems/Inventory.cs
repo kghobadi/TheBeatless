@@ -147,6 +147,7 @@ public class Inventory : MonoBehaviour
                     if (slots[i].GetChild(0).tag == objectToSave.tag && slots[i].GetChild(0).name == objectToSave.name)
                     {
                         objectToSave.parent = slots[indexToSaveInNew];
+                        objectToSave.GetComponent<inventoryMan>().slotNumRetake = indexToSaveInNew;
                         objectToSave.localPosition = new Vector3(Random.Range(-0.3f, 0.3f), 0.05f, Random.Range(-0.3f, 0.3f));
                         objectToSave.localScale = objectToSave.localScale / 2f;
 
@@ -238,8 +239,12 @@ public class Inventory : MonoBehaviour
 
     public void usedNowTakeAgain(int slotNumber)
     {
-
-        slots[slotNumber].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
+        if (!isEmpty[slotNumber])
+        {
+            slots[slotNumber].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
+            Debug.Log(slotNumber);
+            //fix this
+        }
 
     }
 

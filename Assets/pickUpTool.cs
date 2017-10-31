@@ -14,6 +14,7 @@ public class pickUpTool : Interactable
     {
         base.Start();
         lArmMan = leftArmObj.GetComponent<leftArmManager>();
+        interactable = true;
 
     }
 
@@ -34,6 +35,10 @@ public class pickUpTool : Interactable
             transform.localEulerAngles = Vector3.zero;
             GetComponent<SaveSound>().enabled = true;
             GetComponent<loadAudioClips>().enabled = true;
+            if (lArmMan.objectHeld != null)
+                lArmMan.putAwayEverything();
+            lArmMan.objectHeld = lArmMan.recorder;
+
             this.enabled = false;
         }
         if (isShovel)
@@ -43,6 +48,10 @@ public class pickUpTool : Interactable
             transform.localPosition = Vector3.zero;
             transform.localEulerAngles = Vector3.zero;
             GetComponent<Shovel>().enabled = true;
+            if (lArmMan.objectHeld == lArmMan.recorder)
+                lArmMan.putAwayEverything();
+            lArmMan.objectHeld = lArmMan.shovel;
+
             this.enabled = false;
         }
     }

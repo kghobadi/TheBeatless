@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class Shovel : Interactable
+public class Shovel : MonoBehaviour
 {
 
 
@@ -26,15 +26,19 @@ public class Shovel : Interactable
     int previousCellIndex;
     int currentCellIndex;
 
-    public override void Start()
+    GameObject _player;
+
+    void Start()
     {
-        base.Start();
+
 
         //Inventory Manager reference
 
 
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
+
+        _player = GameObject.FindWithTag("Player");
     }
 
 
@@ -75,7 +79,7 @@ public class Shovel : Interactable
                             tgs.CellSetTag(fertile, 1);
                             StartCoroutine(ChangeTexture(cellIndex, fertileTexture));
                         }
-                        soundBoard.PlayOneShot(InteractSound);
+                        //soundBoard.PlayOneShot(InteractSound);
 
                     }
 
