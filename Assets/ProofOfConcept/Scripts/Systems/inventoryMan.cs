@@ -21,6 +21,8 @@ public class inventoryMan : Interactable
 
     int originalLayer;
 
+    public int slotNumRetake;
+
     public override void Start()
     {
         base.Start();
@@ -107,7 +109,7 @@ public class inventoryMan : Interactable
 
     }
 
-    void takeFromInvent()
+    public void takeFromInvent()
     {
         int slotNum;
         int.TryParse(transform.parent.name, out slotNum);

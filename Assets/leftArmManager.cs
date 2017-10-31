@@ -8,7 +8,9 @@ public class leftArmManager : MonoBehaviour
     public GameObject recorder, shovel;
     AudioListener mainListener;
     public AudioListener recorderListener;
-    bool holdingSomething;
+    //public bool holdingSomething;
+    public bool pickedNew;
+    public GameObject objectHeld;
 
     // Use this for initialization
     void Start()
@@ -21,40 +23,104 @@ public class leftArmManager : MonoBehaviour
     void Update()
     {
 
-
+        //holdingSomething = checkIfHolding();
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && recorder != null)
         {
-            if (!recorder.activeSelf && !holdingSomething)
+            if (objectHeld != recorder)// && !holdingSomething)
             {
-                recorder.SetActive(true);
-                holdingSomething = true;
-                recorderListener.enabled = true;
-                mainListener.enabled = false;
+                putAwayEverything();
+                equipRecorder();
+
+                //objectHeld = recorder;
+
             }
-            else
+            else if (objectHeld == recorder)
             {
-                recorder.SetActive(false);
-                holdingSomething = false;
-                recorderListener.enabled = false;
-                mainListener.enabled = true;
+                putAwayRecorder();
+                //objectHeld = null;
+
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && shovel != null)
         {
-            if (!recorder.activeSelf && !holdingSomething)
+            if (objectHeld != shovel)
             {
-                shovel.SetActive(true);
-                holdingSomething = true;
+                putAwayEverything();
+                equipShovel();
+
+                //objectHeld = shovel;
+
             }
-            else
+            else if (objectHeld == shovel)
             {
-                shovel.SetActive(false);
-                holdingSomething = false;
+                putAwayShovel();
+                //objectHeld = null;
             }
         }
 
 
     }
+
+    public void equipRecorder()
+    {
+        recorder.SetActive(true);
+        //holdingSomething = true;
+        recorderListener.enabled = true;
+        mainListener.enabled = false;
+        objectHeld = recorder;
+    }
+
+    public void putAwayRecorder()
+    {
+        recorder.SetActive(false);
+        //holdingSomething = false;
+        recorderListener.enabled = false;
+        mainListener.enabled = true;
+
+        objectHeld = null;
+    }
+
+    public void equipShovel()
+    {
+        shovel.SetActive(true);
+        //holdingSomething = true;
+        objectHeld = shovel;
+    }
+
+    public void putAwayShovel()
+    {
+        shovel.SetActive(false);
+        //holdingSomething = false;
+        objectHeld = null;
+    }
+
+    public void putAwayEverything()
+    {
+        if (shovel != null)
+        {
+            if (objectHeld == shovel)
+                putAwayShovel();
+        }
+        if (recorder != null)
+        {
+            if (objectHeld == recorder)
+                putAwayRecorder();
+        }
+
+    }
+
+
+
+
+
+    //bool checkIfHolding()
+    //{
+    //    if (recorder.activeSelf || shovel.activeSelf)
+    //        return true;
+    //    else
+    //        return false;
+
+    //}
 }
