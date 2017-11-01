@@ -12,6 +12,7 @@ public class PlantLife : MonoBehaviour {
 
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
+	public Transform currentTree;
     public GameObject fruit;
     GameObject fruitClone;
 
@@ -51,7 +52,7 @@ public class PlantLife : MonoBehaviour {
 
         // Clone Sapling prefabs and Instantiate
         saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0));
-       
+		currentTree = saplingClone.transform;
         //Set age and fruit
         ageCounter = 0;
         fruitAmount = 0;
@@ -60,38 +61,43 @@ public class PlantLife : MonoBehaviour {
 	}
 	
 	void Update () {
+
         if (hasGrown)
         {
             switch (ageCounter)
             {
-                case 1: //Young
-                    hasGrown = false;
-                    playAud.clipsSwitched = false;
-                    Destroy(saplingClone);
-                    youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
+				case 1: //Young
+					hasGrown = false;
+					playAud.clipsSwitched = false;
+					Destroy (saplingClone);
+					youngClone = Instantiate (young, transform.position, Quaternion.Euler (0, randomRotation, 0));
+					currentTree = youngClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     StartCoroutine(Growth());
                     break;
-                case 2: //Adult
-                    hasGrown = false;
-                    playAud.clipsSwitched = false;
-                    Destroy(youngClone);
-                    adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0));
+				case 2: //Adult
+					hasGrown = false;
+					playAud.clipsSwitched = false;
+					Destroy (youngClone);
+					adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0));
+					currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 4);
                     StartCoroutine(Growth());
                     break;
-                case 3: // Old
-                    hasGrown = false;
-                    playAud.clipsSwitched = false;
-                    Destroy(adultClone);
-                    oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0));
+				case 3: // Old
+					hasGrown = false;
+					playAud.clipsSwitched = false;
+					Destroy (adultClone);
+					oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0));
+					currentTree = oldClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     StartCoroutine(Growth());
                     break;
-                case 4: // Dead
-                    hasGrown = false;
-                    playAud.clipsSwitched = false;
-                    Destroy(oldClone);
+				case 4: // Dead
+					hasGrown = false;
+					playAud.clipsSwitched = false;
+					Destroy (oldClone);
+					currentTree = null;
 
                     //Takes current cell and sets it back to normal Ground for tree death
                     Cell groundTile = tgs.CellGetAtPosition(transform.position);
@@ -106,7 +112,16 @@ public class PlantLife : MonoBehaviour {
                     //THIS IS WHERE I SHOULD INCORPORATE POSSIBILITY OF ANCIENT
                     break;
             }
+
+
+
         }
+		if (playAudio1.growingSize) {
+			currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
+		} else {
+			currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
+			
+		}
 		
 	}
 

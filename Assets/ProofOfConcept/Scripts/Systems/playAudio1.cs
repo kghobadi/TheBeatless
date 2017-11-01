@@ -9,6 +9,7 @@ public class playAudio1 : MonoBehaviour
     public AudioClip[] clips, switchedClips, secondClips;
     public bool clipsSwitched = false;
     public bool playedAudio = false;
+	public static bool growingSize = false;
     AudioSource audio;
     public int timeScale = 0;
 
@@ -66,22 +67,30 @@ public class playAudio1 : MonoBehaviour
     void Update()
     {
 
-        if (audio.isPlaying)
+		if (audio.isPlaying && audio.outputAudioMixerGroup == regularMix)
         {
+			growingSize = true;
+			Debug.Log ("PLAYING");
             timer -= Time.deltaTime;
+
             if (timer > 0)
             {
+				
                 sprVisisble = true;
             }
             else
             {
+				
                 sprVisisble = false;
             }
         }
         else
         {
+			growingSize = false;
+			Debug.Log ("NOT");
             timer = timerStartVal;
         }
+
         switch (plantlife.ageCounter)
         {
             case 0:
