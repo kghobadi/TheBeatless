@@ -26,6 +26,7 @@ public class Fruit : Interactable {
     private Sun sunScript;
 
     TerrainGridSystem tgs;
+    public float hungerValue;
 
 
     public override void Start()
@@ -71,7 +72,6 @@ public class Fruit : Interactable {
             if (feedAnimal)
             {
                 inventMan.underPlayerControl = false;
-                playerControl.isHoldingFood = false;
 
                 //NEED TO find a way to set parent to animal, carry it around a while, then poop it out (set active)
                 seedClone = Instantiate(seed, transform.position, Quaternion.identity);
