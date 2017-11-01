@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace TGS
 {
-	public class AnimalAI : MonoBehaviour
-	{
+    public class AnimalAI : MonoBehaviour
+    {
         enum BigStates
         {
             EAT,
@@ -16,17 +16,18 @@ namespace TGS
         BigStates bigStates;
 
 
-		enum State
-		{
-			MOVING,
-			MOVESELECT,
-          
-        
-		}
-		State state;
-		TerrainGridSystem tgs;
-		List<int> moveList;
-		short moveCounter = 0;
+        enum State
+        {
+            MOVING,
+            MOVESELECT,
+            SEARCHWORLD
+
+
+        }
+        State state;
+        TerrainGridSystem tgs;
+        List<int> moveList;
+        short moveCounter = 0;
 
         //Stats set in editor or in start
         public float hungerModifier;
@@ -81,10 +82,10 @@ namespace TGS
 
 
         // Use this for initialization
-        void Start ()
-		{
-			tgs = TerrainGridSystem.instance;
-			state = State.MOVESELECT;
+        void Start()
+        {
+            tgs = TerrainGridSystem.instance;
+            state = State.MOVESELECT;
             bigStates = BigStates.PICKGOAL;
 
             //Assign Stats 
@@ -102,10 +103,12 @@ namespace TGS
 
 
         }
-	
-		// Update is called once per frame
-		void Update ()
-		{
+
+        // Update is called once per frame
+        void Update()
+        {
+            Debug.Log(bigStates);
+            Debug.Log(state);
             //if(nearAnimal == true){
             // social meter decreases over time
 
@@ -123,17 +126,14 @@ namespace TGS
                     if (decider < hungerPercentage)
                     {
                         bigStates = BigStates.EAT;
-                        SearchWorld(fruit);
                     }
                     if (decider >= hungerPercentage && decider < sleepPercentage)
                     {
                         bigStates = BigStates.SLEEP;
-                        SearchWorld(nest);
                     }
                     if (decider >= sleepPercentage)
                     {
                         bigStates = BigStates.SEARCHFORANIMAL;
-                        SearchWorld(animal);
                     }
                     break;
                 case BigStates.EAT:
@@ -147,7 +147,7 @@ namespace TGS
                     //    //nextCell = memoryBankHunger.Keys[i];
 
                     //}
-                    isMoving(nextCell);
+                    isMoving(fruit);
                     Debug.Log(" EAT called is moving");
                     //Is Moving-- MOVESELECT
                     // Eat();
@@ -160,6 +160,7 @@ namespace TGS
                     //}
 
                     Debug.Log("SLEEP called is moving");
+                    isMoving(nest);
                     //Is Moving-- MOVESELECT
                     //Sleep();
                     //Goal met, Remember Cell -- memoryBankSleep.Add(groundTile, 0) or ++ its int Value;
@@ -170,7 +171,7 @@ namespace TGS
                     //    //memoryBankSocial
 
                     //}
-                    isMoving(nextCell);
+                    isMoving(animal);
 
                     Debug.Log("SOCIAL called is moving");
                     //Is Moving -- MOVESELECT
@@ -179,11 +180,11 @@ namespace TGS
                     break;
             }
 
-            
 
-		}
-		
-		
+
+        }
+
+
 
         void EvaluateConsiderations()
         {
@@ -215,54 +216,15 @@ namespace TGS
             sleepPercentage += hungerPercentage;
             //social percentage is the remaining
             socialPercentage = social / totalMeter;
-            
-            
+
+
 
         }
 
-        Cell SearchWorld(string name)
-        {
-            //Checks for cells in memory which returned a gameObject of Goal type && high rate of success (return cell)
-            //if memoryList == Null || nothing was found at memoryList Cell location
-            //--> Use sphere casts to look for goalObject -- returns closest object of relevance.  (returns cell)
-            Debug.Log("searched world");
-            RaycastHit hit;
-            float distanceToObstacle = 0;
-
-            Vector3 origin = transform.position;
-            if (Physics.SphereCast(origin, rayDistance, transform.forward, out hit, 10))
-            {
-                distanceToObstacle = hit.distance;
-                if(hit.collider.gameObject.tag == name)
-                {
-                    nextCell = tgs.CellGetAtPosition(hit.collider.gameObject.transform.position, true);
-                    goalFound = true;
-                    goalObject = hit.collider.gameObject;
-                    return nextCell;
-                    
-                }
-
-                else
-                {
-                    nextCell = tgs.CellGetAtPosition(transform.position + transform.forward,true);
-                    goalFound = false;
-                    return nextCell;
-
-                    
-                    //nextCell = random neighbor
-                }
-            }
-            nextCell = tgs.CellGetAtPosition(transform.position + transform.forward, true);
-            goalFound = false;
-            return nextCell;
-            //If Null --> move to point outside last Spherecast and repeat. (returns cell)
-            //Will eventually return with a gameObject match, call correct function --> foundGoal == true
-
-        }
 
         void Eat(GameObject fruit)
         {
-            Debug.Log("just ate");
+            //Debug.Log("just ate");
             goalReward = fruit.GetComponent<Fruit>().hungerValue;
             //play eating animation
             fruit.GetComponent<Fruit>().feedAnimal = true;
@@ -271,17 +233,17 @@ namespace TGS
 
         void Sleep(GameObject nest)
         {
-            while(sleep> 1)
+            while (sleep > 1)
             {
                 isSleeping = true; //prob don't need this, can just use States
                 //play sleeping animation
-                Debug.Log("sleeping");
-                if((hunger + social) > sleep)
+                //Debug.Log("sleeping");
+                if ((hunger + social) > sleep)
                 {
                     goalReward = 2 * Time.deltaTime;
                     chanceToAwaken += goalReward;
                     float randomChance = Random.Range(0, 100);
-                    if(randomChance < chanceToAwaken)
+                    if (randomChance < chanceToAwaken)
                     {
                         //wake up animation
                         bigStates = BigStates.PICKGOAL;
@@ -293,32 +255,33 @@ namespace TGS
                     goalReward = 1 * Time.deltaTime;
                 }
             }
-            
+
 
         }
 
         void InteractWithAnimal(GameObject animal)
         {
-            Debug.Log("socializing");
+            //Debug.Log("socializing");
             //isSocializing = true; only need this for while loop
-            if (animal.GetComponent<AnimalAI>().bigStates == BigStates.SEARCHFORANIMAL){
+            if (animal.GetComponent<AnimalAI>().bigStates == BigStates.SEARCHFORANIMAL)
+            {
                 //play interaction animation 
                 goalReward = socialReward;
-                
+
                 bigStates = BigStates.PICKGOAL;
             }
             else if (animal.GetComponent<AnimalAI>().isSleeping)
             {
                 // either try to wake up this other animal
                 //This animal sleeps too, for companionship
-                
+
                 bigStates = BigStates.PICKGOAL;
             }
-            else if(animal.GetComponent<AnimalAI>().bigStates == BigStates.EAT)
+            else if (animal.GetComponent<AnimalAI>().bigStates == BigStates.EAT)
             {
                 // either try to interact with this other animal
                 // this animal joins other in search for food
-                
+
                 bigStates = BigStates.PICKGOAL;
             }
 
@@ -345,12 +308,13 @@ namespace TGS
             }
         }
 
-        void isMoving(Cell targestDestination) // grab targestDestination from SearchWorld() output
+        void isMoving(string name) // grab targestDestination from SearchWorld() output
         {
+            Debug.Log(nextCell);
             switch (state)
             {
                 case State.MOVING:
-                    Debug.Log("moving");
+                    //Debug.Log("moving");
                     if (moveCounter < moveList.Count)
                     {
                         Move(tgs.CellGetPosition(moveList[moveCounter]));
@@ -358,8 +322,8 @@ namespace TGS
                     else
                     {
                         moveCounter = 0;
-                        Debug.Log("back to search world");
-                        if(bigStates == BigStates.EAT)
+
+                        if (bigStates == BigStates.EAT)
                         {
                             if (goalFound)
                             {
@@ -367,11 +331,13 @@ namespace TGS
                             }
                             else
                             {
-                                SearchWorld(fruit);
+
+                                state = State.SEARCHWORLD;
+                                //state = State.MOVESELECT;
                             }
                         }
-                        
-                        if(bigStates == BigStates.SEARCHFORANIMAL)
+
+                        if (bigStates == BigStates.SEARCHFORANIMAL)
                         {
                             if (goalFound)
                             {
@@ -379,10 +345,11 @@ namespace TGS
                             }
                             else
                             {
-                                SearchWorld(animal);
+                                state = State.SEARCHWORLD;
+                                //state = State.MOVESELECT;
                             }
                         }
-                        if(bigStates == BigStates.SLEEP)
+                        if (bigStates == BigStates.SLEEP)
                         {
                             if (goalFound)
                             {
@@ -390,16 +357,18 @@ namespace TGS
                             }
                             else
                             {
-                                SearchWorld(nest);
+                                state = State.SEARCHWORLD;
+                                //state = State.MOVESELECT;
                             }
                         }
-                        state = State.MOVESELECT;
+                        Debug.Log("back to search world");
+
                     }
                     break;
 
                 case State.MOVESELECT:
-                    Debug.Log("Is MOVESELECT");
-                    int targetCell = tgs.CellGetIndex(targestDestination); //this could be apple, animal, or nest
+                    //Debug.Log("Is MOVESELECT");
+                    int targetCell = tgs.CellGetIndex(nextCell); //this could be apple, animal, or nest
                     tgs.CellFadeOut(targetCell, Color.red, 50);
                     if (targetCell != -1)
                     {
@@ -408,6 +377,7 @@ namespace TGS
                         neighbors = tgs.CellGetNeighbours(startCell);
                         int totalCost;
                         moveList = tgs.FindPath(startCell, targetCell, out totalCost);
+                        Debug.Log("start cell" + startCell + "|end cell" + targetCell);
                         if (moveList == null) return;
                         Debug.Log("Total move cost: " + totalCost);
                         tgs.CellFadeOut(moveList, Color.green, 5f);
@@ -420,11 +390,48 @@ namespace TGS
                     }
 
                     break;
+                case State.SEARCHWORLD:
+                    //Checks for cells in memory which returned a gameObject of Goal type && high rate of success (return cell)
+                    //if memoryList == Null || nothing was found at memoryList Cell location
+                    //--> Use sphere casts to look for goalObject -- returns closest object of relevance.  (returns cell)
+                    Debug.Log("searched world");
+                    RaycastHit hit;
+                    float distanceToObstacle = 0;
+
+                    Vector3 origin = transform.position;
+                    if (Physics.SphereCast(origin, rayDistance, transform.forward, out hit, 10))
+                    {
+                        distanceToObstacle = hit.distance;
+                        if (hit.collider.gameObject.tag == name)
+                        {
+                            nextCell = tgs.CellGetAtPosition(hit.collider.gameObject.transform.position, true);
+                            goalFound = true;
+                            goalObject = hit.collider.gameObject;
+                            state = State.MOVESELECT;
+
+                        }
+
+                        else
+                        {
+                            nextCell = tgs.CellGetAtPosition(transform.position + transform.forward, true);
+                            goalFound = false;
+                            state = State.MOVESELECT;
+
+
+                            //nextCell = random neighbor
+                        }
+                    }
+                    nextCell = tgs.CellGetAtPosition(transform.position + transform.forward, true);
+                    goalFound = false;
+                    state = State.MOVESELECT;
+                    break;
+                    //If Null --> move to point outside last Spherecast and repeat. (returns cell)
+                    //Will eventually return with a gameObject match, call correct function --> foundGoal == true
 
             }
         }
 
-        
+
 
     }
 }
