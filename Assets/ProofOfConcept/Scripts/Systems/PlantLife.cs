@@ -12,7 +12,7 @@ public class PlantLife : MonoBehaviour {
 
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
-	public Transform currentTree;
+	private Transform currentTree;
     public GameObject fruit;
     GameObject fruitClone;
 
@@ -82,12 +82,13 @@ public class PlantLife : MonoBehaviour {
         if (hasGrown)
         {
             switch (ageCounter)
-            {
-                case 0: //Sapling
-                    hasGrown = false;
-                    playAud.clipsSwitched = false;
-                    tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
-                    saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0));
+            	{
+				case 0: //Sapling
+					hasGrown = false;
+					playAud.clipsSwitched = false;
+					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
+					saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0));
+					currentTree = saplingClone.transform;
                     growthDay = Random.Range(2, 4); 
                     StartCoroutine(Growth());
                     break;
