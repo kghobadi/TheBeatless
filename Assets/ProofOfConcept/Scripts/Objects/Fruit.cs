@@ -26,6 +26,7 @@ public class Fruit : Interactable {
     private Sun sunScript;
 
     TerrainGridSystem tgs;
+    public float hungerValue;
 
 
     public override void Start()
@@ -45,9 +46,11 @@ public class Fruit : Interactable {
 
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
-        inventMan.isSingle = true;
+        inventMan.isSingle = false;
         inventMan.interactable = false;
         interactable = false;
+
+        gameObject.name = "fruit" + seed.name;
 
         //Grabs rigidbody and sets to kinematic
         rb = GetComponent<Rigidbody>();
@@ -55,7 +58,7 @@ public class Fruit : Interactable {
 
         //TerrainGridSystem ref
         tgs = TerrainGridSystem.instance;
-
+        
     }
 
     void Update()
@@ -63,11 +66,12 @@ public class Fruit : Interactable {
         //Checks if it has been picked up and equipped
         if (inventMan.underPlayerControl)
         {
+            onGround = false;
+            //should turn On rb when drop from Invent
             //If player clicks on animal. May need to restructure this so that it's a raycast as well, we'll see.
             if (feedAnimal)
             {
                 inventMan.underPlayerControl = false;
-                playerControl.isHoldingFood = false;
 
                 //NEED TO find a way to set parent to animal, carry it around a while, then poop it out (set active)
                 seedClone = Instantiate(seed, transform.position, Quaternion.identity);
@@ -97,6 +101,7 @@ public class Fruit : Interactable {
             {
                 inventMan.interactable = true;
                 interactable = true;
+
             }
 
         }
@@ -113,7 +118,7 @@ public class Fruit : Interactable {
             else if (transform.localScale.x > fullyGrownXScale)
             {
                 hasFallen = true;
-            }
+        }
 
     }
 

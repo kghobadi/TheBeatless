@@ -31,10 +31,6 @@ public class Shovel : MonoBehaviour
     void Start()
     {
 
-
-        //Inventory Manager reference
-
-
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
 
