@@ -36,6 +36,13 @@ public class Seed : Interactable
 
     bool textureShowing;
 
+    private GameObject sun;
+    private Sun sunScript;
+
+    public int decompositionDaysMin;
+    public int decompositionDaysMax;
+    int decompositionDay;
+
     int currentCellIndex;
     int previousCellIndex;
 
@@ -44,12 +51,18 @@ public class Seed : Interactable
     {
         base.Start();
 
+        //grabs Sun ref
+        sun = GameObject.FindGameObjectWithTag("Sun");
+        sunScript = sun.GetComponent<Sun>();
 
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
         inventMan.isSingle = false;
 
         inventMan.interactable = true;
+
+        //Random decompDay
+        decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
 
         //TerrainGridSystem Reference
         tgs = TerrainGridSystem.instance;
@@ -58,6 +71,7 @@ public class Seed : Interactable
 
         invent = playerControl.gameObject.GetComponent<Inventory>();
 
+        StartCoroutine(Decompose());
     }
 
 
@@ -186,6 +200,19 @@ public class Seed : Interactable
         tgs.CellToggleRegionSurface(index, true, texture);
         textureShowing = false;
     }
+    //Causes fruit to decay and either plant a seed on a fertile tile, or leave behind a seed for pick up
+    IEnumerator Decompose()
+    {
+        //for loops waits given # of days
+        for (int i = 0; i < decompositionDay; i++)
+        {
+            yield return new WaitUntil(() => sunScript.dayPassed == true);
+
+        }
+        Destroy(gameObject);
+        
+    }
+
 
 
 }

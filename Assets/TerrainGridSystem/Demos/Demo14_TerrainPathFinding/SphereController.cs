@@ -62,6 +62,7 @@ namespace TGS
 				}
 				break;
 			}
+
 		}
 		
 		void Move (Vector3 in_vec)
