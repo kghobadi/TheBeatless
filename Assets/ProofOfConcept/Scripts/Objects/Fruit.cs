@@ -10,7 +10,7 @@ public class Fruit : Interactable {
     public bool onGround;
 
     public GameObject seed;
-    GameObject seedClone;
+    public GameObject seedClone;
 
     public float fullyGrownXScale;
     public float growthMetric;
@@ -101,7 +101,6 @@ public class Fruit : Interactable {
             {
                 inventMan.interactable = true;
                 interactable = true;
-
             }
 
         }
