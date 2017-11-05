@@ -144,12 +144,12 @@ public class PlantLife : MonoBehaviour {
 
 
         }
-		if (playAudio1.growingSize) {
-			currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
-		} else {
-			currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
+		//if (playAudio1.growingSize) {
+		//	currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
+		//} else {
+		//	currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
 			
-		}
+		//}
 		
 	}
 
