@@ -126,6 +126,7 @@ namespace TGS
                 case BigStates.PICKGOAL:
 
                     goalFound = false;
+                    goalReward = 0;
                     Random.InitState(System.DateTime.Now.Millisecond);
                     float decider = Random.Range(0f, 100f);
                     if (decider < hungerPercentage)
