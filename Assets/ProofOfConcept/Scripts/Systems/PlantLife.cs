@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class PlantLife : MonoBehaviour {
+public class PlantLife : MonoBehaviour
+{
 
     bool fruitGrowing;
     int fruitAmount;
@@ -12,7 +13,7 @@ public class PlantLife : MonoBehaviour {
 
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
-	private Transform currentTree;
+    private Transform currentTree;
     public GameObject fruit;
     GameObject fruitClone;
 
@@ -44,7 +45,8 @@ public class PlantLife : MonoBehaviour {
         sunScript = sun.GetComponent<Sun>();
     }
 
-    void Start () {
+    void Start()
+    {
 
         playAud = GetComponent<playAudio1>();
 
@@ -60,9 +62,9 @@ public class PlantLife : MonoBehaviour {
         groundTile = tgs.CellGetAtPosition(transform.position, true);
         cellIndex = tgs.CellGetIndex(groundTile);
         neighbors = tgs.CellGetNeighbours(groundTile);
-
+        tgs.CellSetCanCross(cellIndex, false);
         //fills up neighborIndexes with the proper cell indexes
-        for(int i = 0; i < neighbors.Count; i++)
+        for (int i = 0; i < neighbors.Count; i++)
         {
             int index = tgs.CellGetIndex(neighbors[i]);
             neighborIndexes.Add(index);
@@ -75,21 +77,23 @@ public class PlantLife : MonoBehaviour {
 
 
         StartCoroutine(Growth());
-	}
-	
-	void Update () {
+
+    }
+
+    void Update()
+    {
 
         if (hasGrown)
         {
             switch (ageCounter)
-            	{
-				case 0: //Sapling
-					hasGrown = false;
-					playAud.clipsSwitched = false;
-					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
-					saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0));
-					currentTree = saplingClone.transform;
-                    growthDay = Random.Range(2, 4); 
+            {
+                case 0: //Sapling
+                    hasGrown = false;
+                    playAud.clipsSwitched = false;
+                    tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
+                    saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0));
+                    currentTree = saplingClone.transform;
+                    growthDay = Random.Range(2, 4);
                     StartCoroutine(Growth());
                     break;
                 case 1: //Young
@@ -97,42 +101,42 @@ public class PlantLife : MonoBehaviour {
                     playAud.clipsSwitched = false;
                     youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     Destroy(saplingClone);
-					currentTree = youngClone.transform;
+                    currentTree = youngClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(3, 5);
                     StartCoroutine(Growth());
                     break;
-				case 2: //Adult
-					hasGrown = false;
-					playAud.clipsSwitched = false;
-					Destroy (youngClone);
-					adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0));
-					currentTree = adultClone.transform;
+                case 2: //Adult
+                    hasGrown = false;
+                    playAud.clipsSwitched = false;
+                    Destroy(youngClone);
+                    adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0));
+                    currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 4);
                     growthDay = Random.Range(5, 10);
                     StartCoroutine(Growth());
                     break;
-				case 3: // Old
-					hasGrown = false;
-					playAud.clipsSwitched = false;
-					Destroy (adultClone);
-					oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0));
-					currentTree = oldClone.transform;
+                case 3: // Old
+                    hasGrown = false;
+                    playAud.clipsSwitched = false;
+                    Destroy(adultClone);
+                    oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0));
+                    currentTree = oldClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(3, 10);
                     StartCoroutine(Growth());
                     break;
-				case 4: // Dead
-					hasGrown = false;
-					playAud.clipsSwitched = false;
-					Destroy (oldClone);
-					currentTree = null;
+                case 4: // Dead
+                    hasGrown = false;
+                    playAud.clipsSwitched = false;
+                    Destroy(oldClone);
+                    currentTree = null;
 
                     //Takes current cell and sets it back to normal Ground for tree death
-                 
+
                     tgs.CellSetTag(groundTile, 0);
                     tgs.CellToggleRegionSurface(cellIndex, true, groundTexture);
-
+                    tgs.CellSetCanCross(cellIndex, true);
                     //Death
                     Destroy(gameObject);
                     //stumpClone = Instantiate(stump, transform.position, Quaternion.Euler(0, randomRotation, 0));
@@ -144,22 +148,22 @@ public class PlantLife : MonoBehaviour {
 
 
         }
-		//if (playAudio1.growingSize) {
-		//	currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
-		//} else {
-		//	currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
-			
-		//}
-		
-	}
+        //if (playAudio1.growingSize) {
+        //	currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
+        //} else {
+        //	currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
+
+        //}
+
+    }
 
     IEnumerator Growth()
     {
         //for loop waits a number of days 
-        for(int i = 0; i < growthDay; i++)
+        for (int i = 0; i < growthDay; i++)
         {
             SpawnFruits();
-            if(fruitAmount > 0)
+            if (fruitAmount > 0)
                 treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
             yield return new WaitUntil(() => sunScript.dayPassed == true); //Can be changed so that it is not real time
             yield return new WaitForSeconds(1);
@@ -171,7 +175,7 @@ public class PlantLife : MonoBehaviour {
 
     public void SpawnFruits()
     {
-        for (int i = 0; i < fruitAmount; i += Random.Range(1,2))
+        for (int i = 0; i < fruitAmount; i += Random.Range(1, 2))
         {
             //fruit starting pos and Instantiate
             Vector3 xyz = Random.insideUnitSphere * 1;
@@ -180,10 +184,10 @@ public class PlantLife : MonoBehaviour {
 
             //random starting scale for fruit
             float randomStartScale = Random.Range(0.1f, 0.3f);
-            fruitClone.transform.localScale = new Vector3 (randomStartScale, randomStartScale, randomStartScale);
+            fruitClone.transform.localScale = new Vector3(randomStartScale, randomStartScale, randomStartScale);
         }
-        
+
     }
 
-  
+
 }
