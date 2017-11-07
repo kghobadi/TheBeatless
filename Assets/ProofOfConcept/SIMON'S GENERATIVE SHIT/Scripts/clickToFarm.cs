@@ -8,6 +8,8 @@ public class clickToFarm : MonoBehaviour {
 
 	public bool isNight = false;
 
+	public int octave = 0;
+
 	public int numRows = 4;
 	public int numColumns = 4;
 
@@ -25,11 +27,12 @@ public class clickToFarm : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			isNight = true;
+			//GetComponent<assignKey> ().switched = false;
 			print ("yeah");
 		} else { 
 			isNight = false;
 		}
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+/*		Ray ray = Camera.main.ScreenPoeintToRay (Input.mousePosition);
 
 		RaycastHit rayHit = new RaycastHit ();
 
@@ -38,7 +41,7 @@ public class clickToFarm : MonoBehaviour {
 			//rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber++;
 			if (rayHit.collider.gameObject.GetComponent<growPlants> ().toGrow == false && rayHit.collider.gameObject.GetComponent<growPlants> ().growthNumber == 0) {
 				//rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
-				rayHit.collider.gameObject.GetComponent<playAudio> ().clipsSwitched = false;
+				//rayHit.collider.gameObject.GetComponent<playSequence> ().changedSequence = false;
 				rayHit.collider.gameObject.GetComponent<growPlants> ().toGrow = true;
 			}
 
@@ -48,6 +51,6 @@ public class clickToFarm : MonoBehaviour {
 			//rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
 			//rayHit.collider.gameObject.GetComponent<playAudio> ().clipsSwitched = false;
 
-		}
+		} */
 	}
 }

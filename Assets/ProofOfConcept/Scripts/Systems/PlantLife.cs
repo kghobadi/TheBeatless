@@ -22,7 +22,7 @@ public class PlantLife : MonoBehaviour {
 
     private AudioSource treeSounds;
     public AudioClip growthSound;
-    playAudio1 playAud;
+	playSequence playAud;
 
     public float fruitYpos;
     int randomRotation;
@@ -37,16 +37,19 @@ public class PlantLife : MonoBehaviour {
     public Texture2D growingTexture;
     public Texture2D groundTexture;
 
+	public Vector3[] neighbourPos;
+
     void Awake()
     {
         //grabs Sun ref
+		neighbourPos = new Vector3[6];
         sun = GameObject.FindGameObjectWithTag("Sun");
         sunScript = sun.GetComponent<Sun>();
     }
 
     void Start () {
 
-        playAud = GetComponent<playAudio1>();
+		playAud = GetComponent<playSequence>();
 
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
@@ -58,6 +61,7 @@ public class PlantLife : MonoBehaviour {
 
         // Clone Sapling prefabs and Instantiate
         groundTile = tgs.CellGetAtPosition(transform.position, true);
+		//transform.SetParent ();
         cellIndex = tgs.CellGetIndex(groundTile);
         neighbors = tgs.CellGetNeighbours(groundTile);
 
@@ -65,11 +69,24 @@ public class PlantLife : MonoBehaviour {
         for(int i = 0; i < neighbors.Count; i++)
         {
             int index = tgs.CellGetIndex(neighbors[i]);
-            neighborIndexes.Add(index);
+            neighborIndexes.Add(index); 
+			neighbourPos[i] = tgs.CellGetPosition (index);
+			//this gives you neighbor cell position
+			//can be used to see which cell you're being given
+			//raycast to this position to get the plant collider and get the sequencer
+			if (tgs.CellGetTag (index) == 2) {
+				//this cell has a tree planted, but don't run this in start
+				//send to an array of "plants nearby"
+				
+				//for any rule make a bool in plantlife for "isFollowingRule" to see if neighbours are occupied or following a rule already
+				//are two adjacent cells in the index occupied that's a triad
+				//if all cells are occupied that's an arp, arp beats triad
+
+			}
         }
 
         //Set age and fruit
-        ageCounter = -1;
+        ageCounter = 0;
         fruitAmount = 0;
         growthDay = 1;
 
@@ -83,16 +100,16 @@ public class PlantLife : MonoBehaviour {
         {
             switch (ageCounter)
             	{
-				case 0: //Sapling
+				case 1: //Sapling
 					hasGrown = false;
-					playAud.clipsSwitched = false;
+				    playAud.changedSequence = false;
 					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
 					saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0));
 					currentTree = saplingClone.transform;
                     growthDay = Random.Range(2, 4); 
                     StartCoroutine(Growth());
                     break;
-                case 1: //Young
+              /*  case 1: //Young
                     hasGrown = false;
                     playAud.clipsSwitched = false;
                     youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
@@ -101,10 +118,10 @@ public class PlantLife : MonoBehaviour {
                     fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(3, 5);
                     StartCoroutine(Growth());
-                    break;
+                    break; */
 				case 2: //Adult
 					hasGrown = false;
-					playAud.clipsSwitched = false;
+				playAud.changedSequence = false;
 					Destroy (youngClone);
 					adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0));
 					currentTree = adultClone.transform;
@@ -114,7 +131,7 @@ public class PlantLife : MonoBehaviour {
                     break;
 				case 3: // Old
 					hasGrown = false;
-					playAud.clipsSwitched = false;
+					playAud.changedSequence = false;
 					Destroy (adultClone);
 					oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0));
 					currentTree = oldClone.transform;
@@ -124,7 +141,7 @@ public class PlantLife : MonoBehaviour {
                     break;
 				case 4: // Dead
 					hasGrown = false;
-					playAud.clipsSwitched = false;
+					playAud.changedSequence = false;
 					Destroy (oldClone);
 					currentTree = null;
 
@@ -184,6 +201,13 @@ public class PlantLife : MonoBehaviour {
         }
         
     }
+
+
+	public void CheckRules() {
+
+
+
+	}
 
   
 }
