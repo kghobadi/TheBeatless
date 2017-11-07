@@ -138,7 +138,7 @@ public class Seed : Interactable
             //checks if cell is Fertile
             if (tgs.CellGetTag(cellIndex) == 1 || planting)
             {
-                Debug.Log("planter");
+//                Debug.Log("planter");
                 //Centers seed on tile
                 transform.position = new Vector3(tgs.CellGetPosition(cellIndex).x, transform.position.y, tgs.CellGetPosition(cellIndex).z);
                 //Calls PlantSeed function on selected tile
@@ -157,7 +157,7 @@ public class Seed : Interactable
 
     public void PlantSeed(Cell tile, int index)
     {
-        Debug.Log("planted Seed");
+      //  Debug.Log("planted Seed");
         //unparents from player control   
         transform.SetParent(null);
 

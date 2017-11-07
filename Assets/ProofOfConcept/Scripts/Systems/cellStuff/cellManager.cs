@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class cellManager : MonoBehaviour {
+public class cellManager : MonoBehaviour
+{
 
     TerrainGridSystem tgs;
     public Vector3 cellCenter;
@@ -14,13 +15,17 @@ public class cellManager : MonoBehaviour {
     {
         tgs = TerrainGridSystem.instance;
 
-        for (int i = 0; i < tgs.cells.Count;i++){
+        for (int i = 0; i < tgs.cells.Count; i++)
+        {
             tgs.CellToggleRegionSurface(i, true, groundTexture);
+            if (tgs.CellGetTag(i) == 5)
+                tgs.CellSetCanCross(i, false);
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
 
         //if (Input.GetMouseButton(0))
@@ -38,5 +43,5 @@ public class cellManager : MonoBehaviour {
         //        }
         //    }
         //}
-	}
+    }
 }
