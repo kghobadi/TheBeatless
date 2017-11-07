@@ -80,6 +80,7 @@ namespace TGS
         public string nest;
 
         public GameObject[] nestObject;
+        public GameObject model;
 
         public float moveSpeed;
 
@@ -94,6 +95,12 @@ namespace TGS
 
         public Cell rendezvousCell;
         public bool waitingAtRendezvous;
+
+        public bool skinned;
+
+        private GameObject sun;
+        private Sun sunScript;
+        
         //Animations
         //sleep
         //wake up
@@ -108,6 +115,10 @@ namespace TGS
         // Use this for initialization
         void Start()
         {
+            //grabs Sun ref
+            sun = GameObject.FindGameObjectWithTag("Sun");
+            sunScript = sun.GetComponent<Sun>();
+
             tgs = TerrainGridSystem.instance;
             state = State.MOVESELECT;
             bigStates = BigStates.PICKGOAL;
@@ -143,6 +154,7 @@ namespace TGS
 
             //Always run this
             EvaluateConsiderations();
+            
 
             switch (bigStates)
             {
@@ -155,17 +167,33 @@ namespace TGS
                     //    bigStates = BigStates.NEARPLAYER;
                     //    state = State.IDLE;
                     //}
+                 
+
                     Random.InitState(System.DateTime.Now.Millisecond);
                     float decider = Random.Range(0f, 100f);
                     if (decider < hungerPercentage)
                     {
                         bigStates = BigStates.EAT;
                         state = State.SEARCHWORLD;
-                        GetComponent<MeshRenderer>().material.color = Color.red;
+                        if (skinned)
+                        {
+                            model.GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
+                        }
+                        else
+                        {
+                            model.GetComponent<MeshRenderer>().material.color = Color.red;
+                        }
                     }
                     if (decider >= hungerPercentage && decider < sleepPercentage)
                     {
-                        GetComponent<MeshRenderer>().material.color = Color.blue;
+                        if (skinned)
+                        {
+                            model.GetComponent<SkinnedMeshRenderer>().material.color = Color.blue;
+                        }
+                        else
+                        {
+                            model.GetComponent<MeshRenderer>().material.color = Color.blue;
+                        }
                         float closestNestDistance = 10000f;
                         for (int i = 0; i < nestObject.Length; i++)
                         {
@@ -186,7 +214,14 @@ namespace TGS
                     {
                         bigStates = BigStates.SEARCHFORANIMAL;
                         state = State.SEARCHWORLD;
-                        GetComponent<MeshRenderer>().material.color = Color.green;
+                        if (skinned)
+                        {
+                            model.GetComponent<SkinnedMeshRenderer>().material.color = Color.green;
+                        }
+                        else
+                        {
+                            model.GetComponent<MeshRenderer>().material.color = Color.green;
+                        }
                     }
                     //Debug.Log(decider);
                     break;
@@ -306,8 +341,9 @@ namespace TGS
                 hunger = 0;
                 //play eating animation
                 fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
-                fruit.GetComponent<Fruit>().seedClone.transform.position = fruit.GetComponent<Fruit>().seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
                 fruit.GetComponent<Fruit>().seedClone.transform.SetParent(this.transform);
+                fruit.GetComponent<Fruit>().seedClone.SetActive(false);
+                StartCoroutine(Poop(fruit.GetComponent<Fruit>().seedClone));
                 Destroy(fruit.gameObject);
             }
             hunger = 0;
@@ -455,7 +491,7 @@ namespace TGS
 
                 case State.MOVESELECT:
                     int targetCell = tgs.CellGetIndex(nextCell); //this could be apple, animal, or nest
-                    tgs.CellFadeOut(targetCell, Color.white, 2);
+                    //tgs.CellFadeOut(targetCell, Color.white, 2);
                     if (targetCell != -1)
                     {
                         Debug.Log("move select happening");
@@ -592,6 +628,16 @@ namespace TGS
                     }
                 }
             }
+
+        }
+
+        IEnumerator Poop(GameObject seed)
+        {
+            //for loops waits given # of days
+            
+            yield return new WaitUntil(() => sunScript.dayPassed == true);
+            seed.SetActive(true);
+            seed.transform.SetParent(null);
 
         }
     }
