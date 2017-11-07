@@ -97,6 +97,10 @@ namespace TGS
         public bool waitingAtRendezvous;
 
         public bool skinned;
+
+        private GameObject sun;
+        private Sun sunScript;
+        
         //Animations
         //sleep
         //wake up
@@ -111,6 +115,10 @@ namespace TGS
         // Use this for initialization
         void Start()
         {
+            //grabs Sun ref
+            sun = GameObject.FindGameObjectWithTag("Sun");
+            sunScript = sun.GetComponent<Sun>();
+
             tgs = TerrainGridSystem.instance;
             state = State.MOVESELECT;
             bigStates = BigStates.PICKGOAL;
@@ -146,6 +154,7 @@ namespace TGS
 
             //Always run this
             EvaluateConsiderations();
+            
 
             switch (bigStates)
             {
@@ -158,6 +167,8 @@ namespace TGS
                     //    bigStates = BigStates.NEARPLAYER;
                     //    state = State.IDLE;
                     //}
+                 
+
                     Random.InitState(System.DateTime.Now.Millisecond);
                     float decider = Random.Range(0f, 100f);
                     if (decider < hungerPercentage)
@@ -330,8 +341,9 @@ namespace TGS
                 hunger = 0;
                 //play eating animation
                 fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
-                fruit.GetComponent<Fruit>().seedClone.transform.position = fruit.GetComponent<Fruit>().seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
                 fruit.GetComponent<Fruit>().seedClone.transform.SetParent(this.transform);
+                fruit.GetComponent<Fruit>().seedClone.SetActive(false);
+                StartCoroutine(Poop(fruit.GetComponent<Fruit>().seedClone));
                 Destroy(fruit.gameObject);
             }
             hunger = 0;
@@ -616,6 +628,16 @@ namespace TGS
                     }
                 }
             }
+
+        }
+
+        IEnumerator Poop(GameObject seed)
+        {
+            //for loops waits given # of days
+            
+            yield return new WaitUntil(() => sunScript.dayPassed == true);
+            seed.SetActive(true);
+            seed.transform.SetParent(null);
 
         }
     }
