@@ -80,6 +80,7 @@ namespace TGS
         public string nest;
 
         public GameObject[] nestObject;
+        public GameObject model;
 
         public float moveSpeed;
 
@@ -161,11 +162,11 @@ namespace TGS
                     {
                         bigStates = BigStates.EAT;
                         state = State.SEARCHWORLD;
-                        GetComponent<MeshRenderer>().material.color = Color.red;
+                        model.GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
                     }
                     if (decider >= hungerPercentage && decider < sleepPercentage)
                     {
-                        GetComponent<MeshRenderer>().material.color = Color.blue;
+                        model.GetComponent<SkinnedMeshRenderer>().material.color = Color.blue;
                         float closestNestDistance = 10000f;
                         for (int i = 0; i < nestObject.Length; i++)
                         {
@@ -186,7 +187,7 @@ namespace TGS
                     {
                         bigStates = BigStates.SEARCHFORANIMAL;
                         state = State.SEARCHWORLD;
-                        GetComponent<MeshRenderer>().material.color = Color.green;
+                        model.GetComponent<SkinnedMeshRenderer>().material.color = Color.green;
                     }
                     //Debug.Log(decider);
                     break;
@@ -212,22 +213,11 @@ namespace TGS
                     // Eat();
                     //Goal met, Remember Cell -- memoryBankHunger.Add(groundTile, 0) or ++ its int Value;
                     break;
-<<<<<<< HEAD
                 case BigStates.SLEEP:
                     //if(memoryBankSleep != null)
                     //{
                     //memoryBankSleep
                     //}
-
-                    isMoving(nest);
-                    Debug.Log("SLEEP called is moving");
-=======
-                case BigStates.SLEEP:
-                    //if(memoryBankSleep != null)
-                    //{
-                    //memoryBankSleep
-                    //}
->>>>>>> master
                     isInEatState = false;
                     isInSleepState = true;
                     isInSocialState = false;
@@ -322,7 +312,6 @@ namespace TGS
                 Destroy(fruit.gameObject);
             }
             hunger = 0;
->>>>>>> master
             // play sound or whatever
             bigStates = BigStates.PICKGOAL;
         }
@@ -341,17 +330,6 @@ namespace TGS
             sleep = 0f;
 
             Debug.Log("done sleeping");
-<<<<<<< HEAD
-            bigStates = BigStates.PICKGOAL;
-
-
-        }
-
-
-
-
-        void InteractWithAnimal(GameObject animal)
-=======
             bigStates = BigStates.PICKGOAL;
 
 
@@ -360,7 +338,6 @@ namespace TGS
 
 
         IEnumerator InteractWithAnimal(GameObject animal)
->>>>>>> master
         {
             // I Still dont know wtf
 
@@ -442,61 +419,6 @@ namespace TGS
                             goalObject = hitColliders[i].gameObject;
                             nextCell = tgs.CellGetAtPosition(goalObject.transform.position, true);
 
-<<<<<<< HEAD
-                            if (isInSocialState && goalObject.GetComponent<AnimalAI>().isInSocialState)
-                            {
-
-                                if (goalObject.GetComponent<AnimalAI>().rendezvousCell != null)
-                                {
-                                    Debug.Log("meeting at rendezvous");
-                                    bool setNeighbourRendezvous = false;
-                                    int j = 0;
-                                    while (!setNeighbourRendezvous)
-                                    {
-
-                                        nextCell = tgs.CellGetNeighbours(goalObject.GetComponent<AnimalAI>().rendezvousCell)[j];
-                                        int cellInd = tgs.CellGetIndex(nextCell);
-                                        if (tgs.CellGetTag(cellInd) == 0 && nextCell != null)
-                                            setNeighbourRendezvous = true;
-                                        else
-                                        {
-                                            if (j <= 6)
-                                                j++;
-                                            else
-                                            {
-                                                Debug.Log("noAvailableNeighbor");
-                                            }
-
-                                        }
-                                    }
-
-
-                                }
-                                else
-                                {
-                                    Debug.Log("setting new rendezvous");
-                                    bool setNewRendezvous = false;
-                                    while (!setNewRendezvous)
-                                    {
-
-                                        nextCell = tgs.CellGetAtPosition(transform.position +
-                                                             ((transform.forward + new Vector3(Random.Range(-1.5f, 1.5f), 0, 0)) * Random.Range(5, 15)), true);
-                                        int cellInd = tgs.CellGetIndex(nextCell);
-                                        if (tgs.CellGetTag(cellInd) == 0 && nextCell != null)
-                                        {
-                                            rendezvousCell = nextCell;
-                                            setNewRendezvous = true;
-                                        }
-                                        else
-                                        {
-                                            transform.eulerAngles += new Vector3(0, Random.Range(-30f, 30f), 0);
-                                        }
-                                    }
-                                }
-                            }
-
-
-=======
                             if (isInSocialState)
                             {
                                 if (goalObject.GetComponent<AnimalAI>().isInSocialState)
@@ -506,7 +428,6 @@ namespace TGS
                             }
 
 
->>>>>>> master
                             goalFound = true;
                             state = State.MOVESELECT;
                         }
@@ -535,7 +456,7 @@ namespace TGS
 
                 case State.MOVESELECT:
                     int targetCell = tgs.CellGetIndex(nextCell); //this could be apple, animal, or nest
-                    tgs.CellFadeOut(targetCell, Color.white, 2);
+                    //tgs.CellFadeOut(targetCell, Color.white, 2);
                     if (targetCell != -1)
                     {
                         Debug.Log("move select happening");
@@ -578,7 +499,7 @@ namespace TGS
                             if (goalFound)
                             {
                                 Eat(goalObject);
-                                state = State.MOVESELECT;
+                                //state = State.MOVESELECT;
                             }
                             else
                             {
@@ -590,17 +511,12 @@ namespace TGS
                         {
                             if (goalFound)// && Vector3.Distance(transform.position, goalObject.transform.position) < interactDistance)
                             {
-<<<<<<< HEAD
-                                InteractWithAnimal(goalObject);
-
-=======
                                 if (!waitingAtRendezvous)
                                 {
                                     goalObject.GetComponent<AnimalAI>().waitingAtRendezvous = false;
                                 }
                                 StartCoroutine(InteractWithAnimal(goalObject));
 
->>>>>>> master
                             }
                             else
                             {
