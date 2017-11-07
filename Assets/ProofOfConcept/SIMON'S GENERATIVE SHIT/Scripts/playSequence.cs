@@ -16,8 +16,9 @@ public class playSequence : MonoBehaviour {
 	public int lastNote;
 
 	int note;
-	int start;
+	public int start, newStart;
 	int end;
+	public int species;
 
 	public List<int> currentKey;
 
@@ -35,9 +36,18 @@ public class playSequence : MonoBehaviour {
 	void Update () {
 		if (GetComponent<growPlants> ().growthNumber == 1) {
 			if (!changedSequence) {
+				species = Random.Range (0, 2);
 				note = Random.Range (0, 6);
-				 start = Random.Range (0, 64);
-				 end = start + Random.Range (1, 4);
+				if (species == 0) {
+					start = Random.Range (0, 8);
+					newStart = start * 8;
+					end = newStart + 2;
+				} else if (species == 1) {
+					start = Random.Range (0, 8);
+					newStart = (start * 8) + 1;
+					end = newStart + 4;
+				}
+				 //end = newStart + Random.Range (1, 4);
 				changeSequence1 ();
 				changedSequence = true;
 			}
@@ -100,7 +110,7 @@ public class playSequence : MonoBehaviour {
 				newNote = 61;
 				break;
 			} */
-		sequencer.AddNote (farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 2)), start, end, velocity);
+		sequencer.AddNote (farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 2)), newStart, end, velocity);
 		Debug.Log ("Set Note to" + note);
 		Debug.Log (farmManager.GetComponent<assignKey> ().currentList [note]);
 
@@ -143,7 +153,7 @@ public class playSequence : MonoBehaviour {
 				newNote = 49;
 				break;
 			} */
-		sequencer.AddNote (farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 1)), start, end, velocity);
+		sequencer.AddNote (farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 1)), newStart, end, velocity);
 		Debug.Log ("current note :" + note);
 		Debug.Log (farmManager.GetComponent<assignKey> ().currentList [note]);
 		//}
@@ -187,7 +197,7 @@ public class playSequence : MonoBehaviour {
 				newNote = 37;
 				break;
 			} */
-			sequencer.AddNote (farmManager.GetComponent<assignKey>().currentList[note] + (12 * octave), start, end, velocity);
+		sequencer.AddNote (farmManager.GetComponent<assignKey>().currentList[note] + (12 * octave), newStart, end, velocity);
 		//}
 
 	}
