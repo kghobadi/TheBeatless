@@ -95,6 +95,8 @@ namespace TGS
 
         public Cell rendezvousCell;
         public bool waitingAtRendezvous;
+
+        public bool skinned;
         //Animations
         //sleep
         //wake up
@@ -162,11 +164,25 @@ namespace TGS
                     {
                         bigStates = BigStates.EAT;
                         state = State.SEARCHWORLD;
-                        model.GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
+                        if (skinned)
+                        {
+                            model.GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
+                        }
+                        else
+                        {
+                            model.GetComponent<MeshRenderer>().material.color = Color.red;
+                        }
                     }
                     if (decider >= hungerPercentage && decider < sleepPercentage)
                     {
-                        model.GetComponent<SkinnedMeshRenderer>().material.color = Color.blue;
+                        if (skinned)
+                        {
+                            model.GetComponent<SkinnedMeshRenderer>().material.color = Color.blue;
+                        }
+                        else
+                        {
+                            model.GetComponent<MeshRenderer>().material.color = Color.blue;
+                        }
                         float closestNestDistance = 10000f;
                         for (int i = 0; i < nestObject.Length; i++)
                         {
@@ -187,7 +203,14 @@ namespace TGS
                     {
                         bigStates = BigStates.SEARCHFORANIMAL;
                         state = State.SEARCHWORLD;
-                        model.GetComponent<SkinnedMeshRenderer>().material.color = Color.green;
+                        if (skinned)
+                        {
+                            model.GetComponent<SkinnedMeshRenderer>().material.color = Color.green;
+                        }
+                        else
+                        {
+                            model.GetComponent<MeshRenderer>().material.color = Color.green;
+                        }
                     }
                     //Debug.Log(decider);
                     break;
