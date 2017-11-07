@@ -17,7 +17,7 @@ namespace TGS
         public BigStates bigStates;
 
 
-        enum State
+        public enum State
         {
             MOVING,
             MOVESELECT,
@@ -26,7 +26,7 @@ namespace TGS
 
 
         }
-        State state;
+        public State state;
         TerrainGridSystem tgs;
         List<int> moveList;
         short moveCounter = 0;
@@ -40,9 +40,9 @@ namespace TGS
         float goalReward;
 
         //Goal Meters
-        float hunger;
-        float social;
-        float sleep;
+        public float hunger;
+        public float social;
+        public float sleep;
 
         public float interactDistance;
         public int minSleep, maxSleep;
@@ -93,7 +93,7 @@ namespace TGS
         private GameObject _player;
 
         public Cell rendezvousCell;
-
+        public bool waitingAtRendezvous;
         //Animations
         //sleep
         //wake up
@@ -133,6 +133,8 @@ namespace TGS
         // Update is called once per frame
         void Update()
         {
+            //            Debug.Log(rendezvousCell == null);
+
             Debug.Log(state);
             //if(nearAnimal == true){
             // social meter decreases over time
@@ -148,11 +150,11 @@ namespace TGS
 
                     goalFound = false;
                     goalReward = 0;
-                    if (Vector3.Distance(transform.position, _player.transform.position) < interactDistance)
-                    {
-                        bigStates = BigStates.NEARPLAYER;
-                        state = State.IDLE;
-                    }
+                    //if (Vector3.Distance(transform.position, _player.transform.position) < interactDistance)
+                    //{
+                    //    bigStates = BigStates.NEARPLAYER;
+                    //    state = State.IDLE;
+                    //}
                     Random.InitState(System.DateTime.Now.Millisecond);
                     float decider = Random.Range(0f, 100f);
                     if (decider < hungerPercentage)
@@ -199,17 +201,18 @@ namespace TGS
                     //    //nextCell = memoryBankHunger.Keys[i];
 
                     //}
-
-                    isMoving(fruit);
-                    Debug.Log(" EAT called is moving");
                     isInEatState = true;
                     isInSleepState = false;
                     isInSocialState = false;
+                    isMoving(fruit);
+                    Debug.Log(" EAT called is moving");
+
 
                     //Is Moving-- MOVESELECT
                     // Eat();
                     //Goal met, Remember Cell -- memoryBankHunger.Add(groundTile, 0) or ++ its int Value;
                     break;
+<<<<<<< HEAD
                 case BigStates.SLEEP:
                     //if(memoryBankSleep != null)
                     //{
@@ -218,9 +221,19 @@ namespace TGS
 
                     isMoving(nest);
                     Debug.Log("SLEEP called is moving");
+=======
+                case BigStates.SLEEP:
+                    //if(memoryBankSleep != null)
+                    //{
+                    //memoryBankSleep
+                    //}
+>>>>>>> master
                     isInEatState = false;
                     isInSleepState = true;
                     isInSocialState = false;
+                    isMoving(nest);
+                    Debug.Log("SLEEP called is moving");
+
 
                     //Is Moving-- MOVESELECT
                     //Sleep();
@@ -232,12 +245,12 @@ namespace TGS
                     //    //memoryBankSocial
 
                     //}
-
-                    isMoving(animal);
-                    Debug.Log("SOCIAL called is moving");
                     isInEatState = false;
                     isInSleepState = false;
                     isInSocialState = true;
+                    isMoving(animal);
+                    Debug.Log("SOCIAL called is moving");
+
 
                     //Is Moving -- MOVESELECT
                     //InteractWithAnimal();
@@ -296,6 +309,7 @@ namespace TGS
 
         void Eat(GameObject fruit)
         {
+<<<<<<< HEAD
             Debug.Log("just ate");
             goalReward = fruit.GetComponent<Fruit>().hungerValue;
             hunger = 0;
@@ -304,6 +318,20 @@ namespace TGS
             fruit.GetComponent<Fruit>().seedClone.transform.position = fruit.GetComponent<Fruit>().seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
             fruit.GetComponent<Fruit>().seedClone.transform.SetParent(this.transform);
             Destroy(fruit.gameObject);
+=======
+            Debug.Log("just ate");
+            if (fruit != null)
+            {
+                goalReward = fruit.GetComponent<Fruit>().hungerValue;
+                hunger = 0;
+                //play eating animation
+                fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
+                fruit.GetComponent<Fruit>().seedClone.transform.position = fruit.GetComponent<Fruit>().seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
+                fruit.GetComponent<Fruit>().seedClone.transform.SetParent(this.transform);
+                Destroy(fruit.gameObject);
+            }
+            hunger = 0;
+>>>>>>> master
             // play sound or whatever
             bigStates = BigStates.PICKGOAL;
         }
@@ -322,6 +350,7 @@ namespace TGS
             sleep = 0f;
 
             Debug.Log("done sleeping");
+<<<<<<< HEAD
             bigStates = BigStates.PICKGOAL;
 
 
@@ -331,28 +360,46 @@ namespace TGS
 
 
         void InteractWithAnimal(GameObject animal)
+=======
+            bigStates = BigStates.PICKGOAL;
+
+
+        }
+
+
+
+        IEnumerator InteractWithAnimal(GameObject animal)
+>>>>>>> master
         {
             // I Still dont know wtf
 
-            state = State.MOVESELECT;
-            social -= socialReward;
-            Debug.Log("socializing");
-            if (animal.GetComponent<AnimalAI>().isInSocialState)
-            {
-                //play interaction animation 
-                bigStates = BigStates.PICKGOAL;
-            }
-            else if (animal.GetComponent<AnimalAI>().isInSleepState)
-            {
-                //play interact animation
-                bigStates = BigStates.SLEEP;
-            }
-            else if (animal.GetComponent<AnimalAI>().isInEatState)
-            {
-                //play interact animation
-                bigStates = BigStates.EAT;
+            state = State.IDLE;
+            yield return new WaitUntil(() => waitingAtRendezvous == false);
 
-            }
+            social = 0;
+            rendezvousCell = null;
+            Debug.Log("socializing done");
+            bigStates = BigStates.PICKGOAL;
+
+            //if (animal.GetComponent<AnimalAI>().isInSocialState)
+            //{
+            //    //play interaction animation 
+            //    bigStates = BigStates.PICKGOAL;
+            //    rendezvousCell = null;
+            //}
+            //else if (animal.GetComponent<AnimalAI>().isInSleepState)
+            //{
+            //    //play interact animation
+            //    bigStates = BigStates.PICKGOAL;
+            //    rendezvousCell = null;
+            //}
+            //else if (animal.GetComponent<AnimalAI>().isInEatState)
+            //{
+            //    //play interact animation
+            //    bigStates = BigStates.PICKGOAL;
+            //    rendezvousCell = null;
+
+            //}
 
             //An interaction can be weighed for certain social meter amounts. 
             //Lower social meter based on these factors
@@ -379,6 +426,8 @@ namespace TGS
             }
         }
 
+
+
         void isMoving(string name) // grab targestDestination from SearchWorld() output
         {
             //            Debug.Log(nextCell);
@@ -402,6 +451,7 @@ namespace TGS
                             goalObject = hitColliders[i].gameObject;
                             nextCell = tgs.CellGetAtPosition(goalObject.transform.position, true);
 
+<<<<<<< HEAD
                             if (isInSocialState && goalObject.GetComponent<AnimalAI>().isInSocialState)
                             {
 
@@ -455,6 +505,17 @@ namespace TGS
                             }
 
 
+=======
+                            if (isInSocialState)
+                            {
+                                if (goalObject.GetComponent<AnimalAI>().isInSocialState)
+                                {
+                                    SetRendezvous();
+                                }
+                            }
+
+
+>>>>>>> master
                             goalFound = true;
                             state = State.MOVESELECT;
                         }
@@ -483,7 +544,7 @@ namespace TGS
 
                 case State.MOVESELECT:
                     int targetCell = tgs.CellGetIndex(nextCell); //this could be apple, animal, or nest
-                    tgs.CellFadeOut(targetCell, Color.red, 50);
+                    tgs.CellFadeOut(targetCell, Color.white, 2);
                     if (targetCell != -1)
                     {
                         Debug.Log("move select happening");
@@ -491,9 +552,10 @@ namespace TGS
                         neighbors = tgs.CellGetNeighbours(startCell);
                         int totalCost;
                         moveList = tgs.FindPath(startCell, targetCell, out totalCost);
-                        Debug.Log("start cell" + startCell + "|end cell" + targetCell);
-                        if (moveList == null) return;
-                        tgs.CellFadeOut(moveList, Color.green, 5f);
+                        //                        Debug.Log("start cell" + startCell + "|end cell" + targetCell);
+                        if (moveList == null)
+                            state = State.SEARCHWORLD;
+                        //tgs.CellFadeOut(moveList, Color.green, 5f);
                         moveCounter = 0;
                         state = State.MOVING;
                     }
@@ -506,7 +568,13 @@ namespace TGS
 
                 case State.MOVING:
                     //Debug.Log("moving");
-                    if (moveCounter < moveList.Count)
+                    if (moveList == null)
+                    {
+                        Debug.Log("error of death");
+                        bigStates = BigStates.PICKGOAL;
+                    }
+                    else
+                        if (moveCounter < moveList.Count)
                     {
                         Move(tgs.CellGetPosition(moveList[moveCounter]));
                     }
@@ -531,8 +599,17 @@ namespace TGS
                         {
                             if (goalFound)// && Vector3.Distance(transform.position, goalObject.transform.position) < interactDistance)
                             {
+<<<<<<< HEAD
                                 InteractWithAnimal(goalObject);
 
+=======
+                                if (!waitingAtRendezvous)
+                                {
+                                    goalObject.GetComponent<AnimalAI>().waitingAtRendezvous = false;
+                                }
+                                StartCoroutine(InteractWithAnimal(goalObject));
+
+>>>>>>> master
                             }
                             else
                             {
@@ -561,7 +638,56 @@ namespace TGS
         }
 
 
+        void SetRendezvous()
+        {
+            if (goalObject.GetComponent<AnimalAI>().rendezvousCell != null && rendezvousCell != null)
+            {
+                Debug.Log("meeting at rendezvous");
+                bool setNeighbourRendezvous = false;
+                int j = 0;
+                while (!setNeighbourRendezvous)
+                {
 
+                    nextCell = tgs.CellGetNeighbours(goalObject.GetComponent<AnimalAI>().rendezvousCell)[j];
+                    int cellInd = tgs.CellGetIndex(nextCell);
+                    if (tgs.CellGetTag(cellInd) == 0 && nextCell != null)
+                        setNeighbourRendezvous = true;
+                    else
+                    {
+                        if (j <= 6)
+                            j++;
+                        else
+                        {
+                            Debug.Log("noAvailableNeighbor");
+                        }
+
+                    }
+                }
+            }
+            else if (!goalObject.GetComponent<AnimalAI>().waitingAtRendezvous)
+            {
+                Debug.Log("setting new rendezvous");
+                bool setNewRendezvous = false;
+                while (!setNewRendezvous)
+                {
+
+                    nextCell = tgs.CellGetAtPosition(transform.position +
+                                         ((transform.forward + new Vector3(Random.Range(-1.5f, 1.5f), 0, 0)) * Random.Range(5, 15)), true);
+                    int cellInd = tgs.CellGetIndex(nextCell);
+                    if (tgs.CellGetTag(cellInd) == 0 && nextCell != null)
+                    {
+                        rendezvousCell = nextCell;
+                        setNewRendezvous = true;
+                        waitingAtRendezvous = true;
+                    }
+                    else
+                    {
+                        transform.eulerAngles += new Vector3(0, Random.Range(-30f, 30f), 0);
+                    }
+                }
+            }
+
+        }
     }
 }
 
