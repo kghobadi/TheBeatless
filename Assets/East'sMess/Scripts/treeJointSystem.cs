@@ -33,6 +33,12 @@ public class treeJointSystem : MonoBehaviour {
 			origScl.Add (treeJoints [i].localScale);
 		}
 
+		for (int i = 0; i < treeJoints.Count; i++) {
+			treeJoints [i].position = new Vector3 (origPos[i].x + Random.Range(-.5f, .5f), origPos[i].y, origPos[i].z + Random.Range(-.5f, .5f));
+			//treeJoints [i].localEulerAngles = new Vector3 (origAng[i].x + Random.Range(-15f, 15f), origAng[i].y + Random.Range(-15f, 15f), origAng[i].z + Random.Range(-15f, 15f));
+			//treeJoints [i].localScale = new Vector3 (origScl[i].x * Random.Range(.5f, 1.5f), origScl[i].y * Random.Range(.5f, 1.5f), origScl[i].z * Random.Range(.5f, 1.5f));
+		}
+
 
 		
 	}
@@ -41,11 +47,6 @@ public class treeJointSystem : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKey (KeyCode.Space)) {
-			for (int i = 0; i < treeJoints.Count; i++) {
-				treeJoints [i].position = new Vector3 (origPos[i].x + Random.Range(-2f, 2f), origPos[i].y, origPos[i].z + Random.Range(-2f, 2f));
-				//treeJoints [i].localEulerAngles = new Vector3 (origAng[i].x + Random.Range(-15f, 15f), origAng[i].y + Random.Range(-15f, 15f), origAng[i].z + Random.Range(-15f, 15f));
-				 treeJoints [i].localScale = new Vector3 (origScl[i].x * Random.Range(.5f, 1.5f), origScl[i].y * Random.Range(.5f, 1.5f), origScl[i].z * Random.Range(.5f, 1.5f));
-			}
 
 			randomTwist = 10 * Random.onUnitSphere;
 		}
