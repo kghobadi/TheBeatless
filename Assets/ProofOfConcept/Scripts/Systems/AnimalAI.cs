@@ -11,7 +11,8 @@ namespace TGS
             EAT,
             SLEEP,
             SEARCHFORANIMAL,
-            PICKGOAL
+            PICKGOAL,
+            NEARPLAYER
         }
         BigStates bigStates;
 
@@ -20,7 +21,8 @@ namespace TGS
         {
             MOVING,
             MOVESELECT,
-            SEARCHWORLD
+            SEARCHWORLD,
+            IDLE
 
 
         }
@@ -42,7 +44,8 @@ namespace TGS
         float social;
         float sleep;
 
-        int sleepLength;
+        public float interactDistance;
+        public int minSleep, maxSleep;
 
         //Decision Range for Picking goal
         float totalMeter;
@@ -71,8 +74,10 @@ namespace TGS
 
         // use these strings to indicate Type of gameObject to search for
         public string fruit;
-        public string nest;
         public string animal;
+        public string nest;
+
+        public GameObject[] nestObject;
 
         public float moveSpeed;
 
@@ -82,6 +87,16 @@ namespace TGS
 
         //Vision Range
         public float rayDistance = 50f;
+
+        private GameObject _player;
+
+        //Animations
+        //sleep
+        //wake up
+        //eat
+        //walk
+        //Idle
+        //Interact with animal
 
         //could add memory banks for other animals and fruit types
 
@@ -98,13 +113,15 @@ namespace TGS
             socialModifier += Random.Range(0, .3f);
             sleepModifier += Random.Range(0, .3f);
 
+            nestObject = GameObject.FindGameObjectsWithTag("Nest"); // add naming convention of + ___ specie name
+
             //Zero Meters
             hunger = 0;
             social = 0;
             sleep = 0;
 
-
-            chanceToAwaken = 10;
+            _player = GameObject.FindGameObjectWithTag("Player");
+            //chanceToAwaken = 10;
 
 
         }
@@ -127,6 +144,11 @@ namespace TGS
 
                     goalFound = false;
                     goalReward = 0;
+                    if(Vector3.Distance(transform.position, _player.transform.position) < interactDistance)
+                    {
+                        bigStates = BigStates.NEARPLAYER;
+                        state = State.IDLE;
+                    }
                     Random.InitState(System.DateTime.Now.Millisecond);
                     float decider = Random.Range(0f, 100f);
                     if (decider < hungerPercentage)
@@ -137,9 +159,22 @@ namespace TGS
                     }
                     if (decider >= hungerPercentage && decider < sleepPercentage)
                     {
-                        bigStates = BigStates.SLEEP;
-                        state = State.SEARCHWORLD;
                         GetComponent<MeshRenderer>().material.color = Color.blue;
+                        float closestNestDistance = 10000f;
+                        for (int i = 0; i < nestObject.Length; i++)
+                        {
+                            float currentDist = Vector3.Distance(transform.position, nestObject[i].transform.position);
+                            if (currentDist < closestNestDistance)
+                            {
+                                closestNestDistance = currentDist;
+                                goalObject = nestObject[i];
+                            }
+                        }
+
+                        nextCell = tgs.CellGetAtPosition(goalObject.transform.position, true);
+                        goalFound = true;
+                        bigStates = BigStates.SLEEP;
+                        state = State.MOVESELECT;
                     }
                     if (decider >= sleepPercentage)
                     {
@@ -173,6 +208,7 @@ namespace TGS
                     //{
                     //memoryBankSleep
                     //}
+                    
                     isMoving(nest);
                     Debug.Log("SLEEP called is moving");
 
@@ -195,6 +231,19 @@ namespace TGS
                     //InteractWithAnimal();
                     // Goal met, Remember Cell -- memoryBankSocial.Add(groundTile, 0) or ++ its int Value;
                     break;
+
+                case BigStates.NEARPLAYER:
+                    // what do?? 
+                    // need to make sure can Eat, if eats, follows player, change music
+                    // look in fruit script perhaps
+                    //
+
+                    transform.LookAt(_player.transform);
+                    // play sound
+                    //play "tentative interact animation"
+                    Vector3.MoveTowards(transform.position, _player.transform.position - new Vector3(1, 0, 1), moveSpeed);
+
+                    break;
             }
 
 
@@ -210,12 +259,11 @@ namespace TGS
             social += socialModifier * Time.deltaTime;
 
             //Adds goalReward of what whichever goal was just met
-            if (bigStates == BigStates.EAT)
-                hunger -= goalReward;
-            if (bigStates == BigStates.SEARCHFORANIMAL)
-                social -= goalReward;
-            if(bigStates == BigStates.SLEEP)
-                sleep -= goalReward;
+            
+            //if (bigStates == BigStates.SEARCHFORANIMAL)
+            //    social -= goalReward;
+            //if(bigStates == BigStates.SLEEP)
+            //    sleep -= goalReward;
 
             //creates total 
             totalMeter = hunger + sleep + social;
@@ -229,7 +277,7 @@ namespace TGS
             socialPercentage = (social / totalMeter) * 100;
 
 
-            Debug.Log(sleep);
+            //Debug.Log(sleep);
 
         }
 
@@ -238,6 +286,7 @@ namespace TGS
         {
             Debug.Log("just ate");
             goalReward = fruit.GetComponent<Fruit>().hungerValue;
+            hunger -= goalReward;
             //play eating animation
             fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
             fruit.GetComponent<Fruit>().seedClone.transform.position = fruit.GetComponent<Fruit>().seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
@@ -249,25 +298,16 @@ namespace TGS
 
         IEnumerator Sleep(GameObject nest)
         {
-            state = State.MOVESELECT;
+            state = State.IDLE;
             Debug.Log("Sleeping");
             transform.position = nest.transform.position;
-            sleepLength = Random.Range(5, 10);
-            goalReward = 1 * Time.deltaTime;
+            int sleepLength = Random.Range(minSleep, maxSleep);
+            goalReward = 0.1f;
+            // play sleep animation.loop
             yield return new WaitForSeconds(sleepLength);
-                //prob don't need this, can just use States
-                //play sleeping animation
-                //Debug.Log("sleeping");
-                //if ((hunger + social) > sleep)
-                //{
-                //    goalReward = 2 * Time.deltaTime;
-                //    chanceToAwaken += goalReward;
-                //    Random.InitState(System.DateTime.Now.Millisecond);
-                //    float randomChance = Random.Range(0f, 100f);
-                //    if (randomChance < chanceToAwaken)
-                //    {
-                //wake up animation
 
+            //wake up animation
+            sleep = 0f;
             
             Debug.Log("done sleeping");
             bigStates = BigStates.PICKGOAL;
@@ -280,28 +320,25 @@ namespace TGS
 
         void InteractWithAnimal(GameObject animal)
         {
-            //Debug.Log("socializing");
-            //isSocializing = true; only need this for while loop
+            // I Still dont know wtf
+
+            state = State.MOVESELECT;
+            social -= socialReward;
+            Debug.Log("socializing");
             if (animal.GetComponent<AnimalAI>().bigStates == BigStates.SEARCHFORANIMAL)
             {
                 //play interaction animation 
-                goalReward = socialReward;
-
                 bigStates = BigStates.PICKGOAL;
             }
-            else if (animal.GetComponent<AnimalAI>().isSleeping)
+            else if (animal.GetComponent<AnimalAI>().bigStates == BigStates.SLEEP)
             {
-                // either try to wake up this other animal
-                //This animal sleeps too, for companionship
-                goalReward = socialReward;
-                bigStates = BigStates.PICKGOAL;
+                //play interact animation
+                bigStates = BigStates.SLEEP;
             }
             else if (animal.GetComponent<AnimalAI>().bigStates == BigStates.EAT)
             {
-                // either try to interact with this other animal
-                // this animal joins other in search for food
-                goalReward = socialReward;
-                bigStates = BigStates.PICKGOAL;
+                //play interact animation
+                bigStates = BigStates.EAT;
 
             }
 
@@ -335,6 +372,9 @@ namespace TGS
             //            Debug.Log(nextCell);
             switch (state)
             {
+                case State.IDLE:
+                    //Play Current Animation;
+                    break;
                 //REVERT SEARCH WORLD BACK TO A FUNCTION SO IT DOESN'T STOP FOR A FRAME EVERYTIME
                 case State.SEARCHWORLD:
                     //Checks for cells in memory which returned a gameObject of Goal type && high rate of success (return cell)
@@ -347,11 +387,11 @@ namespace TGS
                     {
                         if (hitColliders[i].gameObject.tag == name && hitColliders[i].gameObject != this.gameObject)
                         {
-                            nextCell = tgs.CellGetAtPosition(hitColliders[i].gameObject.transform.position, true);
-                            goalFound = true;
+
                             goalObject = hitColliders[i].gameObject;
+                            nextCell = tgs.CellGetAtPosition(goalObject.transform.position, true);
+                            goalFound = true;
                             state = State.MOVESELECT;
-                            //                            Debug.Log("called move selec after finding goal");
                         }
 
                     }
@@ -372,16 +412,11 @@ namespace TGS
                         }
 
                         state = State.MOVESELECT;
-                        //Debug.Log("set forward as next cell");
                         goalFound = false;
                     }
-                    //                    Debug.Log(goalFound);
                     break;
-                //If Null --> move to point outside last Spherecast and repeat. (returns cell)
-                //Will eventually return with a gameObject match, call correct function --> foundGoal == true
 
                 case State.MOVESELECT:
-                    //Debug.Log("Is MOVESELECT");
                     int targetCell = tgs.CellGetIndex(nextCell); //this could be apple, animal, or nest
                     tgs.CellFadeOut(targetCell, Color.red, 50);
                     if (targetCell != -1)
@@ -393,7 +428,6 @@ namespace TGS
                         moveList = tgs.FindPath(startCell, targetCell, out totalCost);
                         Debug.Log("start cell" + startCell + "|end cell" + targetCell);
                         if (moveList == null) return;
-                        //                        Debug.Log("Total move cost: " + totalCost);
                         tgs.CellFadeOut(moveList, Color.green, 5f);
                         moveCounter = 0;
                         state = State.MOVING;
@@ -430,7 +464,7 @@ namespace TGS
 
                         if (bigStates == BigStates.SEARCHFORANIMAL)
                         {
-                            if (goalFound)
+                            if (goalFound && Vector3.Distance(transform.position, goalObject.transform.position) < interactDistance)
                             {
                                 InteractWithAnimal(goalObject);
                                 
