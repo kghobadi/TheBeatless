@@ -9,55 +9,82 @@ public class playSequence : MonoBehaviour {
 
 	public bool changedSequence = false;
 
+	public bool isLeader = false;
+	public bool isFollower = false;
+
 	public int octave = 1;
 
-	public AudioMixer mixer;
+	public AudioMixerGroup mixer;
 
 	public int lastNote;
 
-	int note;
+	public int note;
 	public int start, newStart;
 	int end;
 	public int species;
 
 	public List<int> currentKey;
 
-	GameObject farmManager;
+	public GameObject farmManager;
+
+	PlantLife life;
 
 
 	void Awake() {
 		//mixer = Instantiate ();
-		farmManager = GameObject.Find("farmManager");
-		octave = farmManager.GetComponent<clickToFarm> ().octave;
+		farmManager = GameObject.Find("farmManagerNew");
+		octave = farmManager.GetComponent<assignKey> ().octave;
+		life = GetComponent<PlantLife> ();
+		//note = Random.Range (0, 6);
+		if (Random.Range (0, 3) == 1) {
+			note = 0;
+			isLeader = true;
+			start = Random.Range (0, 8);
+		} else {
+			note = Random.Range (0, 6);
+
+		}
+
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (GetComponent<growPlants> ().growthNumber == 1) {
-			if (!changedSequence) {
+		if (life.ageCounter == 1) {
+			if (!changedSequence && isLeader) {
 				species = Random.Range (0, 2);
-				note = Random.Range (0, 6);
+				//note = Random.Range (0, 6);
 				if (species == 0) {
-					start = Random.Range (0, 8);
+					//	start = Random.Range (0, 8);
 					newStart = start * 8;
 					end = newStart + 2;
 				} else if (species == 1) {
-					start = Random.Range (0, 8);
+					//	start = Random.Range (0, 8);
 					newStart = (start * 8) + 1;
 					end = newStart + 4;
 				}
-				 //end = newStart + Random.Range (1, 4);
+				//end = newStart + Random.Range (1, 4);
+				changeSequence1 ();
+				changedSequence = true;
+			} else if (!changedSequence && !isFollower) {
+				start = Random.Range (0, 8);
+				newStart = start * 8;
+				end = newStart + 2;
+				changeSequence1 ();
+				changedSequence = true;
+			} else if(!changedSequence){
+				newStart = start * 8;
+				end = newStart + 2;
 				changeSequence1 ();
 				changedSequence = true;
 			}
-		} else if (GetComponent<growPlants> ().growthNumber == 2) {
+		} else if (life.ageCounter == 2) {
 			if (!changedSequence) {
 				changeSequence2 ();
 				changedSequence = true;
 			}
 
-		} else if (GetComponent<growPlants> ().growthNumber == 3) {
+		} else if (life.ageCounter == 3) {
 			if (!changedSequence) {
 				changeSequence3 ();
 				changedSequence = true;

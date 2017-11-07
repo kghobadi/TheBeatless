@@ -32,7 +32,7 @@ public class clickToFarm : MonoBehaviour {
 		} else { 
 			isNight = false;
 		}
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+/*		Ray ray = Camera.main.ScreenPoeintToRay (Input.mousePosition);
 
 		RaycastHit rayHit = new RaycastHit ();
 
@@ -51,6 +51,6 @@ public class clickToFarm : MonoBehaviour {
 			//rayHit.collider.gameObject.GetComponent<playAudio> ().playedAudio = false;
 			//rayHit.collider.gameObject.GetComponent<playAudio> ().clipsSwitched = false;
 
-		}
+		} */
 	}
 }

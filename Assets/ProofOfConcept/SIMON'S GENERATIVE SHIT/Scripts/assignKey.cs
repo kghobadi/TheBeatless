@@ -14,6 +14,9 @@ public class assignKey : MonoBehaviour {
 	public bool switched = true;
 
 
+	public int octave = 2;
+
+
 
 	void Start() {
 		currentList = C;
