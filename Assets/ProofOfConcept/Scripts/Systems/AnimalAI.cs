@@ -298,7 +298,7 @@ namespace TGS
         {
             Debug.Log("just ate");
             goalReward = fruit.GetComponent<Fruit>().hungerValue;
-            hunger -= goalReward;
+            hunger = 0;
             //play eating animation
             fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
             fruit.GetComponent<Fruit>().seedClone.transform.position = fruit.GetComponent<Fruit>().seedClone.transform.position + new Vector3(-0.5f, 0, -0.5f);
@@ -519,7 +519,7 @@ namespace TGS
                             if (goalFound)
                             {
                                 Eat(goalObject);
-                                //state = State.MOVESELECT;
+                                state = State.MOVESELECT;
                             }
                             else
                             {
