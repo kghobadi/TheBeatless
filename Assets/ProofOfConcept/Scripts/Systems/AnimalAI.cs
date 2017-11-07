@@ -298,6 +298,7 @@ namespace TGS
 
         void Eat(GameObject fruit)
         {
+
             Debug.Log("just ate");
             if (fruit != null)
             {
