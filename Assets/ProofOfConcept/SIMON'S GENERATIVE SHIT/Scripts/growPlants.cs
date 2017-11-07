@@ -31,8 +31,10 @@ public class growPlants : MonoBehaviour {
 				growthNumber++;
 			}
 			//GameObject.Find ("farmManager").GetComponent<clickToFarm> ().isNight = false;
-			GetComponent<playAudio> ().clipsSwitched = false;
+			//GetComponent<playAudio> ().clipsSwitched = false;
+			GetComponent<playSequence>().changedSequence = false;
 		}
+
 		if (growthNumber > 3) {
 			growthNumber = 0;
 			//growthMat.color = Color.yellow;
