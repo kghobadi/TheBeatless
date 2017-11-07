@@ -6,7 +6,7 @@ namespace TGS
 {
     public class AnimalAI : MonoBehaviour
     {
-        enum BigStates
+        public enum BigStates
         {
             EAT,
             SLEEP,
@@ -14,7 +14,7 @@ namespace TGS
             PICKGOAL,
             NEARPLAYER
         }
-        BigStates bigStates;
+        public BigStates bigStates;
 
 
         enum State
@@ -46,6 +46,8 @@ namespace TGS
 
         public float interactDistance;
         public int minSleep, maxSleep;
+
+        public bool isInSleepState, isInSocialState, isInEatState;
 
         //Decision Range for Picking goal
         float totalMeter;
@@ -89,6 +91,8 @@ namespace TGS
         public float rayDistance = 50f;
 
         private GameObject _player;
+
+        public Cell rendezvousCell;
 
         //Animations
         //sleep
@@ -144,7 +148,7 @@ namespace TGS
 
                     goalFound = false;
                     goalReward = 0;
-                    if(Vector3.Distance(transform.position, _player.transform.position) < interactDistance)
+                    if (Vector3.Distance(transform.position, _player.transform.position) < interactDistance)
                     {
                         bigStates = BigStates.NEARPLAYER;
                         state = State.IDLE;
@@ -198,6 +202,9 @@ namespace TGS
 
                     isMoving(fruit);
                     Debug.Log(" EAT called is moving");
+                    isInEatState = true;
+                    isInSleepState = false;
+                    isInSocialState = false;
 
                     //Is Moving-- MOVESELECT
                     // Eat();
@@ -208,10 +215,12 @@ namespace TGS
                     //{
                     //memoryBankSleep
                     //}
-                    
+
                     isMoving(nest);
                     Debug.Log("SLEEP called is moving");
-
+                    isInEatState = false;
+                    isInSleepState = true;
+                    isInSocialState = false;
 
                     //Is Moving-- MOVESELECT
                     //Sleep();
@@ -226,6 +235,9 @@ namespace TGS
 
                     isMoving(animal);
                     Debug.Log("SOCIAL called is moving");
+                    isInEatState = false;
+                    isInSleepState = false;
+                    isInSocialState = true;
 
                     //Is Moving -- MOVESELECT
                     //InteractWithAnimal();
@@ -259,7 +271,7 @@ namespace TGS
             social += socialModifier * Time.deltaTime;
 
             //Adds goalReward of what whichever goal was just met
-            
+
             //if (bigStates == BigStates.SEARCHFORANIMAL)
             //    social -= goalReward;
             //if(bigStates == BigStates.SLEEP)
@@ -308,15 +320,15 @@ namespace TGS
 
             //wake up animation
             sleep = 0f;
-            
+
             Debug.Log("done sleeping");
             bigStates = BigStates.PICKGOAL;
-            
-                
+
+
         }
 
 
-        
+
 
         void InteractWithAnimal(GameObject animal)
         {
@@ -325,17 +337,17 @@ namespace TGS
             state = State.MOVESELECT;
             social -= socialReward;
             Debug.Log("socializing");
-            if (animal.GetComponent<AnimalAI>().bigStates == BigStates.SEARCHFORANIMAL)
+            if (animal.GetComponent<AnimalAI>().isInSocialState)
             {
                 //play interaction animation 
                 bigStates = BigStates.PICKGOAL;
             }
-            else if (animal.GetComponent<AnimalAI>().bigStates == BigStates.SLEEP)
+            else if (animal.GetComponent<AnimalAI>().isInSleepState)
             {
                 //play interact animation
                 bigStates = BigStates.SLEEP;
             }
-            else if (animal.GetComponent<AnimalAI>().bigStates == BigStates.EAT)
+            else if (animal.GetComponent<AnimalAI>().isInEatState)
             {
                 //play interact animation
                 bigStates = BigStates.EAT;
@@ -387,15 +399,68 @@ namespace TGS
                     {
                         if (hitColliders[i].gameObject.tag == name && hitColliders[i].gameObject != this.gameObject)
                         {
-
                             goalObject = hitColliders[i].gameObject;
                             nextCell = tgs.CellGetAtPosition(goalObject.transform.position, true);
+
+                            if (isInSocialState && goalObject.GetComponent<AnimalAI>().isInSocialState)
+                            {
+
+                                if (goalObject.GetComponent<AnimalAI>().rendezvousCell != null)
+                                {
+                                    Debug.Log("meeting at rendezvous");
+                                    bool setNeighbourRendezvous = false;
+                                    int j = 0;
+                                    while (!setNeighbourRendezvous)
+                                    {
+
+                                        nextCell = tgs.CellGetNeighbours(goalObject.GetComponent<AnimalAI>().rendezvousCell)[j];
+                                        int cellInd = tgs.CellGetIndex(nextCell);
+                                        if (tgs.CellGetTag(cellInd) == 0 && nextCell != null)
+                                            setNeighbourRendezvous = true;
+                                        else
+                                        {
+                                            if (j <= 6)
+                                                j++;
+                                            else
+                                            {
+                                                Debug.Log("noAvailableNeighbor");
+                                            }
+
+                                        }
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    Debug.Log("setting new rendezvous");
+                                    bool setNewRendezvous = false;
+                                    while (!setNewRendezvous)
+                                    {
+
+                                        nextCell = tgs.CellGetAtPosition(transform.position +
+                                                             ((transform.forward + new Vector3(Random.Range(-1.5f, 1.5f), 0, 0)) * Random.Range(5, 15)), true);
+                                        int cellInd = tgs.CellGetIndex(nextCell);
+                                        if (tgs.CellGetTag(cellInd) == 0 && nextCell != null)
+                                        {
+                                            rendezvousCell = nextCell;
+                                            setNewRendezvous = true;
+                                        }
+                                        else
+                                        {
+                                            transform.eulerAngles += new Vector3(0, Random.Range(-30f, 30f), 0);
+                                        }
+                                    }
+                                }
+                            }
+
+
                             goalFound = true;
                             state = State.MOVESELECT;
                         }
 
                     }
-                    if (goalFound == false)
+                    if (!goalFound)
                     {
                         bool setNextCellTarget = false;
 
@@ -464,10 +529,10 @@ namespace TGS
 
                         if (bigStates == BigStates.SEARCHFORANIMAL)
                         {
-                            if (goalFound && Vector3.Distance(transform.position, goalObject.transform.position) < interactDistance)
+                            if (goalFound)// && Vector3.Distance(transform.position, goalObject.transform.position) < interactDistance)
                             {
                                 InteractWithAnimal(goalObject);
-                                
+
                             }
                             else
                             {
