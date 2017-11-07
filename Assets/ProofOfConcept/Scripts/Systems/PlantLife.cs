@@ -69,7 +69,7 @@ public class PlantLife : MonoBehaviour {
         }
 
         //Set age and fruit
-        ageCounter = -1;
+        ageCounter = 0;
         fruitAmount = 0;
         growthDay = 1;
 
@@ -83,7 +83,7 @@ public class PlantLife : MonoBehaviour {
         {
             switch (ageCounter)
             	{
-				case 0: //Sapling
+				case 1: //Sapling
 					hasGrown = false;
 					playAud.clipsSwitched = false;
 					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
@@ -92,16 +92,16 @@ public class PlantLife : MonoBehaviour {
                     growthDay = Random.Range(2, 4); 
                     StartCoroutine(Growth());
                     break;
-                case 1: //Young
-                    hasGrown = false;
-                    playAud.clipsSwitched = false;
-                    youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
-                    Destroy(saplingClone);
-					currentTree = youngClone.transform;
-                    fruitAmount = Random.Range(0, 2);
-                    growthDay = Random.Range(3, 5);
-                    StartCoroutine(Growth());
-                    break;
+     //           case 1: //Young
+     //               hasGrown = false;
+     //               playAud.clipsSwitched = false;
+     //               youngClone = Instantiate(young, transform.position, Quaternion.Euler(0, randomRotation, 0));
+     //               Destroy(saplingClone);
+					//currentTree = youngClone.transform;
+     //               fruitAmount = Random.Range(0, 2);
+     //               growthDay = Random.Range(3, 5);
+     //               StartCoroutine(Growth());
+     //               break;
 				case 2: //Adult
 					hasGrown = false;
 					playAud.clipsSwitched = false;
