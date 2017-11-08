@@ -104,7 +104,7 @@ public class PlantLife : MonoBehaviour
                 case 2: //Adult
                     hasGrown = false;
                     playAud.changedSequence = false;
-                    Destroy(youngClone);
+                    Destroy(saplingClone);
                     adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 4);
