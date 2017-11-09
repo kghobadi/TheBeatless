@@ -47,7 +47,6 @@ public class treeJointSystem : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKey (KeyCode.Space)) {
-
 			randomTwist = 10 * Random.onUnitSphere;
 		}
 
