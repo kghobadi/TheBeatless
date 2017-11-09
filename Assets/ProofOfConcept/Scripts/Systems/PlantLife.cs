@@ -137,7 +137,7 @@ public class PlantLife : MonoBehaviour
 				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 2);
-                    growthDay = Random.Range(5, 10);
+                    growthDay = Random.Range(3, 6);
                     StartCoroutine(Growth());
                     break;
                 case 3: // Old

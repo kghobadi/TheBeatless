@@ -42,7 +42,7 @@ public abstract class Interactable : MonoBehaviour
         soundBoard = cammy.GetComponent<AudioSource>(); //assigns audio source
 
         playerControl = _player.GetComponent<FirstPersonController>();
-        startScale = transform.localScale;
+        //startScale = transform.localScale;
     }
     
     void OnMouseEnter()
@@ -52,7 +52,7 @@ public abstract class Interactable : MonoBehaviour
             cammy.GetComponent<camMouseLook>().sensitivityX = 1.5f;
             cammy.GetComponent<camMouseLook>().sensitivityY = 1.5f;
             symbol.sprite = interactSprite;
-            transform.localScale *= scaleFactor;
+            //transform.localScale *= scaleFactor;
 
         }
     }
@@ -64,7 +64,7 @@ public abstract class Interactable : MonoBehaviour
             symbol.sprite = normalSprite;
             cammy.GetComponent<camMouseLook>().sensitivityX = 2f;
             cammy.GetComponent<camMouseLook>().sensitivityY = 2f;
-            transform.localScale = startScale;
+            //transform.localScale = startScale;
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class Interactable : MonoBehaviour
         symbol.sprite = clickSprite;
         Play();
         symbol.sprite = normalSprite;
-        transform.localScale = startScale;
+       // transform.localScale = startScale;
     }
 
    
