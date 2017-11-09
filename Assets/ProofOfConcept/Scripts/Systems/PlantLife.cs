@@ -104,9 +104,9 @@ public class PlantLife : MonoBehaviour {
 	
 	void Update () {
 
-		note = seq.GetAllNoteOnsInRange (0, 96);
+	//	note = seq.GetAllNoteOnsInRange (0, 96);
 
-		newNote = note [0];
+	//	newNote = note [0];
 
         if (hasGrown)
         {
@@ -116,7 +116,7 @@ public class PlantLife : MonoBehaviour {
 					hasGrown = false;
 				    playAud.changedSequence = false;
 					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
-					saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0));
+				saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = saplingClone.transform;
                     growthDay = Random.Range(2, 4); 
                     StartCoroutine(Growth());
@@ -135,7 +135,7 @@ public class PlantLife : MonoBehaviour {
 					hasGrown = false;
 				playAud.changedSequence = false;
 					Destroy (youngClone);
-					adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0));
+				adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 4);
                     growthDay = Random.Range(5, 10);
@@ -145,7 +145,7 @@ public class PlantLife : MonoBehaviour {
 					hasGrown = false;
 					playAud.changedSequence = false;
 					Destroy (adultClone);
-					oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0));
+				oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = oldClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(3, 10);
