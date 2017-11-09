@@ -191,7 +191,7 @@ public class PlantLife : MonoBehaviour
         {
             SpawnFruits();
             if (fruitAmount > 0)
-                treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
+                //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
             yield return new WaitUntil(() => sunScript.dayPassed == true); //Can be changed so that it is not real time
             yield return new WaitForSeconds(1);
         }
