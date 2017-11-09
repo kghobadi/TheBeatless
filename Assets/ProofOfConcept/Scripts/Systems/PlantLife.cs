@@ -28,7 +28,7 @@ public class PlantLife : MonoBehaviour
     int randomRotation;
     TerrainGridSystem tgs;
     Cell groundTile;
-    int cellIndex;
+    public int cellIndex;
     public List<Cell> neighbors = new List<Cell>();
     public List<int> neighborIndexes = new List<int>();
     public Texture2D growingTexture;
@@ -87,10 +87,11 @@ public class PlantLife : MonoBehaviour
         StartCoroutine(Growth());
     }
 
-	//	note = seq.GetAllNoteOnsInRange (0, 96);
+    //	note = seq.GetAllNoteOnsInRange (0, 96);
 
-	//	newNote = note [0];
-
+    //	newNote = note [0];
+     void Update()
+    {
         if (hasGrown)
         {
             switch (ageCounter)
@@ -99,7 +100,7 @@ public class PlantLife : MonoBehaviour
 					hasGrown = false;
 				    playAud.changedSequence = false;
 					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
-				saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
+				    saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = saplingClone.transform;
                     growthDay = Random.Range(2, 4); 
                     StartCoroutine(Growth());
@@ -114,20 +115,12 @@ public class PlantLife : MonoBehaviour
                       growthDay = Random.Range(3, 5);
                       StartCoroutine(Growth());
                       break; */
-                case 2: //Adult
-                    hasGrown = false;
-                    playAud.changedSequence = false;
-                    Destroy(saplingClone);
-					currentTree = youngClone.transform;
-                    fruitAmount = Random.Range(0, 2);
-                    growthDay = Random.Range(3, 5);
-                    StartCoroutine(Growth());
-                    break; */
+              
 				case 2: //Adult
 					hasGrown = false;
-				playAud.changedSequence = false;
-					Destroy (youngClone);
-				adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
+				    playAud.changedSequence = false;
+					Destroy (saplingClone);
+				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 4);
                     growthDay = Random.Range(5, 10);
@@ -137,7 +130,7 @@ public class PlantLife : MonoBehaviour
 					hasGrown = false;
 					playAud.changedSequence = false;
 					Destroy (adultClone);
-				oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
+				    oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = oldClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(3, 10);
@@ -192,6 +185,7 @@ public class PlantLife : MonoBehaviour
         randomRotation = 60 * Random.Range(0, 6);
         hasGrown = true;
     }
+
     public void SpawnFruits()
     {
         for (int i = 0; i < fruitAmount; i += Random.Range(1, 2))

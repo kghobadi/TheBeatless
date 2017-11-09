@@ -5,7 +5,7 @@ using UnityEngine;
 public class leftArmManager : MonoBehaviour
 {
 
-    public GameObject recorder, shovel;
+    public GameObject recorder, shovel, ax;
     AudioListener mainListener;
     public AudioListener recorderListener;
     //public bool holdingSomething;
@@ -59,6 +59,22 @@ public class leftArmManager : MonoBehaviour
                 //objectHeld = null;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && ax != null)
+        {
+            if (objectHeld != ax)
+            {
+                putAwayEverything();
+                equipAx();
+
+                //objectHeld = shovel;
+
+            }
+            else if (objectHeld == shovel)
+            {
+                putAwayAx();
+                //objectHeld = null;
+            }
+        }
 
 
     }
@@ -96,6 +112,18 @@ public class leftArmManager : MonoBehaviour
         objectHeld = null;
     }
 
+    public void equipAx()
+    {
+        ax.SetActive(true);
+        objectHeld = ax;
+    }
+    public void putAwayAx()
+    {
+        ax.SetActive(false);
+        //holdingSomething = false;
+        objectHeld = null;
+    }
+
     public void putAwayEverything()
     {
         if (shovel != null)
@@ -107,6 +135,13 @@ public class leftArmManager : MonoBehaviour
         {
             if (objectHeld == recorder)
                 putAwayRecorder();
+        }
+        if(ax != null)
+        {
+            if(objectHeld == ax)
+            {
+                putAwayAx();
+            }
         }
 
     }
