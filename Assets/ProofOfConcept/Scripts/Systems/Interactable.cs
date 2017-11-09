@@ -13,6 +13,7 @@ public abstract class Interactable : MonoBehaviour
 
     public Vector3 startScale;
     public float scaleFactor;
+    public Material outlineShader;
 
 
     protected float withinDistance = 10f;
@@ -52,6 +53,7 @@ public abstract class Interactable : MonoBehaviour
             cammy.GetComponent<camMouseLook>().sensitivityY = 1.5f;
             symbol.sprite = interactSprite;
             transform.localScale *= scaleFactor;
+
         }
     }
 
