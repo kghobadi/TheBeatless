@@ -125,7 +125,7 @@ namespace TGS
 
             //Assign Stats 
             hungerModifier += Random.Range(0, .3f);
-            socialModifier += Random.Range(0, .3f);
+            //socialModifier += Random.Range(0, .3f);
             sleepModifier += Random.Range(0, .3f);
 
             nestObject = GameObject.FindGameObjectsWithTag("Nest"); // add naming convention of + ___ specie name
@@ -335,17 +335,18 @@ namespace TGS
         {
 
             Debug.Log("just ate");
-            if (fruit != null)
+            if (fruit != null )
             {
                 goalReward = fruit.GetComponent<Fruit>().hungerValue;
-                hunger = 0;
                 //play eating animation
                 fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
                 fruit.GetComponent<Fruit>().seedClone.transform.SetParent(this.transform);
                 fruit.GetComponent<Fruit>().seedClone.SetActive(false);
                 StartCoroutine(Poop(fruit.GetComponent<Fruit>().seedClone));
                 Destroy(fruit.gameObject);
+
             }
+
             hunger = 0;
             // play sound or whatever
             bigStates = BigStates.PICKGOAL;
@@ -461,10 +462,18 @@ namespace TGS
                                     SetRendezvous();
                                 }
                             }
-
-
-                            goalFound = true;
-                            state = State.MOVESELECT;
+                            if (isInEatState)
+                            {
+                                if (goalObject != null && goalObject.GetComponent<Fruit>().hasFallen || goalObject.GetComponent<Fruit>().onGround || goalObject.GetComponent<inventoryMan>().underPlayerControl)
+                                {
+                                    goalFound = true;
+                                    state = State.MOVESELECT;
+                                }
+                                else
+                                {
+                                    goalFound = false;
+                                }
+                            }
                         }
 
                     }
@@ -533,7 +542,7 @@ namespace TGS
                         {
                             if (goalFound)
                             {
-                                Eat(goalObject);
+                                    Eat(goalObject);
                                 //state = State.MOVESELECT;
                             }
                             else
