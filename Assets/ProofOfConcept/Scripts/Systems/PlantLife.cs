@@ -214,22 +214,7 @@ public class PlantLife : MonoBehaviour
         }
 
     }
-    public void CheckRules()
-    {
-    }
+    
 
 }
-    }
-
-    //	note = seq.GetAllNoteOnsInRange (0, 96);
-
-    //	newNote = note [0];
-     void Update()
-              
-				case 2: //Adult
-					hasGrown = false;
-				    playAud.changedSequence = false;
-					Destroy (saplingClone);
-				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
-					currentTree = adultClone.transform;
-                    fruitAmount = Random.Range(0, 2);
+    
