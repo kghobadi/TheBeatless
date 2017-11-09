@@ -7,7 +7,7 @@ public class pickUpTool : Interactable
     public Transform leftArmObj;
     leftArmManager lArmMan;
 
-    public bool isRecorder, isShovel;
+    public bool isRecorder, isShovel, isAx;
 
     // Use this for initialization
     public override void Start()
@@ -48,11 +48,26 @@ public class pickUpTool : Interactable
             transform.localPosition = Vector3.zero;
             transform.localEulerAngles = Vector3.zero;
             GetComponent<Shovel>().enabled = true;
-            if (lArmMan.objectHeld == lArmMan.recorder)
+            if (lArmMan.objectHeld != null)
                 lArmMan.putAwayEverything();
             lArmMan.objectHeld = lArmMan.shovel;
 
             this.enabled = false;
+        }
+
+        if (isAx)
+        {
+            transform.parent = leftArmObj;
+            lArmMan.ax = this.gameObject;
+            transform.localPosition = Vector3.zero;
+            transform.localEulerAngles = Vector3.zero;
+            GetComponent<Ax>().enabled = true;
+            if (lArmMan.objectHeld != null)
+                lArmMan.putAwayEverything();
+            lArmMan.objectHeld = lArmMan.ax;
+
+            this.enabled = false;
+
         }
     }
 
