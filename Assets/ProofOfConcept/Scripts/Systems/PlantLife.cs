@@ -136,7 +136,7 @@ public class PlantLife : MonoBehaviour
 					Destroy (saplingClone);
 				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = adultClone.transform;
-                    fruitAmount = Random.Range(0, 4);
+                    fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(5, 10);
                     StartCoroutine(Growth());
                     break;
@@ -190,11 +190,12 @@ public class PlantLife : MonoBehaviour
         for (int i = 0; i < growthDay; i++)
         {
             SpawnFruits();
-            if (fruitAmount > 0)
-                treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
+            //if (fruitAmount > 0)
+                //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
             yield return new WaitUntil(() => sunScript.dayPassed == true); //Can be changed so that it is not real time
-            yield return new WaitForSeconds(1);
+           //s yield return new WaitForSeconds(1);
         }
+        Debug.Log("age +1");
         ageCounter += 1;
         randomRotation = 60 * Random.Range(0, 6);
         hasGrown = true;
@@ -214,9 +215,7 @@ public class PlantLife : MonoBehaviour
         }
 
     }
-    public void CheckRules()
-    {
-    }
+    
 
 }
     

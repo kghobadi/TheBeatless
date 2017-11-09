@@ -37,16 +37,16 @@ public class playSequence : MonoBehaviour
     public int startScale = 8;
     public int startMultiplier = 8;
 
-    public int endScale = 1;
+	public int endScale = 1;
+	public int endEnd = 4;
 
 
-    void Awake()
-    {
-        //mixer = Instantiate ();
-        farmManager = GameObject.Find("farmManagerNew");
-        octave = farmManager.GetComponent<assignKey>().octave;
-        life = GetComponent<PlantLife>();
-        //note = Random.Range (0, 6);
+	void Awake() {
+		//mixer = Instantiate ();
+		farmManager = GameObject.Find("farmManagerNew");
+		//octave = farmManager.GetComponent<assignKey>().octave;
+		life = GetComponent<PlantLife> ();
+		//note = Random.Range (0, 6);
 
         sun = GameObject.FindGameObjectWithTag("Sun");
         sunScript = sun.GetComponent<Sun>();
@@ -69,10 +69,44 @@ public class playSequence : MonoBehaviour
     void Update()
     {
 
-        if (sunScript.dayPassed)
-        {
-            changedSequence = false;
-        }
+		if (sunScript.dayPassed) {
+			changedSequence = false;
+		}
+	
+		if (life.ageCounter == 1) {
+			if (!changedSequence && isLeader) {
+				species = Random.Range (0, 2);
+				//note = Random.Range (0, 6);
+				if (species == 0) {
+					//	start = Random.Range (0, 8);
+					newStart = start * startMultiplier;
+					end = newStart + Random.Range (endScale, endEnd);
+				} else if (species == 1) {
+					//	start = Random.Range (0, 8);
+					newStart = (start * startMultiplier) + 1;
+					end = newStart + Random.Range (endScale, endEnd);
+				}
+				//end = newStart + Random.Range (1, 4);
+				changeSequence1 ();
+				changedSequence = true;
+			} else if (!changedSequence && !isFollower) {
+				start = Random.Range (0, startScale);
+				newStart = start * startMultiplier;
+				end = newStart + Random.Range (endScale, endEnd);
+				changeSequence1 ();
+				changedSequence = true;
+			} else if (!changedSequence) {
+				newStart = start * startMultiplier;
+				end = newStart + Random.Range (endScale, endEnd);
+				changeSequence1 ();
+				changedSequence = true;
+			}
+		} else if (life.ageCounter == 2) {
+			if (!changedSequence) {
+				changeSequence2 ();
+				changedSequence = true;
+			}
+		}
 
         if (life.ageCounter == 1)
         {
