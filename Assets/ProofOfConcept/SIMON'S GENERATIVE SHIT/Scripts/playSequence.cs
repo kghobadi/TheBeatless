@@ -80,11 +80,11 @@ public class playSequence : MonoBehaviour
 				if (species == 0) {
 					//	start = Random.Range (0, 8);
 					newStart = start * startMultiplier;
-					end = newStart + Random.Range(endScale, endEnd);
+					end = newStart + Random.Range (endScale, endEnd);
 				} else if (species == 1) {
 					//	start = Random.Range (0, 8);
 					newStart = (start * startMultiplier) + 1;
-					end = newStart + Random.Range(endScale, endEnd);
+					end = newStart + Random.Range (endScale, endEnd);
 				}
 				//end = newStart + Random.Range (1, 4);
 				changeSequence1 ();
@@ -92,12 +92,12 @@ public class playSequence : MonoBehaviour
 			} else if (!changedSequence && !isFollower) {
 				start = Random.Range (0, startScale);
 				newStart = start * startMultiplier;
-				end = newStart + Random.Range(endScale, endEnd);
+				end = newStart + Random.Range (endScale, endEnd);
 				changeSequence1 ();
 				changedSequence = true;
-			} else if(!changedSequence){
+			} else if (!changedSequence) {
 				newStart = start * startMultiplier;
-				end = newStart + Random.Range(endScale, endEnd);
+				end = newStart + Random.Range (endScale, endEnd);
 				changeSequence1 ();
 				changedSequence = true;
 			}
@@ -106,6 +106,7 @@ public class playSequence : MonoBehaviour
 				changeSequence2 ();
 				changedSequence = true;
 			}
+		}
 
         if (life.ageCounter == 1)
         {
