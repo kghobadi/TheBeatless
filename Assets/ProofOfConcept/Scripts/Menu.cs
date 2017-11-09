@@ -3,18 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Menu : MonoBehaviour {
-    
+    GameObject menuObject;
 
+    bool isShowing;
 
 	void Start () {
-        gameObject.SetActive(false);
+        menuObject = GameObject.FindGameObjectWithTag("Menu");
+        menuObject.SetActive(false);
+        isShowing = false;
 	}
 	
 
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl) && !isShowing)
         {
-            gameObject.SetActive(true);
+            menuObject.SetActive(true);
+            isShowing = true;
         }
+
+        if (Input.GetKeyUp(KeyCode.LeftControl) && isShowing) {
+            menuObject.SetActive(false);
+            isShowing = false;
+        }
+
 	}
 }

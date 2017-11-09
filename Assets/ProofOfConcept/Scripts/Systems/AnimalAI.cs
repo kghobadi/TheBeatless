@@ -455,13 +455,13 @@ namespace TGS
                             goalObject = hitColliders[i].gameObject;
                             nextCell = tgs.CellGetAtPosition(goalObject.transform.position, true);
 
-                            if (isInSocialState)
-                            {
-                                if (goalObject.GetComponent<AnimalAI>().isInSocialState)
-                                {
-                                    SetRendezvous();
-                                }
-                            }
+                            //if (isInSocialState)
+                            //{
+                            //    if (goalObject.GetComponent<AnimalAI>().isInSocialState)
+                            //    {
+                            //        SetRendezvous();
+                            //    }
+                            //}
                             if (isInEatState)
                             {
                                 if (goalObject != null && goalObject.GetComponent<Fruit>().hasFallen || goalObject.GetComponent<Fruit>().onGround || goalObject.GetComponent<inventoryMan>().underPlayerControl)
