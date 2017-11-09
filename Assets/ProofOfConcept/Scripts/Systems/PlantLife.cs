@@ -10,6 +10,10 @@ public class PlantLife : MonoBehaviour {
     public int ageCounter;
     int growthDay;
 
+	AudioHelm.Sequencer seq;
+
+	playSequence playSeq;
+
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
 	private Transform currentTree;
@@ -38,9 +42,13 @@ public class PlantLife : MonoBehaviour {
     public Texture2D groundTexture;
 
 	public Vector3[] neighbourPos;
+	List<AudioHelm.Note> note;
+	AudioHelm.Note newNote;
 
     void Awake()
     {
+		seq = GetComponent<AudioHelm.Sequencer> ();
+		playSeq = GetComponent<playSequence> ();
         //grabs Sun ref
 		neighbourPos = new Vector3[6];
         sun = GameObject.FindGameObjectWithTag("Sun");
@@ -95,6 +103,10 @@ public class PlantLife : MonoBehaviour {
 	}
 	
 	void Update () {
+
+		note = seq.GetAllNoteOnsInRange (0, 96);
+
+		newNote = note [0];
 
         if (hasGrown)
         {
@@ -161,14 +173,21 @@ public class PlantLife : MonoBehaviour {
 
 
         }
-		//if (playAudio1.growingSize) {
+//		seq.OnNoteOn (newNote);
 		//	currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
 		//} else {
 		//	currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
 			
 		//}
-		
+		//}
 	}
+
+/*	AudioHelm.Sequencer.NoteAction(newNote) {
+
+
+	} */
+
+
 
     IEnumerator Growth()
     {
