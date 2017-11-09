@@ -1,15 +1,27 @@
 fileFormatVersion: 2
-guid: d56a063304f214b99805502c8dac1020
-timeCreated: 1510207709
+guid: 128fa44f6fd5e4b06a66c64dc0a2e96a
+timeCreated: 1510256178
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: group
+    100004: pasted__pSphere1
+    100006: polySurface2
+    100008: pSphere1
+    100010: transform1
+    100012: transform2
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: pSphere1
+    400002: group
+    400004: pasted__pSphere1
+    400006: polySurface2
+    400008: pSphere1
+    400010: transform1
+    400012: transform2
+    2300000: polySurface2
+    3300000: polySurface2
+    4300000: polySurface2
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -37,7 +49,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.5
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
