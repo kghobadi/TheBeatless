@@ -119,6 +119,8 @@ public class Fruit : Interactable {
             else if (transform.localScale.x > fullyGrownXScale)
             {
                 hasFallen = true;
+            startScale = transform.localScale;
+            inventMan.startScale = transform.localScale;
         }
 
     }
