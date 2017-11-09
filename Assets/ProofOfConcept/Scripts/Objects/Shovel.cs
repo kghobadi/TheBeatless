@@ -5,13 +5,6 @@ using TGS;
 
 public class Shovel : MonoBehaviour
 {
-
-
-    public GameObject fertileGround;
-    GameObject fertileGroundClone;
-    Vector3 targetPosition;
-
-
     TerrainGridSystem tgs;
 
     public Texture2D groundTexture;

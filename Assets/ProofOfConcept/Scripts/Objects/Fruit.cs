@@ -13,6 +13,8 @@ public class Fruit : Interactable {
     public GameObject seedClone;
 
     public float fullyGrownXScale;
+    float fullyGrownYScale;
+    float fullyGrownZScale;
     public float growthMetric;
 
     Rigidbody rb;
@@ -117,6 +119,8 @@ public class Fruit : Interactable {
             else if (transform.localScale.x > fullyGrownXScale)
             {
                 hasFallen = true;
+                inventMan.startScale = transform.localScale;
+                startScale = transform.localScale;
         }
 
     }
