@@ -33,7 +33,7 @@ public class playSequence : MonoBehaviour {
 	void Awake() {
 		//mixer = Instantiate ();
 		farmManager = GameObject.Find("farmManagerNew");
-		octave = farmManager.GetComponent<assignKey> ().octave;
+		octave = farmManager.GetComponent<assignKey>().octave;
 		life = GetComponent<PlantLife> ();
 		//note = Random.Range (0, 6);
 		if (Random.Range (0, 3) == 1) {
