@@ -11,6 +11,12 @@ namespace AudioHelm{
 		seq.OnNoteOn += NoteOn;
 	}
 
+		void OnDestroy(){
+			seq.OnNoteOn -= NoteOn;
+
+
+		}
+
 		void NoteOn(Note note){
 			GetComponent<beatVisualizer>().Pulse (1.0f);
 		}
