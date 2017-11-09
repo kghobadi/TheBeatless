@@ -13,6 +13,8 @@ public class assignKey : MonoBehaviour {
 
 	public bool switched = true;
 
+	private GameObject sun;
+	Sun sunScript;
 
 	public int octave = 2;
 
@@ -21,12 +23,15 @@ public class assignKey : MonoBehaviour {
 	void Start() {
 		currentList = C;
 		//switched = true;
+		sun = GameObject.FindGameObjectWithTag("Sun");
+		sunScript = sun.GetComponent<Sun> ();
+
 
 	}
 
 	void Update() {
 
-		if (Input.GetKeyDown (KeyCode.S)) {
+		if (sunScript.dayPassed == true) {
 			int num = Random.Range (0, 11);
 			switch (num) {
 			case 0:
