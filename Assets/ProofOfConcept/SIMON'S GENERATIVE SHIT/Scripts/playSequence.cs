@@ -29,6 +29,15 @@ public class playSequence : MonoBehaviour {
 
 	PlantLife life;
 
+	private GameObject sun;
+	Sun sunScript;
+
+
+	public int startScale = 8;
+	public int startMultiplier = 8;
+
+	public int endScale = 1;
+
 
 	void Awake() {
 		//mixer = Instantiate ();
@@ -36,10 +45,14 @@ public class playSequence : MonoBehaviour {
 		octave = farmManager.GetComponent<assignKey>().octave;
 		life = GetComponent<PlantLife> ();
 		//note = Random.Range (0, 6);
+
+		sun = GameObject.FindGameObjectWithTag("Sun");
+		sunScript = sun.GetComponent<Sun> ();
+
 		if (Random.Range (0, 3) == 1) {
 			note = 0;
 			isLeader = true;
-			start = Random.Range (0, 8);
+			start = Random.Range (0, startScale);
 		} else {
 			note = Random.Range (0, 6);
 		}
@@ -49,31 +62,36 @@ public class playSequence : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (sunScript.dayPassed) {
+			changedSequence = false;
+		}
+	
 		if (life.ageCounter == 1) {
 			if (!changedSequence && isLeader) {
 				species = Random.Range (0, 2);
 				//note = Random.Range (0, 6);
 				if (species == 0) {
 					//	start = Random.Range (0, 8);
-					newStart = start * 8;
-					end = newStart + 1;
+					newStart = start * startMultiplier;
+					end = newStart + endScale;
 				} else if (species == 1) {
 					//	start = Random.Range (0, 8);
-					newStart = (start * 8) + 1;
-					end = newStart + 1;
+					newStart = (start * startMultiplier) + 1;
+					end = newStart + endScale;
 				}
 				//end = newStart + Random.Range (1, 4);
 				changeSequence1 ();
 				changedSequence = true;
 			} else if (!changedSequence && !isFollower) {
-				start = Random.Range (0, 8);
-				newStart = start * 8;
-				end = newStart + 1;
+				start = Random.Range (0, startScale);
+				newStart = start * startMultiplier;
+				end = newStart + endScale;
 				changeSequence1 ();
 				changedSequence = true;
 			} else if(!changedSequence){
-				newStart = start * 8;
-				end = newStart + 1;
+				newStart = start * startMultiplier;
+				end = newStart + endScale;
 				changeSequence1 ();
 				changedSequence = true;
 			}

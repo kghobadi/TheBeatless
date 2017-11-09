@@ -28,7 +28,7 @@ namespace AudioHelm
                     return octave * scale.Length + scaleNote;
             }
             return octave * scale.Length;
-        }/s
+        }
 
         void NoteOn(Note note)
         {
