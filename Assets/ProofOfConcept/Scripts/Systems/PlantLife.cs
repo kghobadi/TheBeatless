@@ -5,7 +5,7 @@ using TGS;
 public class PlantLife : MonoBehaviour
 {
     public bool plantedInEditor;
-    public Texture2D plantedTexture;
+    //public Texture2D plantedTexture;
 
     bool fruitGrowing;
     public int fruitAmount;
@@ -85,9 +85,10 @@ public class PlantLife : MonoBehaviour
         }
         if (plantedInEditor)
         {
+            ageCounter -= 1;
             transform.position = tgs.CellGetPosition(cellIndex);
             tgs.CellSetTag(cellIndex, 2);
-            tgs.CellToggleRegionSurface(cellIndex, true, plantedTexture);
+            tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
         }
         else
         {
