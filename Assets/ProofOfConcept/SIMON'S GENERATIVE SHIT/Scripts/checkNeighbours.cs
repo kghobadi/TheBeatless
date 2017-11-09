@@ -47,7 +47,7 @@ public class checkNeighbours : MonoBehaviour {
 
 		if (j >= 2 && seq.isLeader == true) {
 			if (!changedNotes) {
-				print (AudioHelm.AudioHelmClock.GetGlobalBpm ());
+//				print (AudioHelm.AudioHelmClock.GetGlobalBpm ());
 				//seq.isLeader = true;
 				neighbourObj [0].GetComponent<playSequence> ().isLeader = false;
 				neighbourObj [1].GetComponent<playSequence> ().isLeader = false;

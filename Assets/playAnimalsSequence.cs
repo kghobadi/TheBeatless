@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using TGS;
 
-public class playSequence : MonoBehaviour {
+public class playAnimalsSequence : MonoBehaviour {
 
 	public AudioHelm.Sequencer sequencer;
 
@@ -27,81 +28,70 @@ public class playSequence : MonoBehaviour {
 
 	public GameObject farmManager;
 
-	PlantLife life;
+	//PlantLife life;
 
-	private GameObject sun;
-	Sun sunScript;
-
-
-	public int startScale = 8;
-	public int startMultiplier = 8;
-
-	public int endScale = 1;
+	AnimalAI animalAI;
 
 
 	void Awake() {
+
+		//USE THIS TO MAKE IT MAKE SOUNDS
+		if (animalAI.bigStates == AnimalAI.BigStates.SLEEP) {
+
+		}
 		//mixer = Instantiate ();
 		farmManager = GameObject.Find("farmManagerNew");
-		octave = farmManager.GetComponent<assignKey>().octave;
-		life = GetComponent<PlantLife> ();
+		octave = farmManager.GetComponent<assignKey> ().octave;
+		animalAI = GetComponent<AnimalAI> ();
 		//note = Random.Range (0, 6);
-
-		sun = GameObject.FindGameObjectWithTag("Sun");
-		sunScript = sun.GetComponent<Sun> ();
-
 		if (Random.Range (0, 3) == 1) {
 			note = 0;
 			isLeader = true;
-			start = Random.Range (0, startScale);
+			start = Random.Range (0, 8);
 		} else {
 			note = Random.Range (0, 6);
 		}
 
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-
-		if (sunScript.dayPassed) {
-			changedSequence = false;
-		}
-	
-		if (life.ageCounter == 1) {
+		if (animalAI.bigStates == AnimalAI.BigStates.EAT) {
 			if (!changedSequence && isLeader) {
 				species = Random.Range (0, 2);
 				//note = Random.Range (0, 6);
 				if (species == 0) {
 					//	start = Random.Range (0, 8);
-					newStart = start * startMultiplier;
-					end = newStart + endScale;
+					newStart = start * 8;
+					end = newStart + 2;
 				} else if (species == 1) {
 					//	start = Random.Range (0, 8);
-					newStart = (start * startMultiplier) + 1;
-					end = newStart + endScale;
+					newStart = (start * 8) + 1;
+					end = newStart + 4;
 				}
 				//end = newStart + Random.Range (1, 4);
 				changeSequence1 ();
 				changedSequence = true;
 			} else if (!changedSequence && !isFollower) {
-				start = Random.Range (0, startScale);
-				newStart = start * startMultiplier;
-				end = newStart + endScale;
+				start = Random.Range (0, 8);
+				newStart = start * 8;
+				end = newStart + 2;
 				changeSequence1 ();
 				changedSequence = true;
 			} else if(!changedSequence){
-				newStart = start * startMultiplier;
-				end = newStart + endScale;
+				newStart = start * 8;
+				end = newStart + 2;
 				changeSequence1 ();
 				changedSequence = true;
 			}
-		} else if (life.ageCounter == 2) {
+		} else if (animalAI.bigStates == AnimalAI.BigStates.SLEEP) {
 			if (!changedSequence) {
 				changeSequence2 ();
 				changedSequence = true;
 			}
 
-		} else if (life.ageCounter == 3) {
+		} else if (animalAI.bigStates == AnimalAI.BigStates.NEARPLAYER) {
 			if (!changedSequence) {
 				changeSequence3 ();
 				changedSequence = true;
@@ -126,8 +116,8 @@ public class playSequence : MonoBehaviour {
 		//int end = start + Random.Range (1, 3);
 		float velocity = Random.Range (0.4f, 1f);
 		//if (change == 1) {
-			sequencer.Clear ();
-			/*switch (note) {
+		sequencer.Clear ();
+		/*switch (note) {
 			case 1:
 				newNote = 61;
 				break;
@@ -169,8 +159,8 @@ public class playSequence : MonoBehaviour {
 
 		float velocity = Random.Range (0.4f, 1f);
 		//if (change == 1) {
-			sequencer.Clear ();
-			/*switch (note) {
+		sequencer.Clear ();
+		/*switch (note) {
 			case 1:
 				newNote = 49;
 				break;
@@ -212,9 +202,9 @@ public class playSequence : MonoBehaviour {
 		//int end = start + Random.Range (1, 3);
 		float velocity = Random.Range (0.4f, 1f);
 		//if (change == 1) {
-			sequencer.Clear ();
+		sequencer.Clear ();
 
-			/*switch (note) {
+		/*switch (note) {
 			case 1:
 				newNote = 37;
 				break;
