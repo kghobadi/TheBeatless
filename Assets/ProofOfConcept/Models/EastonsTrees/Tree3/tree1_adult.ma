@@ -1,6 +1,6 @@
 //Maya ASCII 2016 scene
 //Name: tree1_adult.ma
-//Last modified: Thu, Nov 09, 2017 12:36:34 AM
+//Last modified: Thu, Nov 09, 2017 03:37:50 PM
 //Codeset: UTF-8
 requires maya "2016";
 requires "stereoCamera" "10.0";
@@ -9029,13 +9029,13 @@ createNode mesh -n "pasted__pasted__pasted__pasted__pasted__pCubeShape5" -p "tra
 createNode transform -s -n "persp";
 	rename -uid "4F8EBB1A-3743-E52F-21A4-14AF4EB7F935";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 1.4818666010114612 18.760396919256998 -28.275699169178257 ;
-	setAttr ".r" -type "double3" -32.138352729589762 176.9999999999788 0 ;
+	setAttr ".t" -type "double3" 2.7403826240544302 17.618360904121946 -17.302094944058339 ;
+	setAttr ".r" -type "double3" -43.538352729578364 170.99999999996726 0 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "5E3D008B-994A-F03B-8013-789CC221B20B";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999986;
-	setAttr ".coi" 33.43840262015452;
+	setAttr ".coi" 24.1653235342066;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -9289,15 +9289,15 @@ createNode groupId -n "groupId17";
 	rename -uid "501FC6E4-6B4C-D79D-75B3-F4B65235FB46";
 	setAttr ".ihi" 0;
 createNode lightLinker -s -n "lightLinker1";
-	rename -uid "0354B02F-7547-499A-D939-3398F0FCAFE2";
+	rename -uid "60E40EB2-6F46-FE0B-2CE0-D8BFCEE6C465";
 	setAttr -s 3 ".lnk";
 	setAttr -s 3 ".slnk";
 createNode displayLayerManager -n "layerManager";
-	rename -uid "583A6410-AC4A-06A4-A4D9-4596E6094647";
+	rename -uid "41FA9CEF-2149-94B8-7AF2-4CA6187CAE15";
 createNode displayLayer -n "defaultLayer";
 	rename -uid "95CEE65C-EF46-7252-836A-7DBFBF74473F";
 createNode renderLayerManager -n "renderLayerManager";
-	rename -uid "4FACF787-D145-0300-7427-5DA7224F44B8";
+	rename -uid "6E3AE874-6F48-6169-4D1B-EF88D1F7ABEC";
 createNode renderLayer -n "defaultRenderLayer";
 	rename -uid "EAEF48D2-3643-E162-1096-CCA386C4C9CC";
 	setAttr ".g" yes;
@@ -10234,7 +10234,7 @@ createNode skinCluster -n "skinCluster1";
 	setAttr -s 5 ".wl[389].w[0:4]"  0.4000816922077059 0.59758874272656493 
 		0.0020491727839345186 0.00023232375466450872 4.8068527130105883e-05;
 	setAttr -s 5 ".wl[390].w[0:4]"  0.00082017166848135921 0.99917926069012386 
-		5.0094293139900422e-07 5.531331397501916e-08 1.1385149491474524e-08;
+		5.0094293139900422e-07 5.5313313975019153e-08 1.1385149491474524e-08;
 	setAttr -s 5 ".wl[391].w[0:4]"  0.38030172076319496 0.61795577906933263 
 		0.0015337531468860098 0.00017299129460349421 3.5755725982961463e-05;
 	setAttr -s 5 ".wl[392].w[0:4]"  0.46206179660062413 0.52597858588066304 
@@ -14274,16 +14274,16 @@ createNode skinCluster -n "skinCluster1";
 	setAttr -s 5 ".wl[2409].w[0:4]"  0.99357470047120955 0.005799957313261387 
 		0.00046749338835296429 0.00012087744173913496 3.6971385436920399e-05;
 	setAttr -s 5 ".pm";
-	setAttr ".pm[0]" -type "matrix" 0.010988347541612599 -0.99993962628665989 0 -0 0.99993962628665989 0.010988347541612599 -0 0
-		 0 -0 1 -0 -0 0 -0 1;
-	setAttr ".pm[1]" -type "matrix" 3.6758790455948542e-15 -1 0 -0 1 3.6758790455948542e-15 -0 0
-		 0 -0 1 -0 -1.9998792525733193 0.021976695083216966 -0 1;
-	setAttr ".pm[2]" -type "matrix" 3.6758790455948542e-15 -1 0 -0 1 3.6758790455948542e-15 -0 0
-		 0 -0 1 -0 -4.9998792525733196 0.02197669508320519 -0 1;
-	setAttr ".pm[3]" -type "matrix" 3.6758790455948542e-15 -1 0 -0 1 3.6758790455948542e-15 -0 0
-		 0 -0 1 -0 -7.9998792525733196 0.021976695083194671 -0 1;
-	setAttr ".pm[4]" -type "matrix" 0.99999999999999956 -3.2092384305570828e-16 0 -0
-		 3.2092384305570828e-16 0.99999999999999978 -0 0 0 -0 0.99999999999999978 -0 -0.02197669508322727 -11.999879252573315 -0 1;
+	setAttr ".pm[0]" -type "matrix" 0.010988347541612599 -0.99993962628665989 0 0 0.99993962628665989 0.010988347541612599 0 0
+		 0 0 1 0 0 0 0 1;
+	setAttr ".pm[1]" -type "matrix" 3.6758790455948542e-15 -1 0 0 1 3.6758790455948542e-15 0 0
+		 0 0 1 0 -1.9998792525733193 0.021976695083216966 0 1;
+	setAttr ".pm[2]" -type "matrix" 3.6758790455948542e-15 -1 0 0 1 3.6758790455948542e-15 0 0
+		 0 0 1 0 -4.9998792525733196 0.02197669508320519 0 1;
+	setAttr ".pm[3]" -type "matrix" 3.6758790455948542e-15 -1 0 0 1 3.6758790455948542e-15 0 0
+		 0 0 1 0 -7.9998792525733196 0.021976695083194671 0 1;
+	setAttr ".pm[4]" -type "matrix" 0.99999999999999956 -3.2092384305570828e-16 0 0 3.2092384305570828e-16 0.99999999999999978 0 0
+		 0 0 0.99999999999999978 0 -0.02197669508322727 -11.999879252573315 0 1;
 	setAttr ".gm" -type "matrix" 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1;
 	setAttr -s 5 ".ma";
 	setAttr -s 5 ".dpf[0:4]"  3 3 3 3 3;
