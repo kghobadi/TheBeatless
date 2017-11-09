@@ -214,9 +214,7 @@ public class PlantLife : MonoBehaviour
         }
 
     }
-    public void CheckRules()
-    {
-    }
+    
 
 }
     
