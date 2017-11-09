@@ -23,7 +23,7 @@ public class PlantLife : MonoBehaviour
     int randomRotation;
     TerrainGridSystem tgs;
     Cell groundTile;
-    int cellIndex;
+    public int cellIndex;
     public List<Cell> neighbors = new List<Cell>();
     public List<int> neighborIndexes = new List<int>();
     public Texture2D growingTexture;
@@ -147,6 +147,7 @@ public class PlantLife : MonoBehaviour
         //}
 
     }
+
     IEnumerator Growth()
     {
         //for loop waits a number of days 
@@ -162,6 +163,7 @@ public class PlantLife : MonoBehaviour
         randomRotation = 60 * Random.Range(0, 6);
         hasGrown = true;
     }
+
     public void SpawnFruits()
     {
         for (int i = 0; i < fruitAmount; i += Random.Range(1, 2))
