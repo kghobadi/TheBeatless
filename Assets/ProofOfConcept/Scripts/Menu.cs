@@ -7,7 +7,7 @@ public class Menu : MonoBehaviour {
 
     bool isShowing;
 
-/*	void Start () {
+	void Start () {
         menuObject = GameObject.FindGameObjectWithTag("Menu");
         menuObject.SetActive(false);
         isShowing = false;
@@ -26,5 +26,5 @@ public class Menu : MonoBehaviour {
             isShowing = false;
         }
 
-	} */
+	}
 }

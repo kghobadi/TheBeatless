@@ -42,8 +42,10 @@ public class Ax : MonoBehaviour
                 if (hit.transform.gameObject.tag == "sequencer" && Vector3.Distance(_player.transform.position, hit.point) <= axDistance)
                 {
                     currentTree = hit.transform.gameObject;
+                    Cell tree = tgs.CellGetAtPosition(hit.point, true);
                     int index = currentTree.GetComponent<PlantLife>().cellIndex;
                     tgs.CellToggleRegionSurface(index, true, groundTexture);
+                    tgs.CellSetTag(tree, 0);
                     //play sound
                     //play falling animation
                     Destroy(hit.transform.gameObject);
