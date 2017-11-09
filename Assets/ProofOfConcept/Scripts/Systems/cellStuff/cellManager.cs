@@ -9,7 +9,8 @@ public class cellManager : MonoBehaviour
     TerrainGridSystem tgs;
     public Vector3 cellCenter;
 
-    public Texture2D groundTexture;
+    public Texture2D groundTexture, fertileTexture, plantedTexture;
+    public bool filledAllTextures;
 
     void Start()
     {
@@ -17,9 +18,15 @@ public class cellManager : MonoBehaviour
 
         for (int i = 0; i < tgs.cells.Count; i++)
         {
-            tgs.CellToggleRegionSurface(i, true, groundTexture);
-            if (tgs.CellGetTag(i) == 5)
-                tgs.CellSetCanCross(i, false);
+            if (tgs.CellGetTag(i) == 0)
+                tgs.CellToggleRegionSurface(i, true, groundTexture);
+            //if (tgs.CellGetTag(i) == 1)
+            //    tgs.CellToggleRegionSurface(i, true, fertileTexture);
+            //if (tgs.CellGetTag(i) == 2)
+            //tgs.CellToggleRegionSurface(i, true, plantedTexture);
+
+            //if (tgs.CellGetTag(i) == 5)
+            //tgs.CellSetCanCross(i, false);
         }
     }
 

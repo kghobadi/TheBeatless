@@ -4,14 +4,17 @@ using UnityEngine;
 using TGS;
 public class PlantLife : MonoBehaviour
 {
+    public bool plantedInEditor;
+    public Texture2D plantedTexture;
+
     bool fruitGrowing;
-    int fruitAmount;
+    public int fruitAmount;
     public int ageCounter;
     int growthDay;
 
-	AudioHelm.Sequencer seq;
+    AudioHelm.Sequencer seq;
 
-	playSequence playSeq;
+    playSequence playSeq;
 
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
@@ -34,14 +37,14 @@ public class PlantLife : MonoBehaviour
     public Texture2D growingTexture;
     public Texture2D groundTexture;
 
-	public Vector3[] neighbourPos;
-	List<AudioHelm.Note> note;
-	AudioHelm.Note newNote;
+    public Vector3[] neighbourPos;
+    List<AudioHelm.Note> note;
+    AudioHelm.Note newNote;
 
     void Awake()
     {
-		seq = GetComponent<AudioHelm.Sequencer> ();
-		playSeq = GetComponent<playSequence> ();
+        seq = GetComponent<AudioHelm.Sequencer>();
+        playSeq = GetComponent<playSequence>();
         //grabs Sun ref
         neighbourPos = new Vector3[6];
         sun = GameObject.FindGameObjectWithTag("Sun");
@@ -80,29 +83,39 @@ public class PlantLife : MonoBehaviour
                 //if all cells are occupied that’s an arp, arp beats triad
             }
         }
-        //Set age and fruit
-        ageCounter = 0;
-        fruitAmount = 0;
-        growthDay = 1;
+        if (plantedInEditor)
+        {
+            transform.position = tgs.CellGetPosition(cellIndex);
+            tgs.CellSetTag(cellIndex, 2);
+            tgs.CellToggleRegionSurface(cellIndex, true, plantedTexture);
+        }
+        else
+        {
+
+            //Set age and fruit
+            ageCounter = 0;
+            fruitAmount = 0;
+            growthDay = 1;
+        }
         StartCoroutine(Growth());
     }
 
     //	note = seq.GetAllNoteOnsInRange (0, 96);
 
     //	newNote = note [0];
-     void Update()
+    void Update()
     {
         if (hasGrown)
         {
             switch (ageCounter)
-            	{
-				case 1: //Sapling
-					hasGrown = false;
-				    playAud.changedSequence = false;
-					tgs.CellToggleRegionSurface (cellIndex, true, growingTexture);
-				    saplingClone = Instantiate (sapling, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
-					currentTree = saplingClone.transform;
-                    growthDay = Random.Range(2, 4); 
+            {
+                case 1: //Sapling
+                    hasGrown = false;
+                    playAud.changedSequence = false;
+                    tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
+                    saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
+                    currentTree = saplingClone.transform;
+                    growthDay = Random.Range(2, 4);
                     StartCoroutine(Growth());
                     break;
                 /*  case 1: //Young
@@ -115,23 +128,23 @@ public class PlantLife : MonoBehaviour
                       growthDay = Random.Range(3, 5);
                       StartCoroutine(Growth());
                       break; */
-              
-				case 2: //Adult
-					hasGrown = false;
-				    playAud.changedSequence = false;
-					Destroy (saplingClone);
-				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
-					currentTree = adultClone.transform;
+
+                case 2: //Adult
+                    hasGrown = false;
+                    playAud.changedSequence = false;
+                    Destroy(saplingClone);
+                    adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
+                    currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 4);
                     growthDay = Random.Range(5, 10);
                     StartCoroutine(Growth());
                     break;
-				case 3: // Old
-					hasGrown = false;
-					playAud.changedSequence = false;
-					Destroy (adultClone);
-				    oldClone = Instantiate (old, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
-					currentTree = oldClone.transform;
+                case 3: // Old
+                    hasGrown = false;
+                    playAud.changedSequence = false;
+                    Destroy(adultClone);
+                    oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
+                    currentTree = oldClone.transform;
                     fruitAmount = Random.Range(0, 2);
                     growthDay = Random.Range(3, 10);
                     StartCoroutine(Growth());
@@ -154,19 +167,19 @@ public class PlantLife : MonoBehaviour
                     break;
             }
         }
-//		seq.OnNoteOn (newNote);
-		//	currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
-		//} else {
-		//	currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
-			
-		//}
-		//}
-	}
+        //		seq.OnNoteOn (newNote);
+        //	currentTree.localScale = Vector3.Lerp (new Vector3(1.2f, 1.2f, 1.2f), new Vector3(1.4f, 1.4f, 1.4f), Mathf.PingPong(Time.time, 1));
+        //} else {
+        //	currentTree.localScale = Vector3.Lerp (currentTree.localScale, new Vector3 (1f, 1f, 1f), Time.deltaTime);
 
-/*	AudioHelm.Sequencer.NoteAction(newNote) {
+        //}
+        //}
+    }
+
+    /*	AudioHelm.Sequencer.NoteAction(newNote) {
 
 
-	} */
+        } */
 
 
 
