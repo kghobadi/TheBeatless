@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class camMouseLook : MonoBehaviour {
+public class camMouseLook : MonoBehaviour
+{
 
     Vector2 mouseLook;
     Vector2 smoothV;
@@ -14,16 +15,17 @@ public class camMouseLook : MonoBehaviour {
 
     GameObject character;
 
-	void Start () {
+    void Start()
+    {
         character = transform.parent.gameObject;
 
-        sensitivityX = 3.0f;
-        sensitivityY = 3.0f;
-        
-		
-	}
-	
-	void Update () {
+
+
+
+    }
+
+    void Update()
+    {
 
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -38,6 +40,6 @@ public class camMouseLook : MonoBehaviour {
 
         transform.localRotation = Quaternion.AngleAxis(-mouseLook.y, Vector3.right);
         character.transform.localRotation = Quaternion.AngleAxis(mouseLook.x, character.transform.up);
-	}
+    }
 
 }

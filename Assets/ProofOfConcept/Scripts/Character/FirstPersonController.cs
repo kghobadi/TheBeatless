@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstPersonController : MonoBehaviour {
+public class FirstPersonController : MonoBehaviour
+{
 
     public float speed;
     public float sprintSpeed;
@@ -20,7 +21,7 @@ public class FirstPersonController : MonoBehaviour {
     //public AudioClip mining;
 
     //public ParticleSystem rockBits;
-    
+
 
     float moveForwardBackward;
     float moveLeftRight;
@@ -32,25 +33,27 @@ public class FirstPersonController : MonoBehaviour {
     //public bool IAmMining = false;
 
 
-    void Start () {
+    void Start()
+    {
         player = GetComponent<CharacterController>();
 
     }
-	
-	void Update () {
-        if(Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(KeyCode.RightShift))
-        {
-            speed = sprintSpeed;
-        }
-        else
-        {
-            speed = 10f;
-        }
+
+    void Update()
+    {
+        //if(Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(KeyCode.RightShift))
+        //{
+        //    speed = sprintSpeed;
+        //}
+        //else
+        //{
+        //    speed = 10f;
+        //}
         moveForwardBackward = Input.GetAxis("Vertical") * speed;
         moveLeftRight = Input.GetAxis("Horizontal") * speed;
         moveUpDown = Input.GetAxis("Mouse ScrollWheel") * scrollSpeed;
 
-        Vector3 movement = new Vector3(moveLeftRight, moveUpDown , moveForwardBackward);
+        Vector3 movement = new Vector3(moveLeftRight, moveUpDown, moveForwardBackward);
 
         movement = transform.rotation * movement;
         player.Move(movement * Time.deltaTime);
@@ -61,5 +64,5 @@ public class FirstPersonController : MonoBehaviour {
 
     }
 
-   
+
 }
