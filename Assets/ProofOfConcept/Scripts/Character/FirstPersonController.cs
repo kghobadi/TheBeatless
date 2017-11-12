@@ -9,6 +9,8 @@ public class FirstPersonController : MonoBehaviour {
     public float scrollSpeed = 2.0f;
     CharacterController player;
 
+    public bool isAwake;
+
     public bool isHoldingAnimal;
     public bool isHoldingFood;
     public bool isHoldingSeed;

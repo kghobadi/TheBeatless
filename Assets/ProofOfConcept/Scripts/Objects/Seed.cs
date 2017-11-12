@@ -36,8 +36,8 @@ public class Seed : Interactable
 
     bool textureShowing;
 
-    private GameObject sun;
-    private Sun sunScript;
+    private GameObject bed;
+    private Bed sleepScript;
 
     public int decompositionDaysMin;
     public int decompositionDaysMax;
@@ -52,8 +52,8 @@ public class Seed : Interactable
         base.Start();
 
         //grabs Sun ref
-        sun = GameObject.FindGameObjectWithTag("Sun");
-        sunScript = sun.GetComponent<Sun>();
+        bed = GameObject.FindGameObjectWithTag("Bed");
+        sleepScript = bed.GetComponent<Bed>();
 
         //Inventory Manager reference
         inventMan = GetComponent<inventoryMan>();
@@ -206,7 +206,7 @@ public class Seed : Interactable
         //for loops waits given # of days
         for (int i = 0; i < decompositionDay; i++)
         {
-            yield return new WaitUntil(() => sunScript.dayPassed == true);
+            yield return new WaitUntil(() => sleepScript.dayPassed == true);
 
         }
         Destroy(gameObject);
