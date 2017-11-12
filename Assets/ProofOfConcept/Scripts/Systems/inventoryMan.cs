@@ -84,7 +84,7 @@ public class inventoryMan : Interactable
     {
         transform.SetParent(_player.transform);
 
-        Vector3 armPosition = new Vector3(0.25f, 0f, 1f);
+        Vector3 armPosition = new Vector3(-0.5f, 0f, 1f);
 
         transform.localPosition = armPosition;
         transform.localScale = transform.localScale * 2;
