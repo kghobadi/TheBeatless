@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    protected GameObject _player; 
+    protected GameObject _player;
     protected GameObject cammy; // camera reference
     protected SpriteRenderer symbol; // 2d sprite renderer icon reference
     private Sprite normalSprite;
@@ -24,7 +24,7 @@ public abstract class Interactable : MonoBehaviour
 
     public bool interactable;
 
-	protected FirstPersonController playerControl;
+    protected FirstPersonController playerControl;
 
     public virtual void Start()
     {
@@ -34,9 +34,9 @@ public abstract class Interactable : MonoBehaviour
 
         //loads Cursor Sprites
         normalSprite = Resources.Load<Sprite>("CursorSprites/crosshair");
-        interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked") ;
+        interactSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
         clickSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
-//        Debug.Log(normalSprite);
+        //        Debug.Log(normalSprite);
         symbol.sprite = normalSprite;
 
         soundBoard = cammy.GetComponent<AudioSource>(); //assigns audio source
@@ -44,10 +44,10 @@ public abstract class Interactable : MonoBehaviour
         playerControl = _player.GetComponent<FirstPersonController>();
         //startScale = transform.localScale;
     }
-    
+
     void OnMouseEnter()
     {
-		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable && !playerControl.isHoldingAnimal)
+        if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable && !playerControl.isHoldingAnimal)
         {
             cammy.GetComponent<camMouseLook>().sensitivityX = 1.5f;
             cammy.GetComponent<camMouseLook>().sensitivityY = 1.5f;
@@ -62,8 +62,8 @@ public abstract class Interactable : MonoBehaviour
         if (interactable)
         {
             symbol.sprite = normalSprite;
-            cammy.GetComponent<camMouseLook>().sensitivityX = 2f;
-            cammy.GetComponent<camMouseLook>().sensitivityY = 2f;
+            //cammy.GetComponent<camMouseLook>().sensitivityX = 2f;
+            //cammy.GetComponent<camMouseLook>().sensitivityY = 2f;
             //transform.localScale = startScale;
         }
     }
@@ -73,19 +73,19 @@ public abstract class Interactable : MonoBehaviour
         symbol.sprite = clickSprite;
         Play();
         symbol.sprite = normalSprite;
-       // transform.localScale = startScale;
+        // transform.localScale = startScale;
     }
 
-   
+
 
     void OnMouseDown()
     {
-		if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable)
+        if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistanceActive && interactable)
         {
             handleClickSuccess();
 
         }
-       
+
     }
 
     void Play()

@@ -17,17 +17,14 @@ public class NewSeed : Interactable
     public float counter; // for planting 'animation'
     public float fallSpeed;
 
-    inventoryMan inventMan;
     Vector3 targetPos;
-
-    Inventory invent;
 
     TerrainGridSystem tgs;
 
     public bool underPlayerControl;
 
     //All possible texture references. Can use resources.Load for this stuff. 
-    public Texture2D fertileTexture;
+    public Texture2D groundTexture;
     public Texture2D plantedTexture;
     public Texture2D canClickTexture;
 
@@ -41,9 +38,9 @@ public class NewSeed : Interactable
     private GameObject bed;
     private Bed sleepScript;
 
-    public int decompositionDaysMin;
-    public int decompositionDaysMax;
-    int decompositionDay;
+    //public int decompositionDaysMin;
+    //public int decompositionDaysMax;
+    //int decompositionDay;
 
     int currentCellIndex;
     int previousCellIndex;
@@ -56,11 +53,11 @@ public class NewSeed : Interactable
         //grabs Sun ref
         bed = GameObject.FindGameObjectWithTag("Bed");
         sleepScript = bed.GetComponent<Bed>();
-        
+
         interactable = true;
 
         //Random decompDay
-        decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
+        //decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
 
         //TerrainGridSystem Reference
         tgs = TerrainGridSystem.instance;
@@ -76,7 +73,7 @@ public class NewSeed : Interactable
         base.handleClickSuccess();
         FindPlayerArm();
         underPlayerControl = true;
-        
+
     }
 
     void Update()
@@ -91,9 +88,11 @@ public class NewSeed : Interactable
             //Checks if raycast hits
             if (Physics.Raycast(ray, out hit))
             {
+                Debug.Log("onyourfaceKas");
                 //Checks if the hit is a ground tile and within Distance for planting
                 if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinPlantingRange && !textureShowing)
                 {
+
                     //grabs Cell tile and index
                     Cell fertile = tgs.CellGetAtPosition(hit.point, true);
                     int cellIndex = tgs.CellGetIndex(fertile);
@@ -117,14 +116,14 @@ public class NewSeed : Interactable
                             targetPos = hit.point;
                             playerControl.isHoldingSeed = false;
                             underPlayerControl = false;
-                            
+
                         }
 
                     }
 
                     //If it's a new cell, set last cell back to fertileTexture
                     if (tgs.CellGetTag(previousCellIndex) == 0)
-                        StartCoroutine(ChangeTexture(currentCellIndex, fertileTexture));
+                        StartCoroutine(ChangeTexture(currentCellIndex, groundTexture));
                 }
 
             }
@@ -141,7 +140,7 @@ public class NewSeed : Interactable
             //checks if cell is Fertile
             if (tgs.CellGetTag(cellIndex) == 0 || planting)
             {
-//                Debug.Log("planter");
+                //                Debug.Log("planter");
                 //Centers seed on tile
                 transform.position = new Vector3(tgs.CellGetPosition(cellIndex).x, transform.position.y, tgs.CellGetPosition(cellIndex).z);
                 //Calls PlantSeed function on selected tile
@@ -160,7 +159,7 @@ public class NewSeed : Interactable
 
     public void PlantSeed(Cell tile, int index)
     {
-      //  Debug.Log("planted Seed");
+        //  Debug.Log("planted Seed");
         //unparents from player control   
         transform.SetParent(null);
 
@@ -213,7 +212,7 @@ public class NewSeed : Interactable
 
     //    }
     //    Destroy(gameObject);
-        
+
     //}
 
     void FindPlayerArm()
