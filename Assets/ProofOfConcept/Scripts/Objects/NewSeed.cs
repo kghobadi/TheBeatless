@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class Seed : Interactable
+public class NewSeed : Interactable
 {
 
     public bool plantSeed;
@@ -23,6 +23,8 @@ public class Seed : Interactable
     Inventory invent;
 
     TerrainGridSystem tgs;
+
+    public bool underPlayerControl;
 
     //All possible texture references. Can use resources.Load for this stuff. 
     public Texture2D fertileTexture;
@@ -54,12 +56,8 @@ public class Seed : Interactable
         //grabs Sun ref
         bed = GameObject.FindGameObjectWithTag("Bed");
         sleepScript = bed.GetComponent<Bed>();
-
-        //Inventory Manager reference
-        inventMan = GetComponent<inventoryMan>();
-        inventMan.isSingle = false;
-
-        inventMan.interactable = true;
+        
+        interactable = true;
 
         //Random decompDay
         decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
@@ -69,16 +67,22 @@ public class Seed : Interactable
 
         gameObject.name = "seed" + plant.name;
 
-        invent = playerControl.gameObject.GetComponent<Inventory>();
-
-        StartCoroutine(Decompose());
+        //StartCoroutine(Decompose());
     }
 
+
+    public override void handleClickSuccess()
+    {
+        base.handleClickSuccess();
+        FindPlayerArm();
+        underPlayerControl = true;
+        
+    }
 
     void Update()
     {
         //Checks if has been picked up and equipped 
-        if (inventMan.underPlayerControl)
+        if (underPlayerControl)
         {
             //Sends out raycast
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -101,7 +105,7 @@ public class Seed : Interactable
                     }
 
                     //checks if cell is fertile 
-                    if (tgs.CellGetTag(cellIndex) == 1)
+                    if (tgs.CellGetTag(cellIndex) == 0)
                     {
                         //Sets texture to clickable
                         tgs.CellToggleRegionSurface(cellIndex, true, canClickTexture);
@@ -112,15 +116,14 @@ public class Seed : Interactable
                             plantSeed = true;
                             targetPos = hit.point;
                             playerControl.isHoldingSeed = false;
-                            inventMan.underPlayerControl = false;
-
-                            invent.usedNowTakeAgain(inventMan.slotNumRetake);
+                            underPlayerControl = false;
+                            
                         }
 
                     }
 
                     //If it's a new cell, set last cell back to fertileTexture
-                    if (tgs.CellGetTag(previousCellIndex) == 1)
+                    if (tgs.CellGetTag(previousCellIndex) == 0)
                         StartCoroutine(ChangeTexture(currentCellIndex, fertileTexture));
                 }
 
@@ -136,7 +139,7 @@ public class Seed : Interactable
             int cellIndex = tgs.CellGetIndex(plantTile);
 
             //checks if cell is Fertile
-            if (tgs.CellGetTag(cellIndex) == 1 || planting)
+            if (tgs.CellGetTag(cellIndex) == 0 || planting)
             {
 //                Debug.Log("planter");
                 //Centers seed on tile
@@ -163,7 +166,7 @@ public class Seed : Interactable
 
         planting = true;
         //Set tile tag to planted
-        tgs.CellSetTag(tile, 2);
+        tgs.CellSetTag(tile, 1);
 
         //spirals seed downward into the ground
         if (counter > 0)
@@ -201,18 +204,30 @@ public class Seed : Interactable
         textureShowing = false;
     }
     //Causes fruit to decay and either plant a seed on a fertile tile, or leave behind a seed for pick up
-    IEnumerator Decompose()
-    {
-        //for loops waits given # of days
-        for (int i = 0; i < decompositionDay; i++)
-        {
-            yield return new WaitUntil(() => sleepScript.dayPassed == true);
+    //IEnumerator Decompose()
+    //{
+    //    //for loops waits given # of days
+    //    for (int i = 0; i < decompositionDay; i++)
+    //    {
+    //        yield return new WaitUntil(() => sleepScript.dayPassed == true);
 
-        }
-        Destroy(gameObject);
+    //    }
+    //    Destroy(gameObject);
         
-    }
+    //}
 
+    void FindPlayerArm()
+    {
+        transform.SetParent(_player.transform);
+
+        Vector3 armPosition = new Vector3(-0.5f, 0f, 1f);
+
+        transform.localPosition = armPosition;
+        transform.localScale = transform.localScale * 2;
+        //gameObject.layer = originalLayer;
+        // Can show this with tiny animation and Arm movement
+
+    }
 
 
 }

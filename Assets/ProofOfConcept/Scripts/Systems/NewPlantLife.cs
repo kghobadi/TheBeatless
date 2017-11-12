@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TGS;
-public class PlantLife : MonoBehaviour
+public class NewPlantLife : MonoBehaviour
 {
     public bool plantedInEditor;
     //public Texture2D plantedTexture;
@@ -10,7 +10,7 @@ public class PlantLife : MonoBehaviour
     bool fruitGrowing;
     public int fruitAmount;
     public int ageCounter;
-    int growthDay;
+    int growthPeriod;
 
     AudioHelm.Sequencer seq;
 
@@ -73,7 +73,7 @@ public class PlantLife : MonoBehaviour
             //this gives you neighbor cell position
             //can be used to see which cell you’re being given
             //raycast to this position to get the plant collider and get the sequencer
-            if (tgs.CellGetTag(index) == 2)
+            if (tgs.CellGetTag(index) == 1)
             {
                 //this cell has a tree planted, but don’t run this in start
                 //send to an array of “plants nearby”
@@ -87,7 +87,7 @@ public class PlantLife : MonoBehaviour
         {
             ageCounter -= 1;
             transform.position = tgs.CellGetPosition(cellIndex);
-            tgs.CellSetTag(cellIndex, 2);
+            tgs.CellSetTag(cellIndex, 1);
             tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
         }
         else
@@ -96,7 +96,7 @@ public class PlantLife : MonoBehaviour
             //Set age and fruit
             ageCounter = 0;
             fruitAmount = 0;
-            growthDay = 1;
+            growthPeriod = 1;
         }
         StartCoroutine(Growth());
     }
@@ -116,7 +116,7 @@ public class PlantLife : MonoBehaviour
                     tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
                     saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = saplingClone.transform;
-                    growthDay = Random.Range(2, 4);
+                    growthPeriod = Random.Range(2, 4);
                     StartCoroutine(Growth());
                     break;
                 /*  case 1: //Young
@@ -136,8 +136,8 @@ public class PlantLife : MonoBehaviour
 					Destroy (saplingClone);
 				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = adultClone.transform;
-                    fruitAmount = Random.Range(0, 2);
-                    growthDay = Random.Range(3, 6);
+                    //fruitAmount = Random.Range(0, 2);
+                    growthPeriod = Random.Range(3, 6);
                     StartCoroutine(Growth());
                     break;
                 case 3: // Old
@@ -146,8 +146,8 @@ public class PlantLife : MonoBehaviour
                     Destroy(adultClone);
                     oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = oldClone.transform;
-                    fruitAmount = Random.Range(0, 2);
-                    growthDay = Random.Range(3, 10);
+                    //fruitAmount = Random.Range(0, 2);
+                    growthPeriod = Random.Range(3, 10);
                     StartCoroutine(Growth());
                     break;
                 case 4: // Dead
@@ -187,9 +187,9 @@ public class PlantLife : MonoBehaviour
     IEnumerator Growth()
     {
         //for loop waits a number of days 
-        for (int i = 0; i < growthDay; i++)
+        for (int i = 0; i < growthPeriod; i++)
         {
-            SpawnFruits();
+            //SpawnFruits();
             //if (fruitAmount > 0)
                 //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
             yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time
@@ -201,20 +201,20 @@ public class PlantLife : MonoBehaviour
         hasGrown = true;
     }
 
-    public void SpawnFruits()
-    {
-        for (int i = 0; i < fruitAmount; i += Random.Range(1, 2))
-        {
-            //fruit starting pos and Instantiate
-            Vector3 xyz = Random.insideUnitSphere * 1;
-            Vector3 spawnPosition = xyz + tgs.CellGetPosition(neighborIndexes[i]) + new Vector3(0, fruitYpos, 0);
-            fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
-            //random starting scale for fruit
-            float randomStartScale = Random.Range(0.1f, 0.3f);
-            fruitClone.transform.localScale = new Vector3(randomStartScale, randomStartScale, randomStartScale);
-        }
+    //public void SpawnFruits()
+    //{
+    //    for (int i = 0; i < fruitAmount; i += Random.Range(1, 2))
+    //    {
+    //        //fruit starting pos and Instantiate
+    //        Vector3 xyz = Random.insideUnitSphere * 1;
+    //        Vector3 spawnPosition = xyz + tgs.CellGetPosition(neighborIndexes[i]) + new Vector3(0, fruitYpos, 0);
+    //        fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
+    //        //random starting scale for fruit
+    //        float randomStartScale = Random.Range(0.1f, 0.3f);
+    //        fruitClone.transform.localScale = new Vector3(randomStartScale, randomStartScale, randomStartScale);
+    //    }
 
-    }
+    //}
     
 
 }

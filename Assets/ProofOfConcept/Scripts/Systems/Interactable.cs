@@ -13,7 +13,7 @@ public abstract class Interactable : MonoBehaviour
 
     public Vector3 startScale;
     public float scaleFactor;
-    public Material outlineShader;
+    //public Material outlineShader;
 
 
     protected float withinDistance = 10f;
@@ -92,6 +92,8 @@ public abstract class Interactable : MonoBehaviour
     {
         soundBoard.PlayOneShot(InteractSound);
     }
+
+
 }
 
 
