@@ -21,8 +21,8 @@ public class PlantLife : MonoBehaviour
     private Transform currentTree;
     public GameObject fruit;
     GameObject fruitClone;
-    private GameObject sun;
-    private Sun sunScript;
+    private GameObject bed;
+    private Bed sleepScript;
     bool hasGrown;
     private AudioSource treeSounds;
     public AudioClip growthSound;
@@ -47,8 +47,8 @@ public class PlantLife : MonoBehaviour
         playSeq = GetComponent<playSequence>();
         //grabs Sun ref
         neighbourPos = new Vector3[6];
-        sun = GameObject.FindGameObjectWithTag("Sun");
-        sunScript = sun.GetComponent<Sun>();
+        bed = GameObject.FindGameObjectWithTag("Bed");
+        sleepScript = bed.GetComponent<Bed>();
     }
     void Start()
     {
@@ -137,7 +137,7 @@ public class PlantLife : MonoBehaviour
 				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
 					currentTree = adultClone.transform;
                     fruitAmount = Random.Range(0, 2);
-                    growthDay = Random.Range(5, 10);
+                    growthDay = Random.Range(3, 6);
                     StartCoroutine(Growth());
                     break;
                 case 3: // Old
@@ -192,7 +192,7 @@ public class PlantLife : MonoBehaviour
             SpawnFruits();
             //if (fruitAmount > 0)
                 //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
-            yield return new WaitUntil(() => sunScript.dayPassed == true); //Can be changed so that it is not real time
+            yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time
            //s yield return new WaitForSeconds(1);
         }
         Debug.Log("age +1");
