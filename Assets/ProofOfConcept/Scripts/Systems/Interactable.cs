@@ -11,8 +11,8 @@ public abstract class Interactable : MonoBehaviour
     private Sprite interactSprite;
     private Sprite clickSprite;
 
-    public Vector3 startScale;
-    public float scaleFactor;
+    //public Vector3 startScale;
+    //public float scaleFactor;
     //public Material outlineShader;
 
 
@@ -47,7 +47,7 @@ public abstract class Interactable : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable && !playerControl.isHoldingAnimal)
+        if (Vector3.Distance(transform.position, _player.transform.position) <= withinDistance && interactable)
         {
             cammy.GetComponent<camMouseLook>().sensitivityX = 1.5f;
             cammy.GetComponent<camMouseLook>().sensitivityY = 1.5f;
