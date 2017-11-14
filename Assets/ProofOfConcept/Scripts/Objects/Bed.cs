@@ -8,8 +8,9 @@ public class Bed : Interactable
 
     bool setDayPassed;
     float sleepCounter;
+    public float sleepLength;
     float alphaVal;
-
+    
     public Image sleepBlack;
 
     FirstPersonController fpc;
@@ -24,7 +25,7 @@ public class Bed : Interactable
         cml = Camera.main.GetComponent<camMouseLook>();
         fpc.isAwake = true;
         interactable = true;
-        sleepCounter = 10;
+        sleepCounter = sleepLength;
 
         originalPSpeed = fpc.speed;
     }
@@ -52,7 +53,7 @@ public class Bed : Interactable
             if (sleepCounter < 0)
             {
                 fpc.isAwake = true;
-                sleepCounter = 10;
+                sleepCounter = sleepLength;
             }
 
         }
