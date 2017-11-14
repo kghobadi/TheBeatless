@@ -73,6 +73,7 @@ public class NewSeed : Interactable
         base.handleClickSuccess();
         FindPlayerArm();
         underPlayerControl = true;
+        playerControl.isHoldingSeed = true;
 
     }
 

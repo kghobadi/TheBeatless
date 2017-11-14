@@ -20,7 +20,7 @@ public class Computer : Interactable {
     public override void handleClickSuccess()
     {
         //Picks up seed
-        if (!playerControl.isHoldingAnimal && !playerControl.isHoldingFood && !playerControl.isHoldingSeed)
+        if (!playerControl.isHoldingSeed)
         {
             base.handleClickSuccess();
             Debug.Log("yes");

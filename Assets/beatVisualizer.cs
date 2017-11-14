@@ -12,7 +12,7 @@ public class beatVisualizer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		progress = Mathf.Lerp(progress, 0.0f, Time.deltaTime);
-		transform.localScale = Vector3.Lerp (new Vector3 (1, 1, 1), new Vector3 (3, 3, 3), progress);
+		transform.localScale = Vector3.Lerp (new Vector3 (1, 1, 1), new Vector3 (2, 2, 2), progress * 2);
 	}
 }
 }
