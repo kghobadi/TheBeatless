@@ -83,6 +83,8 @@ public class NewPlantLife : MonoBehaviour
                 //if all cells are occupied that’s an arp, arp beats triad
             }
         }
+
+
         if (plantedInEditor)
         {
             ageCounter -= 1;
