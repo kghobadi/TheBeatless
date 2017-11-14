@@ -43,7 +43,7 @@ public class Ax : MonoBehaviour
                 {
                     currentTree = hit.transform.gameObject;
                     Cell tree = tgs.CellGetAtPosition(hit.point, true);
-                    int index = currentTree.GetComponent<PlantLife>().cellIndex;
+                    int index = currentTree.GetComponent<NewPlantLife>().cellIndex;
                     tgs.CellToggleRegionSurface(index, true, groundTexture);
                     tgs.CellSetTag(tree, 0);
                     //play sound

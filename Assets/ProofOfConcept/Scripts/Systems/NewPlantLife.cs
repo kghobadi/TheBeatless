@@ -7,27 +7,27 @@ public class NewPlantLife : MonoBehaviour
     public bool plantedInEditor;
     //public Texture2D plantedTexture;
 
-    bool fruitGrowing;
-    public int fruitAmount;
+    //bool fruitGrowing;
+    //public int fruitAmount;
     public int ageCounter;
     int growthPeriod;
 
     AudioHelm.Sequencer seq;
 
-    playSequence playSeq;
+    //playSequence playSeq;
 
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
     private Transform currentTree;
-    public GameObject fruit;
-    GameObject fruitClone;
+    //public GameObject fruit;
+    //GameObject fruitClone;
     private GameObject bed;
     private Bed sleepScript;
     bool hasGrown;
     private AudioSource treeSounds;
-    public AudioClip growthSound;
-    playSequence playAud;
-    public float fruitYpos;
+    //public AudioClip growthSound;
+	newSequencePlay playAud;
+    //public float fruitYpos;
     int randomRotation;
     TerrainGridSystem tgs;
     Cell groundTile;
@@ -44,7 +44,7 @@ public class NewPlantLife : MonoBehaviour
     void Awake()
     {
         seq = GetComponent<AudioHelm.Sequencer>();
-        playSeq = GetComponent<playSequence>();
+		playAud = GetComponent<newSequencePlay>();
         //grabs Sun ref
         neighbourPos = new Vector3[6];
         bed = GameObject.FindGameObjectWithTag("Bed");
@@ -52,7 +52,7 @@ public class NewPlantLife : MonoBehaviour
     }
     void Start()
     {
-        playAud = GetComponent<playSequence>();
+       // playAud = GetComponent<playSequence>();
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
         //TerrainGridSystem ref
@@ -83,6 +83,8 @@ public class NewPlantLife : MonoBehaviour
                 //if all cells are occupied that’s an arp, arp beats triad
             }
         }
+
+
         if (plantedInEditor)
         {
             ageCounter -= 1;
@@ -95,7 +97,7 @@ public class NewPlantLife : MonoBehaviour
 
             //Set age and fruit
             ageCounter = 0;
-            fruitAmount = 0;
+            //fruitAmount = 0;
             growthPeriod = 1;
         }
         StartCoroutine(Growth());
@@ -104,7 +106,7 @@ public class NewPlantLife : MonoBehaviour
     //	note = seq.GetAllNoteOnsInRange (0, 96);
 
     //	newNote = note [0];
-     void Update()
+    void Update()
     {
         if (hasGrown)
         {
@@ -129,20 +131,20 @@ public class NewPlantLife : MonoBehaviour
                       growthDay = Random.Range(3, 5);
                       StartCoroutine(Growth());
                       break; */
-              
-				case 2: //Adult
-					hasGrown = false;
-				    playAud.changedSequence = false;
-					Destroy (saplingClone);
-				    adultClone = Instantiate (adult, transform.position, Quaternion.Euler (0, randomRotation, 0), transform);
-					currentTree = adultClone.transform;
+
+                case 2: //Adult
+                    hasGrown = false;
+                    playAud.changedSequence = false;
+                    Destroy(saplingClone);
+                    adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
+                    currentTree = adultClone.transform;
                     //fruitAmount = Random.Range(0, 2);
                     growthPeriod = Random.Range(3, 6);
                     StartCoroutine(Growth());
                     break;
                 case 3: // Old
                     hasGrown = false;
-                    playAud.changedSequence = false;
+                   playAud.changedSequence = false;
                     Destroy(adultClone);
                     oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = oldClone.transform;
@@ -191,9 +193,9 @@ public class NewPlantLife : MonoBehaviour
         {
             //SpawnFruits();
             //if (fruitAmount > 0)
-                //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
+            //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
             yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time
-           //s yield return new WaitForSeconds(1);
+                                                                             //s yield return new WaitForSeconds(1);
         }
         Debug.Log("age +1");
         ageCounter += 1;
@@ -215,7 +217,6 @@ public class NewPlantLife : MonoBehaviour
     //    }
 
     //}
-    
+
 
 }
-    

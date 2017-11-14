@@ -8,47 +8,68 @@ public class Bed : Interactable
 
     bool setDayPassed;
     float sleepCounter;
-
+    public float sleepLength;
+    float alphaVal;
+    
     public Image sleepBlack;
 
     FirstPersonController fpc;
+    camMouseLook cml;
+
+    float originalPSpeed;
 
     public override void Start()
     {
         base.Start();
         fpc = _player.GetComponent<FirstPersonController>();
+        cml = Camera.main.GetComponent<camMouseLook>();
         fpc.isAwake = true;
         interactable = true;
-        sleepCounter = 10;
+        sleepCounter = sleepLength;
+
+        originalPSpeed = fpc.speed;
     }
 
     void Update()
     {
         if (!fpc.isAwake)
         {
+            alphaVal += 0.6f * Time.deltaTime;
             interactable = false;
-            sleepCounter -= 1 * Time.deltaTime;
-            if(sleepCounter < 0)
+            fpc.speed = 0;
+            cml.enabled = false;
+
+            if (!setDayPassed)
             {
-                if (!setDayPassed)
-                {
-                    dayPassed = true;
-                    setDayPassed = true;
-                }
-                else
-                {
-                    dayPassed = false;
-                    fpc.isAwake = true;
-                    sleepCounter = 10;
-                }
+                dayPassed = true;
+                setDayPassed = true;
             }
-            
+            else
+            {
+                dayPassed = false;
+            }
+
+            sleepCounter -= 1 * Time.deltaTime;
+            if (sleepCounter < 0)
+            {
+                fpc.isAwake = true;
+                sleepCounter = sleepLength;
+            }
+
         }
         else
         {
+            alphaVal -= 0.6f * Time.deltaTime;
             interactable = true;
-            sleepBlack.color = Color.Lerp(sleepBlack.color, Color.clear, Time.deltaTime);
+            fpc.speed = originalPSpeed;
+            cml.enabled = true;
+            setDayPassed = false;
         }
+
+        sleepBlack.color = new Color(0f, 0f, 0f, alphaVal);
+
+        alphaVal = Mathf.Clamp01(alphaVal);
+
     }
 
     public override void handleClickSuccess()
@@ -56,10 +77,9 @@ public class Bed : Interactable
         base.handleClickSuccess();
         if (fpc.isAwake)
         {
-            sleepBlack.color = Color.Lerp(sleepBlack.color, Color.black, Time.deltaTime);
             fpc.isAwake = false;
+            setDayPassed = false;
         }
-        
 
     }
 
