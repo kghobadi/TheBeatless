@@ -25,41 +25,41 @@ public class leftArmManager : MonoBehaviour
 
         //holdingSomething = checkIfHolding();
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && recorder != null)
-        {
-            if (objectHeld != recorder)// && !holdingSomething)
-            {
-                putAwayEverything();
-                equipRecorder();
+        //if (Input.GetKeyDown(KeyCode.Alpha1) && recorder != null)
+        //{
+        //    if (objectHeld != recorder)// && !holdingSomething)
+        //    {
+        //        putAwayEverything();
+        //        equipRecorder();
 
-                //objectHeld = recorder;
+        //        //objectHeld = recorder;
 
-            }
-            else if (objectHeld == recorder)
-            {
-                putAwayRecorder();
-                //objectHeld = null;
+        //    }
+        //    else if (objectHeld == recorder)
+        //    {
+        //        putAwayRecorder();
+        //        //objectHeld = null;
 
-            }
-        }
+        //    }
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Alpha2) && shovel != null)
-        {
-            if (objectHeld != shovel)
-            {
-                putAwayEverything();
-                equipShovel();
+        //if (Input.GetKeyDown(KeyCode.Alpha2) && shovel != null)
+        //{
+        //    if (objectHeld != shovel)
+        //    {
+        //        putAwayEverything();
+        //        equipShovel();
 
-                //objectHeld = shovel;
+        //        //objectHeld = shovel;
 
-            }
-            else if (objectHeld == shovel)
-            {
-                putAwayShovel();
-                //objectHeld = null;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && ax != null)
+        //    }
+        //    else if (objectHeld == shovel)
+        //    {
+        //        putAwayShovel();
+        //        //objectHeld = null;
+        //    }
+        //}
+        if (Input.GetKeyDown(KeyCode.Alpha1) && ax != null)
         {
             if (objectHeld != ax)
             {
@@ -69,7 +69,7 @@ public class leftArmManager : MonoBehaviour
                 //objectHeld = shovel;
 
             }
-            else if (objectHeld == shovel)
+            else if (objectHeld == ax)
             {
                 putAwayAx();
                 //objectHeld = null;

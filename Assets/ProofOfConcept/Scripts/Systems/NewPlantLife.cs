@@ -14,7 +14,7 @@ public class NewPlantLife : MonoBehaviour
 
     AudioHelm.Sequencer seq;
 
-    playSequence playSeq;
+    //playSequence playSeq;
 
     public GameObject sapling, young, adult, old, stump;
     private GameObject saplingClone, youngClone, adultClone, oldClone, stumpClone; // can still add or remove from life cycle
@@ -26,7 +26,7 @@ public class NewPlantLife : MonoBehaviour
     bool hasGrown;
     private AudioSource treeSounds;
     //public AudioClip growthSound;
-    playSequence playAud;
+	newSequencePlay playAud;
     //public float fruitYpos;
     int randomRotation;
     TerrainGridSystem tgs;
@@ -44,7 +44,7 @@ public class NewPlantLife : MonoBehaviour
     void Awake()
     {
         seq = GetComponent<AudioHelm.Sequencer>();
-        playSeq = GetComponent<playSequence>();
+		playAud = GetComponent<newSequencePlay>();
         //grabs Sun ref
         neighbourPos = new Vector3[6];
         bed = GameObject.FindGameObjectWithTag("Bed");
@@ -52,7 +52,7 @@ public class NewPlantLife : MonoBehaviour
     }
     void Start()
     {
-        playAud = GetComponent<playSequence>();
+       // playAud = GetComponent<playSequence>();
         //grabs Audio 
         treeSounds = gameObject.AddComponent<AudioSource>();
         //TerrainGridSystem ref
@@ -83,6 +83,8 @@ public class NewPlantLife : MonoBehaviour
                 //if all cells are occupied that’s an arp, arp beats triad
             }
         }
+
+
         if (plantedInEditor)
         {
             ageCounter -= 1;
@@ -142,7 +144,7 @@ public class NewPlantLife : MonoBehaviour
                     break;
                 case 3: // Old
                     hasGrown = false;
-                    playAud.changedSequence = false;
+                   playAud.changedSequence = false;
                     Destroy(adultClone);
                     oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = oldClone.transform;

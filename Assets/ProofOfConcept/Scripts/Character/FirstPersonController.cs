@@ -11,9 +11,7 @@ public class FirstPersonController : MonoBehaviour
     CharacterController player;
 
     public bool isAwake;
-
-    public bool isHoldingAnimal;
-    public bool isHoldingFood;
+    
     public bool isHoldingSeed;
 
     //public Animation pickAxe;

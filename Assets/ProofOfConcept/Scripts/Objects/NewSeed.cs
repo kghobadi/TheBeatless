@@ -73,6 +73,7 @@ public class NewSeed : Interactable
         base.handleClickSuccess();
         FindPlayerArm();
         underPlayerControl = true;
+        playerControl.isHoldingSeed = true;
 
     }
 
@@ -88,7 +89,7 @@ public class NewSeed : Interactable
             //Checks if raycast hits
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log("onyourfaceKas");
+              //  Debug.Log("onyourfaceKas");
                 //Checks if the hit is a ground tile and within Distance for planting
                 if (hit.transform.gameObject.tag == "Ground" && Vector3.Distance(_player.transform.position, hit.point) <= withinPlantingRange && !textureShowing)
                 {
