@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using TGS;
 
 public class newSequencePlay : MonoBehaviour {
 
@@ -32,16 +33,27 @@ public class newSequencePlay : MonoBehaviour {
 		private GameObject bed;
 		private Bed sleepScript;
 
+		TerrainGridSystem tgs;
 
-		public int startScale = 8;
-		public int startMultiplier = 8;
+		public int column;
+		public int row;
+
+		
+
+
+		//public int startScale = 8;
+		//public int startMultiplier = 8;
 
 		public int endScale = 1;
-		public int endEnd = 4;
+		//public int endEnd = 4;
 
 
 		void Awake()
 		{
+
+		sequencer.enabled = false;
+
+			tgs = TerrainGridSystem.instance;
 			//mixer = Instantiate ();
 			farmManager = GameObject.Find("farmManagerNew");
 			//octave = farmManager.GetComponent<assignKey>().octave;
@@ -52,7 +64,14 @@ public class newSequencePlay : MonoBehaviour {
 			bed = GameObject.FindGameObjectWithTag("Bed");
 			sleepScript = bed.GetComponent<Bed>();
 
-			if (Random.Range(0, 3) == 1)
+		Cell cell = tgs.CellGetAtPosition (transform.position, true);
+		row = cell.row;
+		column = cell.column;
+
+		note = cell.row;
+		newStart = cell.column * 8;
+
+		/*	if (Random.Range(0, 3) == 1)
 			{
 				note = 0;
 				isLeader = true;
@@ -63,131 +82,46 @@ public class newSequencePlay : MonoBehaviour {
 				note = Random.Range(0, 6);
 			}
 
-			changedSequence = false;
+			changedSequence = false; */
 		}
 
 		// Update is called once per frame
 		void Update()
 		{
 
+		if (life.ageCounter == 0) {
+			sequencer.syncTime = 0;
+		}
+
+		print (sequencer.GetSequencerPosition ());
+
+		//Vector3 pos = transform.position;
+		//Cell cell = tgs.CellGetAtPosition (pos);
+		//int row = cell.row;
+		//int column = cell.column;
+
 			if (sleepScript.dayPassed)
 			{
+			sequencer.enabled = true;
+			//changedSequence = false;
 				changedSequence = false;
 			}
 
-			if (life.ageCounter == 1)
-			{
-				if (!changedSequence && isLeader)
-				{
-					species = Random.Range(0, 2);
-					//note = Random.Range (0, 6);
-					if (species == 0)
-					{
-						//	start = Random.Range (0, 8);
-						newStart = start * startMultiplier;
-						end = newStart + Random.Range(endScale, endEnd);
-					}
-					else if (species == 1)
-					{
-						//	start = Random.Range (0, 8);
-						newStart = (start * startMultiplier) + 1;
-						end = newStart + Random.Range(endScale, endEnd);
-					}
-					//end = newStart + Random.Range (1, 4);
-					changeSequence1();
-					changedSequence = true;
-				}
-				else if (!changedSequence && !isFollower)
-				{
-					start = Random.Range(0, startScale);
-					newStart = start * startMultiplier;
-					end = newStart + Random.Range(endScale, endEnd);
-					changeSequence1();
-					changedSequence = true;
-				}
-				else if (!changedSequence)
-				{
-					newStart = start * startMultiplier;
-					end = newStart + Random.Range(endScale, endEnd);
-					changeSequence1();
-					changedSequence = true;
-				}
-			}
-			else if (life.ageCounter == 2)
-			{
-				if (!changedSequence)
-				{
-					changeSequence2();
-					changedSequence = true;
-				}
+		if (!changedSequence) {
+			if (life.ageCounter == 1) {
+				changeSequence1 ();
+				changedSequence = true;
+			} else if (life.ageCounter == 2) {
+				changeSequence2 ();
+				changedSequence = true;
+			} else if (life.ageCounter == 3) {
+				changeSequence3 ();
+				changedSequence = true;
 			}
 
-			if (life.ageCounter == 1)
-			{
-				if (!changedSequence && isLeader)
-				{
-					species = Random.Range(0, 2);
-					//note = Random.Range (0, 6);
-					if (species == 0)
-					{
-						//	start = Random.Range (0, 8);
-						newStart = start * startMultiplier;
-						end = newStart + endScale;
-					}
-					else if (species == 1)
-					{
-						//	start = Random.Range (0, 8);
-						newStart = (start * startMultiplier) + 1;
-						end = newStart + endScale;
-					}
-					//end = newStart + Random.Range (1, 4);
-					changeSequence1();
-					changedSequence = true;
-				}
-				else if (!changedSequence && !isFollower)
-				{
-					start = Random.Range(0, startScale);
-					newStart = start * startMultiplier;
-					end = newStart + endScale;
-					changeSequence1();
-					changedSequence = true;
-				}
-				else if (!changedSequence)
-				{
-					newStart = start * startMultiplier;
-					end = newStart + endScale;
-					changeSequence1();
-					changedSequence = true;
-				}
-			}
-			else if (life.ageCounter == 2)
-			{
-				if (!changedSequence)
-				{
-					changeSequence2();
-					changedSequence = true;
-				}
+		}
 
-			}
-			else if (life.ageCounter == 3)
-			{
-				if (!changedSequence)
-				{
-					changeSequence3();
-					changedSequence = true;
-				}
-
-			}
-			else
-			{
-				if (!changedSequence)
-				{
-					clearSequence();
-					changedSequence = true;
-
-				}
-
-			}
+			
 		}
 
 
@@ -228,9 +162,10 @@ public class newSequencePlay : MonoBehaviour {
             newNote = 61;
             break;
         } */
-			sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 2)), newStart, end, velocity);
+		sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 2)), newStart, newStart + endScale, velocity);
 			Debug.Log("Set Note to" + note);
 			Debug.Log(farmManager.GetComponent<assignKey>().currentList[note]);
+			sequencer.StartOnNextCycle ();
 
 			//}		//lastNote = note;
 
@@ -239,8 +174,8 @@ public class newSequencePlay : MonoBehaviour {
 		void changeSequence2()
 		{
 			//int note = Random.Range (0, 6);
-			int change = Random.Range(0, 2);
-			int newNote;
+			//int change = Random.Range(0, 2);
+			//int newNote;
 
 			float velocity = Random.Range(0.4f, 1f);
 			//if (change == 1) {
@@ -272,18 +207,19 @@ public class newSequencePlay : MonoBehaviour {
             newNote = 49;
             break;
         } */
-			sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 1)), newStart, end, velocity);
+		sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 1)), newStart, newStart + endScale, velocity);
 			Debug.Log("current note :" + note);
 			Debug.Log(farmManager.GetComponent<assignKey>().currentList[note]);
+			sequencer.StartOnNextCycle ();
 			//}
 			//sequencer.AddNote (88, 12, 13, 1);
 		}
 
 		void changeSequence3()
 		{
-			int change = Random.Range(0, 2);
+			//int change = Random.Range(0, 2);
 			//int note = Random.Range (0, 6);
-			int newNote;
+		//	int newNote;
 			//int start = Random.Range (0, 16);
 			//int end = start + Random.Range (1, 3);
 			float velocity = Random.Range(0.4f, 1f);
@@ -317,19 +253,11 @@ public class newSequencePlay : MonoBehaviour {
             newNote = 37;
             break;
         } */
-			sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * octave), newStart, end, velocity);
+		sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * octave), newStart, newStart + endScale, velocity);
+		sequencer.StartOnNextCycle ();
 			//}
 
 		}
 
-		void clearSequence()
-		{
-			sequencer.Clear();
-		}
 
-		void randomize()
-		{
-
-
-		}
 	}
