@@ -45,11 +45,11 @@ public class treeJointSystem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		if (Input.GetKey (KeyCode.Space)) {
-			randomTwist = 10 * Random.onUnitSphere;
-		}
-
+       /* if (playing)
+            randomTwist = 10 * Random.onUnitSphere;
+        else
+            randomTwist = Vector3.zero;
+            */
 		for (int i = 0; i < treeJoints.Count; i++) {
 			
 			treeJoints [i].localEulerAngles = new Vector3 (origAng[i].x + Mathf.Sin(Time.time / randomTwist.x), origAng[i].y - Mathf.Sin(Time.time/ randomTwist.y), origAng[i].z + Mathf.Sin(Time.time/ randomTwist.z));
