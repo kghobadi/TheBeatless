@@ -102,7 +102,7 @@ public class newSequencePlay : MonoBehaviour {
 
 			if (sleepScript.dayPassed)
 			{
-		//	sequencer.enabled = true;
+			sequencer.enabled = true;
 			//changedSequence = false;
 				changedSequence = false;
 			}
