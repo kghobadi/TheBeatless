@@ -51,7 +51,7 @@ public class newSequencePlay : MonoBehaviour {
 		void Awake()
 		{
 
-		sequencer.enabled = false;
+		//sequencer.enabled = false;
 
 			tgs = TerrainGridSystem.instance;
 			//mixer = Instantiate ();
@@ -102,7 +102,7 @@ public class newSequencePlay : MonoBehaviour {
 
 			if (sleepScript.dayPassed)
 			{
-			sequencer.enabled = true;
+		//	sequencer.enabled = true;
 			//changedSequence = false;
 				changedSequence = false;
 			}
