@@ -71,7 +71,7 @@ public class AnimalLife : MonoBehaviour {
         {
             Debug.Log(i);
             //animal growth sound?
-            yield return new WaitUntil(() => sunScript.dayPassed == true);
+            //yield return new WaitUntil(() => sunScript.dayPassed == true);
             yield return new WaitForSeconds(1);
         }
 

@@ -16,6 +16,11 @@ public class Bed : Interactable
     FirstPersonController fpc;
     camMouseLook cml;
 
+    GameObject sun;
+    Sun sunScript;
+
+    Vector3 sunStartPos;
+
     float originalPSpeed;
 
     public override void Start()
@@ -26,6 +31,9 @@ public class Bed : Interactable
         fpc.isAwake = true;
         interactable = true;
         sleepCounter = sleepLength;
+        sun = GameObject.FindGameObjectWithTag("Sun");
+        sunScript = sun.GetComponent<Sun>();
+        sunStartPos = sun.transform.position;
 
         originalPSpeed = fpc.speed;
     }
@@ -54,6 +62,8 @@ public class Bed : Interactable
             {
                 fpc.isAwake = true;
                 sleepCounter = sleepLength;
+                sun.transform.position = sunStartPos;
+                fpc.isHoldingSeed = false;
             }
 
         }

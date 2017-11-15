@@ -10,7 +10,10 @@ public class NewPlantLife : MonoBehaviour
     //bool fruitGrowing;
     //public int fruitAmount;
     public int ageCounter;
-    int growthPeriod;
+    public int growthPeriod;
+
+    public bool hasBeenWatered;
+    public bool hasBeenWateredToday;
 
     AudioHelm.Sequencer seq;
 
@@ -118,7 +121,7 @@ public class NewPlantLife : MonoBehaviour
                     tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
                     saplingClone = Instantiate(sapling, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = saplingClone.transform;
-                    growthPeriod = Random.Range(2, 4);
+                    growthPeriod = 4;
                     StartCoroutine(Growth());
                     break;
                 /*  case 1: //Young
@@ -139,7 +142,7 @@ public class NewPlantLife : MonoBehaviour
                     adultClone = Instantiate(adult, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = adultClone.transform;
                     //fruitAmount = Random.Range(0, 2);
-                    growthPeriod = Random.Range(3, 6);
+                    growthPeriod = 10;
                     StartCoroutine(Growth());
                     break;
                 case 3: // Old
@@ -149,7 +152,7 @@ public class NewPlantLife : MonoBehaviour
                     oldClone = Instantiate(old, transform.position, Quaternion.Euler(0, randomRotation, 0), transform);
                     currentTree = oldClone.transform;
                     //fruitAmount = Random.Range(0, 2);
-                    growthPeriod = Random.Range(3, 10);
+                    growthPeriod = 6;
                     StartCoroutine(Growth());
                     break;
                 case 4: // Dead
@@ -179,44 +182,33 @@ public class NewPlantLife : MonoBehaviour
         //}
     }
 
-    /*	AudioHelm.Sequencer.NoteAction(newNote) {
-
-
-        } */
-
-
-
     IEnumerator Growth()
     {
         //for loop waits a number of days 
         for (int i = 0; i < growthPeriod; i++)
         {
-            //SpawnFruits();
-            //if (fruitAmount > 0)
-            //treeSounds.PlayOneShot(growthSound); //THIS NEEDS TO BE MUSICAL AND ON CLOCK
-            yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time
-                                                                             //s yield return new WaitForSeconds(1);
+            yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time  
+            if (hasBeenWateredToday)
+            {
+                growthPeriod -= 1;
+                hasBeenWateredToday = false; //if a day has passed, must be watered again
+            }
+            Debug.Log(growthPeriod);
         }
-        Debug.Log("age +1");
-        ageCounter += 1;
-        randomRotation = 60 * Random.Range(0, 6);
-        hasGrown = true;
+        //checks if hasBeenWatered, otherwise keeps growing in same Age
+        if (hasBeenWatered)
+        {
+            ageCounter += 1;
+            randomRotation = 60 * Random.Range(0, 6);
+            hasGrown = true;
+            hasBeenWatered = false;
+        }
+        else
+        {
+            StartCoroutine(Growth());
+        }
     }
 
-    //public void SpawnFruits()
-    //{
-    //    for (int i = 0; i < fruitAmount; i += Random.Range(1, 2))
-    //    {
-    //        //fruit starting pos and Instantiate
-    //        Vector3 xyz = Random.insideUnitSphere * 1;
-    //        Vector3 spawnPosition = xyz + tgs.CellGetPosition(neighborIndexes[i]) + new Vector3(0, fruitYpos, 0);
-    //        fruitClone = Instantiate(fruit, spawnPosition, Quaternion.Euler(0, Random.Range(0, 90f), 0));
-    //        //random starting scale for fruit
-    //        float randomStartScale = Random.Range(0.1f, 0.3f);
-    //        fruitClone.transform.localScale = new Vector3(randomStartScale, randomStartScale, randomStartScale);
-    //    }
-
-    //}
 
 
 }
