@@ -17,6 +17,9 @@ public class Bed : Interactable
     camMouseLook cml;
 
     GameObject sun;
+
+	public int windDir = 0;
+	ParticleSystem wond;
     Sun sunScript;
 
     Vector3 sunStartPos;
@@ -24,7 +27,7 @@ public class Bed : Interactable
     float originalPSpeed;
 
     public override void Start()
-    {
+	{
         base.Start();
         fpc = _player.GetComponent<FirstPersonController>();
         cml = Camera.main.GetComponent<camMouseLook>();
@@ -34,6 +37,7 @@ public class Bed : Interactable
         sun = GameObject.FindGameObjectWithTag("Sun");
         sunScript = sun.GetComponent<Sun>();
         sunStartPos = sun.transform.position;
+		wond = GameObject.Find ("windParticles").GetComponent<ParticleSystem> ();
 
         originalPSpeed = fpc.speed;
     }
@@ -88,7 +92,28 @@ public class Bed : Interactable
         if (fpc.isAwake)
         {
             fpc.isAwake = false;
-            setDayPassed = false;
+			setDayPassed = false;
+			windDir = Random.Range (0, 4);
+			switch (windDir) {
+			case 0: //left to right
+				wond.transform.eulerAngles = new Vector3(-90, 0, -90);
+				//set simulation speed here when you've fucked w the BPM thingy
+			break;
+
+			case 1: //bottom to top
+				wond.transform.eulerAngles = new Vector3(-90, 0, 180);
+			break;
+
+			case 2: //top to bottom
+				wond.transform.eulerAngles = new Vector3(-90, 0, 0);
+			break;
+
+			case 3: //right to left
+				wond.transform.eulerAngles = new Vector3(-90, 0, 90);
+			break;
+
+
+			}
         }
 
     }
