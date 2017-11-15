@@ -7,8 +7,7 @@ public class WaterParticles : MonoBehaviour {
     TerrainGridSystem tgs;
 
     ParticleSystem waterEffect;
-
-    public Texture2D plantedTexture;
+    
     public Texture2D wateredTexture;
 
     NewPlantLife currentPlant;
@@ -47,8 +46,6 @@ public class WaterParticles : MonoBehaviour {
             {
                 //play particle system
                 waterEffect.Play();
-
-
             }
             else
             {
@@ -74,15 +71,9 @@ public class WaterParticles : MonoBehaviour {
                     Cell tree = tgs.CellGetAtPosition(hit.transform.position, true);
                     int index = currentPlant.cellIndex;
                     tgs.CellToggleRegionSurface(index, true, wateredTexture);
-                    StartCoroutine(ChangeTexture(index));
 
                 }
             }
     }
-
-    IEnumerator ChangeTexture(int index)
-    {
-        yield return new WaitUntil(() => sleepScript.dayPassed == true);
-        tgs.CellToggleRegionSurface(index, true, plantedTexture);
-    }
+    
 }
