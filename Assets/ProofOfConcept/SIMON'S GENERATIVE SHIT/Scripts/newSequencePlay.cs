@@ -15,6 +15,8 @@ public class newSequencePlay : MonoBehaviour {
 
 		public int octave = 1;
 
+		public int windDir = 0;
+
 		public AudioMixerGroup mixer;
 
 		public int lastNote;
@@ -34,6 +36,8 @@ public class newSequencePlay : MonoBehaviour {
 		private Bed sleepScript;
 
 		TerrainGridSystem tgs;
+
+		Cell cell;
 
 		public int column;
 		public int row;
@@ -64,12 +68,12 @@ public class newSequencePlay : MonoBehaviour {
 			bed = GameObject.FindGameObjectWithTag("Bed");
 			sleepScript = bed.GetComponent<Bed>();
 
-		Cell cell = tgs.CellGetAtPosition (transform.position, true);
+		cell = tgs.CellGetAtPosition (transform.position, true);
 		row = cell.row;
 		column = cell.column;
 
-		note = cell.row;
-		newStart = cell.column * 8;
+		windDir = sleepScript.windDir;
+		WindDirection ();
 
 		/*	if (Random.Range(0, 3) == 1)
 			{
@@ -102,9 +106,12 @@ public class newSequencePlay : MonoBehaviour {
 
 			if (sleepScript.dayPassed)
 			{
-		//	sequencer.enabled = true;
+			//windDir = Random.Range (0, 4);
+			windDir = sleepScript.windDir;
+			WindDirection ();
+			sequencer.enabled = true;
 			//changedSequence = false;
-				changedSequence = false;
+			changedSequence = false;
 			}
 
 		if (!changedSequence) {
@@ -258,6 +265,50 @@ public class newSequencePlay : MonoBehaviour {
 			//}
 
 		}
+
+	public void WindDirection() {
+		
+		print (windDir);
+
+		switch(windDir) {
+
+		case 0: // left to right
+			if (cell.row <= 4) {
+				note = cell.row;
+			} else {
+				note = cell.row - 5;
+			}
+			newStart = cell.column * 8;
+		break;
+
+		case 1: //bottom to top
+			if (cell.column <= 4) {
+				note = cell.column;
+			} else {
+				note = cell.column - 5;
+			}
+			newStart = cell.row * 8;
+		break;
+		
+		case 2: //top to bottom
+			if (cell.column >= 2) {
+				note = tgs.columnCount - (cell.column + 1);
+			} else {
+				note = (tgs.columnCount - (cell.column + 1)) - 5;
+			}
+			newStart = (tgs.rowCount - (cell.row + 1)) * 8;
+		break;
+		
+		case 3: // right to left
+			if (cell.row >= 2) {
+				note = tgs.rowCount - (cell.row + 1);
+			} else {
+				note = (tgs.rowCount - (cell.row + 1)) - 5;
+			}
+			newStart = (tgs.columnCount - (cell.column + 1)) * 8;
+		break;
+	}
+	}
 
 
 	}
