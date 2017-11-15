@@ -187,8 +187,12 @@ public class NewPlantLife : MonoBehaviour
         //for loop waits a number of days 
         for (int i = 0; i < growthPeriod; i++)
         {
-            yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time    
-            hasBeenWateredToday = false; //if a day has passed, must be watered again
+            yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time  
+            if (hasBeenWateredToday)
+            {
+                growthPeriod -= 1;
+                hasBeenWateredToday = false; //if a day has passed, must be watered again
+            }
             Debug.Log(growthPeriod);
         }
         //checks if hasBeenWatered, otherwise keeps growing in same Age

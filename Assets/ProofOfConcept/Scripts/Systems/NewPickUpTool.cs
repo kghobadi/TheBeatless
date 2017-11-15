@@ -46,7 +46,7 @@ public class NewPickUpTool : Interactable
             toolMan.water = gameObject;
             transform.localPosition = Vector3.zero;
             transform.localEulerAngles = Vector3.zero;
-            GetComponent<Water>().enabled = true;
+            GetComponentInChildren<WaterParticles>().enabled = true;
             if (toolMan.objectHeld != null)
                 toolMan.putAwayEverything();
             toolMan.objectHeld = toolMan.water;

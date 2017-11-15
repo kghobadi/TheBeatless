@@ -36,10 +36,13 @@ public class Ax : MonoBehaviour
         //Checks if has been picked up and equipped 
 
         //Sends out raycast
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+
+            //start particle system
+            //sphere cast
 
             //Checks if raycast hits
             if (Physics.Raycast(ray, out hit))
@@ -57,6 +60,7 @@ public class Ax : MonoBehaviour
                     if (currentTree.GetComponent<NewPlantLife>().ageCounter >= 2)
                     {
                         crops.cropCounter += 1;
+                        //Spawn or instantiate crop yield somewhere
                     }
                     cameraSource.PlayOneShot(cropYield);
                     Destroy(hit.transform.gameObject);
