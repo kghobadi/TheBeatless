@@ -40,7 +40,7 @@ public class WaterParticles : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(toolMan.objectHeld == toolMan.water)
+        if(toolMan.water != null)
         {
             if (Input.GetMouseButton(0))
             {
