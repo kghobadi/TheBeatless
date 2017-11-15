@@ -93,7 +93,7 @@ public class newSequencePlay : MonoBehaviour {
 			sequencer.syncTime = 0;
 		}
 
-		print (sequencer.GetSequencerPosition ());
+		//print (sequencer.GetSequencerPosition ());
 
 		//Vector3 pos = transform.position;
 		//Cell cell = tgs.CellGetAtPosition (pos);

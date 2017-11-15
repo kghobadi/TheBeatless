@@ -15,6 +15,11 @@ public class Ax : MonoBehaviour
 
     GameObject currentTree;
 
+    CropCurrency crops;
+
+    public AudioSource cameraSource;
+    public AudioClip cropYield;
+
     void Start()
     {
 
@@ -22,6 +27,7 @@ public class Ax : MonoBehaviour
         tgs = TerrainGridSystem.instance;
 
         _player = GameObject.FindWithTag("Player");
+        crops = _player.GetComponent<CropCurrency>();
     }
 
 
@@ -48,6 +54,11 @@ public class Ax : MonoBehaviour
                     tgs.CellSetTag(tree, 0);
                     //play sound
                     //play falling animation
+                    if (currentTree.GetComponent<NewPlantLife>().ageCounter >= 2)
+                    {
+                        crops.cropCounter += 1;
+                    }
+                    cameraSource.PlayOneShot(cropYield);
                     Destroy(hit.transform.gameObject);
 
                 }
