@@ -18,6 +18,7 @@ public class ToolManager : MonoBehaviour
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         fpc = _player.GetComponent<FirstPersonController>();
+        objectHeld = null;
     }
 
     void Update()

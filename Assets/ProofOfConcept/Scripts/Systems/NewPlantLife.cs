@@ -193,6 +193,8 @@ public class NewPlantLife : MonoBehaviour
                 growthPeriod -= 1;
                 hasBeenWateredToday = false; //if a day has passed, must be watered again
             }
+
+            tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
             Debug.Log(growthPeriod);
         }
         //checks if hasBeenWatered, otherwise keeps growing in same Age
@@ -202,10 +204,13 @@ public class NewPlantLife : MonoBehaviour
             randomRotation = 60 * Random.Range(0, 6);
             hasGrown = true;
             hasBeenWatered = false;
+            hasBeenWateredToday = false;
         }
         else
         {
+            hasBeenWateredToday = false;
             StartCoroutine(Growth());
+            //can add death state here and counter for Non-Watered growth periods. 
         }
     }
 
