@@ -28,6 +28,11 @@ public class Bed : Interactable
 
     float originalPSpeed;
 
+    public float minBpm, maxBpm;
+    public float minSimSpeed;
+
+    float speedMultiplier;
+
     public override void Start()
 	{
 		clock = GameObject.Find ("clock").GetComponent<AudioHelm.AudioHelmClock> ();
@@ -96,9 +101,13 @@ public class Bed : Interactable
         {
             fpc.isAwake = false;
 			setDayPassed = false;
-			clock.bpm = Random.Range (80, 140);
-			windDir = Random.Range (0, 4);
-			switch (windDir) {
+            clock.bpm = Random.Range(minBpm, maxBpm);
+            speedMultiplier = clock.bpm / minBpm;
+            ParticleSystem.MainModule wondModule = wond.main;
+            wondModule.simulationSpeed = minSimSpeed * speedMultiplier;
+
+            windDir = Random.Range(0, 4);
+            switch (windDir) {
 			case 0: //left to right
 				wond.transform.eulerAngles = new Vector3(-90, 0, -90);
 				//set simulation speed here when you've fucked w the BPM thingy
