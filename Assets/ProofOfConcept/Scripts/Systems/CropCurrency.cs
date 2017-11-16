@@ -16,5 +16,6 @@ public class CropCurrency : MonoBehaviour {
 	
 	void Update () {
         cropDisplayAmount.text = cropCounter.ToString();
+        //animate crop symbol
 	}
 }

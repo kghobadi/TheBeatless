@@ -15,7 +15,8 @@ public class Ax : MonoBehaviour
 
     GameObject currentTree;
 
-    CropCurrency crops;
+    public GameObject crop;
+    GameObject cropClone;
 
     public AudioSource cameraSource;
     public AudioClip cropYield;
@@ -27,7 +28,6 @@ public class Ax : MonoBehaviour
         tgs = TerrainGridSystem.instance;
 
         _player = GameObject.FindWithTag("Player");
-        crops = _player.GetComponent<CropCurrency>();
     }
 
 
@@ -59,8 +59,14 @@ public class Ax : MonoBehaviour
                     //play falling animation
                     if (currentTree.GetComponent<NewPlantLife>().ageCounter >= 2)
                     {
-                        crops.cropCounter += 1;
-                        //Spawn or instantiate crop yield somewhere
+                        int randoCrops = Random.Range(1, 3);
+                        int randomRotation = Random.Range(0, 360);
+                        for(int i = 0; i< randoCrops; i++)
+                        {
+                            Vector3 xyz = (Vector3)Random.insideUnitCircle * 2 + Vector3.forward;
+                            Vector3 spawnPosition = xyz + currentTree.transform.position;
+                            cropClone = Instantiate(crop, spawnPosition, Quaternion.Euler(0, randomRotation, 0));
+                        }
                     }
                     cameraSource.PlayOneShot(cropYield);
                     Destroy(hit.transform.gameObject);
