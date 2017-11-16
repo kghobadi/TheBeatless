@@ -18,6 +18,8 @@ public class Bed : Interactable
 
     GameObject sun;
 
+	AudioHelm.AudioHelmClock clock;
+
 	public int windDir = 0;
 	ParticleSystem wond;
     Sun sunScript;
@@ -28,6 +30,7 @@ public class Bed : Interactable
 
     public override void Start()
 	{
+		clock = GameObject.Find ("clock").GetComponent<AudioHelm.AudioHelmClock> ();
         base.Start();
         fpc = _player.GetComponent<FirstPersonController>();
         cml = Camera.main.GetComponent<camMouseLook>();
@@ -93,6 +96,7 @@ public class Bed : Interactable
         {
             fpc.isAwake = false;
 			setDayPassed = false;
+			clock.bpm = Random.Range (80, 140);
 			windDir = Random.Range (0, 4);
 			switch (windDir) {
 			case 0: //left to right
