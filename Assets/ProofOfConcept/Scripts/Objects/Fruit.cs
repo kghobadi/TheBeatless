@@ -153,7 +153,7 @@ public class Fruit : Interactable {
         //for loops waits given # of days
         for(int i = 0; i < decompositionDay; i++)
         {
-            yield return new WaitUntil(() => sunScript.dayPassed == true);
+           // yield return new WaitUntil(() => sunScript.dayPassed == true);
 
         }
         if (tagIndex == 1)

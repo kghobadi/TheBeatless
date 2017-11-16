@@ -342,7 +342,7 @@ namespace TGS
                 fruit.GetComponent<Fruit>().seedClone = Instantiate(fruit.GetComponent<Fruit>().seed, transform.position, Quaternion.identity);
                 fruit.GetComponent<Fruit>().seedClone.transform.SetParent(this.transform);
                 fruit.GetComponent<Fruit>().seedClone.SetActive(false);
-                StartCoroutine(Poop(fruit.GetComponent<Fruit>().seedClone));
+                //StartCoroutine(Poop(fruit.GetComponent<Fruit>().seedClone));
                 Destroy(fruit.gameObject);
 
             }
@@ -640,15 +640,15 @@ namespace TGS
 
         }
 
-        IEnumerator Poop(GameObject seed)
-        {
-            //for loops waits given # of days
+        ////IEnumerator Poop(GameObject seed)
+        //{
+        //    //for loops waits given # of days
             
-            yield return new WaitUntil(() => sunScript.dayPassed == true);
-            seed.SetActive(true);
-            seed.transform.SetParent(null);
+        //    //yield return new WaitUntil(() => sunScript.dayPassed == true);
+        //    seed.SetActive(true);
+        //    seed.transform.SetParent(null);
 
-        }
+        //}
     }
 }
 

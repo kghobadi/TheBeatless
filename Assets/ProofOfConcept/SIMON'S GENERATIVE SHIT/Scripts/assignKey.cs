@@ -7,6 +7,7 @@ public class assignKey : MonoBehaviour {
 
 	int first,second,third,fourth,fifth,sixth,seventh;
 	public List<int> C, G, D, A, E, B, Gb, Db, Ab, Eb, Bb, F;
+	public List<int> cPent, gPent, dPent, aPent, ePent, bPent, gbPent, dbPent, abPent, ebPent, bbPent, fPent;
 	public List<int> currentList;
 
 	public bool isMinor = false;
@@ -21,7 +22,7 @@ public class assignKey : MonoBehaviour {
 
 
 	void Start() {
-		currentList = C;
+		currentList = cPent;
 		//switched = true;
 		bed = GameObject.FindGameObjectWithTag("Bed");
 		bedScript = bed.GetComponent<Bed> ();
@@ -31,7 +32,7 @@ public class assignKey : MonoBehaviour {
 
 	void Update() {
 
-		if (bedScript.dayPassed == true) {
+	/*	if (bedScript.dayPassed == true) {
 			int num = Random.Range (0, 11);
 			switch (num) {
 			case 0:
@@ -71,13 +72,13 @@ public class assignKey : MonoBehaviour {
 				currentList = F;
 				break;
 
-			}
+			} 
 				//currentList.Clear ();
 				
 				//switched = true;
 
 		
-		}
+		} */
 	}
 
 
