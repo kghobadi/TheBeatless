@@ -63,7 +63,7 @@ public class Ax : MonoBehaviour
                         int randomRotation = Random.Range(0, 360);
                         for(int i = 0; i< randoCrops; i++)
                         {
-                            Vector3 xyz = (Vector3)Random.insideUnitCircle * 2 + Vector3.forward;
+                            Vector3 xyz = (Vector3)Random.insideUnitSphere * 1 + Vector3.up;
                             Vector3 spawnPosition = xyz + currentTree.transform.position;
                             cropClone = Instantiate(crop, spawnPosition, Quaternion.Euler(0, randomRotation, 0));
                         }

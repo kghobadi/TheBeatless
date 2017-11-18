@@ -162,6 +162,7 @@ public class NewSeed : Interactable
     {
         //  Debug.Log("planted Seed");
         //unparents from player control   
+        interactable = false;
         transform.SetParent(null);
 
         planting = true;
