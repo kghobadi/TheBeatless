@@ -14,6 +14,8 @@ public class NewPlantLife : MonoBehaviour
 
     public bool hasBeenWatered;
     public bool hasBeenWateredToday;
+    public int extraLifeMax;
+    int extraLifeCounter;
 
     AudioHelm.Sequencer seq;
 
@@ -188,10 +190,16 @@ public class NewPlantLife : MonoBehaviour
         for (int i = 0; i < growthPeriod; i++)
         {
             yield return new WaitUntil(() => sleepScript.dayPassed == true); //Can be changed so that it is not real time  
-            if (hasBeenWateredToday)
+            if (hasBeenWateredToday && ageCounter < 2)
             {
                 growthPeriod -= 1;
                 hasBeenWateredToday = false; //if a day has passed, must be watered again
+            }
+            else if(hasBeenWateredToday && ageCounter >= 2 && extraLifeCounter < extraLifeMax)
+            {
+                growthPeriod += 1;
+                extraLifeCounter += 1;
+                hasBeenWateredToday = false;
             }
 
             tgs.CellToggleRegionSurface(cellIndex, true, growingTexture);
