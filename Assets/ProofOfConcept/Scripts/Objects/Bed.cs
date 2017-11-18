@@ -31,6 +31,8 @@ public class Bed : Interactable
     public float minBpm, maxBpm;
     public float minSimSpeed;
 
+    public int dayCounter;
+
     float speedMultiplier;
 
     public override void Start()
@@ -101,6 +103,7 @@ public class Bed : Interactable
         {
             fpc.isAwake = false;
 			setDayPassed = false;
+            dayCounter++;
             clock.bpm = Random.Range(minBpm, maxBpm);
             speedMultiplier = clock.bpm / minBpm;
             ParticleSystem.MainModule wondModule = wond.main;
