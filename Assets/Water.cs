@@ -12,15 +12,21 @@ public class Water : MonoBehaviour {
 
     public float waterDistance;
 
+
+    ParticleSystem waterEffect;
+
+
     GameObject _player;
 
-    GameObject currentTree;
+    NewPlantLife currentPlant;
 
     public AudioSource cameraSource;
     public AudioClip wateringSound;
 
     private GameObject bed;
     private Bed sleepScript;
+
+    public int particleAmount;
 
     //Sprite symbol; use to change cursor sprite
 
@@ -33,6 +39,9 @@ public class Water : MonoBehaviour {
 
         bed = GameObject.FindGameObjectWithTag("Bed");
         sleepScript = bed.GetComponent<Bed>();
+        
+        waterEffect = GetComponentInChildren<ParticleSystem>();
+        waterEffect.Stop();
     }
 	
 	// Update is called once per frame
@@ -43,6 +52,8 @@ public class Water : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
+            waterEffect.Emit(particleAmount);
+
             //Checks if raycast hits
             if (Physics.Raycast(ray, out hit))
             {
@@ -50,31 +61,23 @@ public class Water : MonoBehaviour {
                 if (hit.transform.gameObject.tag == "sequencer" && Vector3.Distance(_player.transform.position, hit.point) <= waterDistance)
                 {
                     //Can add cursor sprite change here
-
-                    currentTree = hit.transform.gameObject;
-                    if (!currentTree.GetComponent<NewPlantLife>().hasBeenWateredToday)
+                    
+                    currentPlant = hit.transform.gameObject.GetComponent<NewPlantLife>();
+                    if (!currentPlant.hasBeenWateredToday)
                     {
-                        currentTree.GetComponent<NewPlantLife>().growthPeriod -= 1;
-                        currentTree.GetComponent<NewPlantLife>().hasBeenWateredToday = true;
-                        currentTree.GetComponent<NewPlantLife>().hasBeenWatered = true;
+                        currentPlant.hasBeenWateredToday = true;
+                        currentPlant.hasBeenWatered = true;
                         cameraSource.PlayOneShot(wateringSound);
 
                         //to change ground texture to water texture
-                        Cell tree = tgs.CellGetAtPosition(hit.point, true);
-                        int index = currentTree.GetComponent<NewPlantLife>().cellIndex;
+                        Cell tree = tgs.CellGetAtPosition(hit.transform.position, true);
+                        int index = currentPlant.cellIndex;
                         tgs.CellToggleRegionSurface(index, true, wateredTexture);
-                        StartCoroutine(ChangeTexture(index));
 
                     }
-
                 }
+            }
             }
         }
     }
 
-    IEnumerator ChangeTexture(int index)
-    {
-        yield return new WaitUntil(() => sleepScript.dayPassed == true);
-        tgs.CellToggleRegionSurface(index, true, plantedTexture);
-    }
-}

@@ -11,7 +11,6 @@ public class WaterParticles : MonoBehaviour {
     public Texture2D wateredTexture;
 
     NewPlantLife currentPlant;
-    List<ParticleCollisionEvent> collisionEvents;
 
     public AudioSource cameraSource;
     public AudioClip wateringSound;
@@ -26,7 +25,6 @@ public class WaterParticles : MonoBehaviour {
 
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
-        collisionEvents = new List<ParticleCollisionEvent>();
 
         toolManager = GameObject.FindGameObjectWithTag("ToolManager");
         toolMan = toolManager.GetComponent<ToolManager>();
