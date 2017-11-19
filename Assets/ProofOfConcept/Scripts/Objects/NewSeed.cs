@@ -11,7 +11,7 @@ public class NewSeed : MonoBehaviour
     public bool plantSeed;
     public bool planting;
     public AudioClip plantedSeed;
-    public AudioSource soundBoard;
+    AudioSource soundBoard;
     //which plant does this seed create?
     public GameObject plant;
     GameObject plantClone;
@@ -53,6 +53,8 @@ public class NewSeed : MonoBehaviour
     {
         _player = GameObject.FindGameObjectWithTag("Player");
         fpc = _player.GetComponent<FirstPersonController>();
+
+        soundBoard = Camera.main.GetComponent<AudioSource>();
 
         //grabs Sun ref
         bed = GameObject.FindGameObjectWithTag("Bed");

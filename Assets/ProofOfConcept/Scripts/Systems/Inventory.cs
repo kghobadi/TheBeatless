@@ -42,7 +42,7 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         fpc = GetComponent<FirstPersonController>();
-        cameraControl = GetComponentInChildren<camMouseLook>();
+        cameraControl = Camera.main.GetComponent<camMouseLook>();
 
         inventory = GameObject.FindGameObjectWithTag("Inventory");
         soundBoard = GetComponentInChildren<AudioSource>();
@@ -74,22 +74,32 @@ public class Inventory : MonoBehaviour
             {
                 rightArmObj.transform.GetChild(0).GetComponent<inventoryMan>().putThisInInvent();
             }
-            for (int i = 0; i < slots.Length + 1; i++)
+            if(currentObject > 0)
             {
-                if (isEmpty[currentObject])
+                currentObject--;
+            }
+            else
+            {
+                currentObject = slots.Length - 1;
+            }
+            for (int i = 0; i < slots.Length + 1; i++)
                 {
-                    if (currentObject > 0)
-                        currentObject--;
+                    if (isEmpty[currentObject])
+                    {
+                        if (currentObject > 0)
+                            currentObject--;
+                        else
+                        {
+                            currentObject = slots.Length - 1;
+                        }
+                    }
                     else
                     {
-                        currentObject = slots.Length - 1;
+                        i = slots.Length + 1;
                     }
                 }
-                else
-                {
-                    i = slots.Length + 1;
-                }
-            }
+            
+           
             slots[currentObject].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
         }
         if ((Input.GetKeyDown(KeyCode.E) || Input.GetAxis("Mouse ScrollWheel") > 0f) && emptyCounter < isEmpty.Length)
@@ -98,22 +108,31 @@ public class Inventory : MonoBehaviour
             {
                 rightArmObj.transform.GetChild(0).GetComponent<inventoryMan>().putThisInInvent();
             }
-            for(int i = 0; i < slots.Length + 1; i++)
+            if (currentObject < (slots.Length - 1))
             {
-                if (isEmpty[currentObject])
+                currentObject++;
+            }
+            else
+            {
+                currentObject = 0;
+            }
+            for (int i = 0; i < slots.Length + 1; i++)
                 {
-                    if(currentObject < (slots.Length - 1))
-                        currentObject++;
+                    if (isEmpty[currentObject])
+                    {
+                        if (currentObject < (slots.Length - 1))
+                            currentObject++;
+                        else
+                        {
+                            currentObject = 0;
+                        }
+                    }
                     else
                     {
-                        currentObject = 0;
+                        i = slots.Length + 1;
                     }
                 }
-                else
-                {
-                    i = slots.Length + 1;
-                }
-            }
+            
             slots[currentObject].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
         }
 
@@ -145,8 +164,9 @@ public class Inventory : MonoBehaviour
 
     public void openInventory()
     {
+        Debug.Log("opening");
         fpc.enabled = false;
-        cameraControl.enabled = false;
+        cameraControl.isActive = false;
         Cursor.lockState = CursorLockMode.None;
         inventory.transform.localPosition = inventoryPos;
         cameraControl.transform.LookAt(inventory.transform.position);
@@ -154,13 +174,15 @@ public class Inventory : MonoBehaviour
         soundBoard.PlayOneShot(bagOpen);
 
         inventCam.SetActive(true);
+        //inventCam.transform.LookAt(inventory.transform.position);
         //add other cam functionaility
     }
 
     public void closeInventory()
     {
+        Debug.Log("closing");
         fpc.enabled = true;
-        cameraControl.enabled = true;
+        cameraControl.isActive = true;
         Cursor.lockState = CursorLockMode.Locked;
         inventory.transform.position = new Vector3(1000, 1000, 1000);
         inventoryOpen = false;
