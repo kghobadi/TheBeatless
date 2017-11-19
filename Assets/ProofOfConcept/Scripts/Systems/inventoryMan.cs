@@ -23,10 +23,15 @@ public class inventoryMan : Interactable
 
     public int slotNumRetake;
 
+    GameObject rightArmObj;
+
     public override void Start()
     {
         base.Start();
         invent = playerControl.gameObject.GetComponent<Inventory>();
+        interactable = true;
+
+        rightArmObj = GameObject.FindGameObjectWithTag("rightArm");
 
         originalLayer = gameObject.layer;
     }
@@ -80,20 +85,18 @@ public class inventoryMan : Interactable
     }
 
 
-    void FindPlayerArm()
+    public void FindPlayerArm()
     {
-        transform.SetParent(_player.transform);
+        transform.SetParent(rightArmObj.transform);
 
-        Vector3 armPosition = new Vector3(-0.5f, 0f, 1f);
-
-        transform.localPosition = armPosition;
+        transform.localPosition = Vector3.zero;
         transform.localScale = transform.localScale * 2;
         gameObject.layer = originalLayer;
         // Can show this with tiny animation and Arm movement
 
     }
 
-    void putThisInInvent()
+    public void putThisInInvent()
     {
         if (!invent.isFull)
         {
@@ -103,6 +106,7 @@ public class inventoryMan : Interactable
             inInventory = true;
             underPlayerControl = false;
             interactable = true;
+            invent.somethingEquipped = false;
         }
         else
             Debug.Log("inventory full");
@@ -121,13 +125,14 @@ public class inventoryMan : Interactable
 
         invent.takeFromInventory(slotNum, isSingle, childIndex, slotChildCount);
         inInventory = false;
-
+        invent.currentObject = slotNum;
         //underPlayerControl = true;//delay this for a frame
 
 
         interactable = false;
         FindPlayerArm();
         StartCoroutine(waitFrame());
+
 
     }
 

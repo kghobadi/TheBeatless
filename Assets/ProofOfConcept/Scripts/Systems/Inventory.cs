@@ -5,13 +5,17 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 
-    FirstPersonController playerControl;
+    FirstPersonController fpc;
     camMouseLook cameraControl;
 
     GameObject inventory;
 
     public bool inventoryOpen;
     public bool canOpen;
+
+    public Vector3 inventoryPos;
+
+    public int currentObject;
 
     AudioSource soundBoard;
     public AudioClip bagOpen;
@@ -21,29 +25,39 @@ public class Inventory : MonoBehaviour
 
     public bool[] isEmpty;
 
+    public int emptyCounter;
+
+    int emptyCount;
+
     public bool isFull;
 
     public GameObject inventCam;
+
+    public bool somethingEquipped;
+
+    GameObject rightArmObj;
 
     //public bool usedNowTakeAgain;
 
     void Start()
     {
-        playerControl = GetComponent<FirstPersonController>();
+        fpc = GetComponent<FirstPersonController>();
         cameraControl = GetComponentInChildren<camMouseLook>();
 
         inventory = GameObject.FindGameObjectWithTag("Inventory");
         soundBoard = GetComponentInChildren<AudioSource>();
 
-        inventory.SetActive(false);
+        rightArmObj = GameObject.FindGameObjectWithTag("rightArm");
+        inventory.transform.position = new Vector3(1000, 1000, 1000);
+
         inventoryOpen = false;
         isEmpty = new bool[slots.Length];
         for (int i = 0; i < isEmpty.Length; i++)
         {
             isEmpty[i] = true;
         }
-
-
+        emptyCounter = slots.Length;
+        somethingEquipped = false;
     }
 
 
@@ -51,6 +65,57 @@ public class Inventory : MonoBehaviour
     {
 
         isFull = checkFull();
+
+        emptyCounter = checkEmpty();
+
+        if ((Input.GetKeyDown(KeyCode.Q) || Input.GetAxis("Mouse ScrollWheel") < 0f) && emptyCounter < isEmpty.Length)
+        {
+            if (somethingEquipped)
+            {
+                rightArmObj.transform.GetChild(0).GetComponent<inventoryMan>().putThisInInvent();
+            }
+            for (int i = 0; i < slots.Length + 1; i++)
+            {
+                if (isEmpty[currentObject])
+                {
+                    if (currentObject > 0)
+                        currentObject--;
+                    else
+                    {
+                        currentObject = slots.Length - 1;
+                    }
+                }
+                else
+                {
+                    i = slots.Length + 1;
+                }
+            }
+            slots[currentObject].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
+        }
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetAxis("Mouse ScrollWheel") > 0f) && emptyCounter < isEmpty.Length)
+        {
+            if (somethingEquipped)
+            {
+                rightArmObj.transform.GetChild(0).GetComponent<inventoryMan>().putThisInInvent();
+            }
+            for(int i = 0; i < slots.Length + 1; i++)
+            {
+                if (isEmpty[currentObject])
+                {
+                    if(currentObject < (slots.Length - 1))
+                        currentObject++;
+                    else
+                    {
+                        currentObject = 0;
+                    }
+                }
+                else
+                {
+                    i = slots.Length + 1;
+                }
+            }
+            slots[currentObject].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
+        }
 
         if (Input.GetKeyDown(KeyCode.Tab) && canOpen)
         {
@@ -80,10 +145,10 @@ public class Inventory : MonoBehaviour
 
     public void openInventory()
     {
-        playerControl.enabled = false;
+        fpc.enabled = false;
         cameraControl.enabled = false;
         Cursor.lockState = CursorLockMode.None;
-        inventory.SetActive(true);
+        inventory.transform.localPosition = inventoryPos;
         cameraControl.transform.LookAt(inventory.transform.position);
         inventoryOpen = true;
         soundBoard.PlayOneShot(bagOpen);
@@ -94,10 +159,10 @@ public class Inventory : MonoBehaviour
 
     public void closeInventory()
     {
-        playerControl.enabled = true;
+        fpc.enabled = true;
         cameraControl.enabled = true;
-        //Cursor.lockState = CursorLockMode.Locked;
-        inventory.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        inventory.transform.position = new Vector3(1000, 1000, 1000);
         inventoryOpen = false;
         soundBoard.PlayOneShot(bagClose);
         inventCam.SetActive(false);
@@ -224,6 +289,7 @@ public class Inventory : MonoBehaviour
                 isEmpty[slotNumber] = true;
         }
 
+        somethingEquipped = true;
     }
 
     bool checkFull()
@@ -236,16 +302,31 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    int checkEmpty()
+    {
+        emptyCount = 0;
+        for(int i = 0; i < isEmpty.Length; i++)
+        {
+            if (isEmpty[i])
+            {
+                emptyCount++;
+            }
+        }
+        return emptyCount;
+    }
+
 
     public void usedNowTakeAgain(int slotNumber)
     {
         if (!isEmpty[slotNumber])
         {
             slots[slotNumber].GetChild(0).GetComponent<inventoryMan>().takeFromInvent();
+            somethingEquipped = true;
             Debug.Log(slotNumber);
             //fix this
         }
 
     }
+
 
 }
