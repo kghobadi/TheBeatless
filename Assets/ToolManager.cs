@@ -6,6 +6,9 @@ public class ToolManager : MonoBehaviour
 {
 
     public GameObject water, ax;
+    public List<GameObject> seeds = new List<GameObject>();
+    public int currentObject;
+    public int inventoryMax;
     public bool pickedNew;
     public GameObject objectHeld;
 
@@ -23,8 +26,26 @@ public class ToolManager : MonoBehaviour
 
     void Update()
     {
-     
-        if (Input.GetKeyDown(KeyCode.Alpha1) && ax != null)
+
+        if (Input.GetKeyDown(KeyCode.Q) && currentObject > 0)
+        {
+            currentObject--;
+            CheckObjects();
+        }
+        if(Input.GetKeyDown(KeyCode.E) && currentObject < inventoryMax)
+        {
+            currentObject++;
+            CheckObjects();
+        }
+
+       
+
+
+    }
+
+    public void CheckObjects()
+    {
+        if (currentObject == 0 && ax != null)
         {
             if (objectHeld != ax)
             {
@@ -37,7 +58,7 @@ public class ToolManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2) && water != null)
+        else if (currentObject == 1 && water != null)
         {
             if (objectHeld != water)
             {
@@ -51,8 +72,12 @@ public class ToolManager : MonoBehaviour
             }
         }
 
+        else if(currentObject > 1 && seeds.Count > 0)
+        {
 
+        }
     }
+   
 
    public void equipWater()
     {
