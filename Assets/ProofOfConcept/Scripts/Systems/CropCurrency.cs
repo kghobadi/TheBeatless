@@ -10,7 +10,7 @@ public class CropCurrency : MonoBehaviour {
     public Text cropDisplayAmount;
 
 	void Start () {
-        cropCounter = 0;
+        //cropCounter = 0;
 		
 	}
 	
