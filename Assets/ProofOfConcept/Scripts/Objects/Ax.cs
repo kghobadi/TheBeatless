@@ -22,6 +22,7 @@ public class Ax : MonoBehaviour
     public AudioClip cropYield;
 
     inventoryMan inventMan;
+    int minCrop, maxCrop;
 
     void Start()
     {
@@ -62,17 +63,18 @@ public class Ax : MonoBehaviour
                         tgs.CellSetTag(tree, 0);
                         //play sound
                         //play falling animation
-                        if (currentTree.GetComponent<NewPlantLife>().ageCounter >= 2)
+                        
+                        if (currentTree.GetComponent<NewPlantLife>().ageCounter == 2)
                         {
-                            int randoCrops = Random.Range(1, 3);
-                            int randomRotation = Random.Range(0, 360);
-                            for (int i = 0; i < randoCrops; i++)
-                            {
-                                Vector3 xyz = (Vector3)Random.insideUnitSphere * 1 + Vector3.up * 2;
-                                Vector3 spawnPosition = xyz + currentTree.transform.position;
-                                cropClone = Instantiate(crop, spawnPosition, Quaternion.Euler(0, randomRotation, 0));
-                            }
+                            SpawnCrops(3, 6);
+                            
                         }
+                        else if (currentTree.GetComponent<NewPlantLife>().ageCounter == 3)
+                        {
+                            SpawnCrops(5, 8);
+
+                        }
+                       
                         cameraSource.PlayOneShot(cropYield);
                         Destroy(hit.transform.gameObject);
 
@@ -83,5 +85,17 @@ public class Ax : MonoBehaviour
 
         }
 
+    }
+
+    void SpawnCrops(int min, int max)
+    {
+        int randoCrops = Random.Range(min, max);
+        int randomRotation = Random.Range(0, 360);
+        for (int i = 0; i < randoCrops; i++)
+        {
+            Vector3 xyz = (Vector3)Random.insideUnitSphere * 1 + Vector3.up;
+            Vector3 spawnPosition = xyz + currentTree.transform.position;
+            cropClone = Instantiate(crop, spawnPosition, Quaternion.Euler(0, randomRotation, 0));
+        }
     }
 }
