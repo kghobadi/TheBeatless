@@ -28,7 +28,7 @@ public class inventoryMan : Interactable
     public override void Start()
     {
         base.Start();
-        invent = playerControl.gameObject.GetComponent<Inventory>();
+        invent = _player.GetComponent<Inventory>();
         interactable = true;
 
         rightArmObj = GameObject.FindGameObjectWithTag("rightArm");
