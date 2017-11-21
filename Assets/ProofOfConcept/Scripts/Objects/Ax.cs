@@ -24,6 +24,8 @@ public class Ax : MonoBehaviour
     inventoryMan inventMan;
     int minCrop, maxCrop;
 
+    WorldManager worldMan;
+
     void Start()
     {
 
@@ -33,6 +35,8 @@ public class Ax : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
 
         inventMan = GetComponent<inventoryMan>();
+
+        worldMan = GameObject.FindGameObjectWithTag("WorldManager").GetComponent<WorldManager>();
     }
 
 
