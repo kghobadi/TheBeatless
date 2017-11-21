@@ -7,8 +7,8 @@
   "settings": {
     "amp_attack": 0.10954500000000000348,
     "amp_decay": 1.5,
-    "amp_release": 0.2999999999999999889,
-    "amp_sustain": 0.74086626838235292158,
+    "amp_release": 1.6231617647058822484,
+    "amp_sustain": 0.49643841911764707842,
     "arp_frequency": 2,
     "arp_gate": 0.5,
     "arp_octaves": 1,
