@@ -64,7 +64,11 @@ public class Ax : MonoBehaviour
                         //play sound
                         //play falling animation
                         
-                        if (currentTree.GetComponent<NewPlantLife>().ageCounter == 2)
+                        if(currentTree.GetComponent<NewPlantLife>().ageCounter == 1)
+                        {
+                            SpawnCrops(1, 3);
+                        }
+                        else if (currentTree.GetComponent<NewPlantLife>().ageCounter == 2)
                         {
                             SpawnCrops(3, 6);
                             
