@@ -116,25 +116,28 @@ public class Bed : Interactable
 			case 0: //left to right
 				wond.transform.eulerAngles = new Vector3 (-90, 0, -90);
 				windBlast.transform.eulerAngles = wond.transform.eulerAngles;
-
+				windBlast.transform.position = new Vector3 (20, 0, 5);
 				//set the start of particles
 				//set their motion
 				//set simulation speed here when you've fucked w the BPM thingy
 			break;
 
 			case 1: //bottom to top
-				wond.transform.eulerAngles = new Vector3(-90, 0, 180);
+				wond.transform.eulerAngles = new Vector3 (-90, 0, 180);
 				windBlast.transform.eulerAngles = wond.transform.eulerAngles;
+				windBlast.transform.position = new Vector3 (10, 0, -5);
 			break;
 
 			case 2: //top to bottom
 				wond.transform.eulerAngles = new Vector3(-90, 0, 0);
 				windBlast.transform.eulerAngles = wond.transform.eulerAngles;
+				windBlast.transform.position = new Vector3 (10, 0, 10);
 			break;
 
 			case 3: //right to left
 				wond.transform.eulerAngles = new Vector3(-90, 0, 90);
 				windBlast.transform.eulerAngles = wond.transform.eulerAngles;
+				windBlast.transform.position = new Vector3 (0, 0, 5);
 			break;
 
 
