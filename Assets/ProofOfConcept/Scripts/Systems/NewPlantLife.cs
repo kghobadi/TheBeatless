@@ -46,6 +46,9 @@ public class NewPlantLife : MonoBehaviour
     List<AudioHelm.Note> note;
     AudioHelm.Note newNote;
 
+    public GameObject crop;
+    GameObject cropClone;
+
     void Awake()
     {
         seq = GetComponent<AudioHelm.Sequencer>();
@@ -168,6 +171,7 @@ public class NewPlantLife : MonoBehaviour
                     tgs.CellToggleRegionSurface(cellIndex, true, groundTexture);
                     tgs.CellSetCanCross(cellIndex, true);
                     //Death
+                    SpawnCrops(3, 6);
                     Destroy(gameObject);
                     //stumpClone = Instantiate(stump, transform.position, Quaternion.Euler(0, randomRotation, 0));
                     // silence after death or leftover ringing in Stump
@@ -219,6 +223,18 @@ public class NewPlantLife : MonoBehaviour
             hasBeenWateredToday = false;
             StartCoroutine(Growth());
             //can add death state here and counter for Non-Watered growth periods. 
+        }
+    }
+
+    void SpawnCrops(int min, int max)
+    {
+        int randoCrops = Random.Range(min, max);
+        int randomRotation = Random.Range(0, 360);
+        for (int i = 0; i < randoCrops; i++)
+        {
+            Vector3 xyz = (Vector3)Random.insideUnitSphere * 1 + Vector3.up;
+            Vector3 spawnPosition = xyz + transform.position;
+            cropClone = Instantiate(crop, spawnPosition, Quaternion.Euler(0, randomRotation, 0));
         }
     }
 
