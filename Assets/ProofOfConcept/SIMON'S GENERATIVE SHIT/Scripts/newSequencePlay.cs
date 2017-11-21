@@ -10,6 +10,8 @@ public class newSequencePlay : MonoBehaviour {
 
 		public bool changedSequence = false;
 
+		AudioSource source;
+
 		public bool isLeader = false;
 		public bool isFollower = false;
 
@@ -18,6 +20,8 @@ public class newSequencePlay : MonoBehaviour {
 		public int windDir = 0;
 
 		public AudioMixerGroup mixer;
+		public AudioMixerGroup mixer2;
+		public AudioMixerGroup mixer3;
 
 		public int lastNote;
 
@@ -56,6 +60,8 @@ public class newSequencePlay : MonoBehaviour {
 		{
 
 		//sequencer.enabled = false;
+		source = GetComponent<AudioSource>();
+		source.outputAudioMixerGroup = mixer;
 
 			tgs = TerrainGridSystem.instance;
 			//mixer = Instantiate ();
@@ -116,12 +122,15 @@ public class newSequencePlay : MonoBehaviour {
 
 		if (!changedSequence) {
 			if (life.ageCounter == 1) {
+				source.outputAudioMixerGroup = mixer;
 				changeSequence1 ();
 				changedSequence = true;
 			} else if (life.ageCounter == 2) {
+				source.outputAudioMixerGroup = mixer2;
 				changeSequence2 ();
 				changedSequence = true;
 			} else if (life.ageCounter == 3) {
+				source.outputAudioMixerGroup = mixer3;
 				changeSequence3 ();
 				changedSequence = true;
 			}
@@ -260,7 +269,7 @@ public class newSequencePlay : MonoBehaviour {
             newNote = 37;
             break;
         } */
-		sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * octave), newStart, newStart + endScale, velocity);
+		sequencer.AddNote(farmManager.GetComponent<assignKey>().currentList[note] + (12 * (octave + 1)), newStart, newStart + endScale, velocity);
 		sequencer.StartOnNextCycle ();
 			//}
 
