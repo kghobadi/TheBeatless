@@ -21,27 +21,45 @@ public class Ax : MonoBehaviour
     public AudioSource cameraSource;
     public AudioClip cropYield;
 
+    SpriteRenderer symbol;
+
+    private Sprite normalSprite;
+    private Sprite clickSprite;
+
     inventoryMan inventMan;
     int minCrop, maxCrop;
 
     WorldManager worldMan;
 
+    bool cursorChange, changeBack;
+    int frameCounter;
+
     void Start()
     {
-
+        frameCounter = 10;
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
 
         _player = GameObject.FindWithTag("Player");
-
+        symbol = GameObject.FindGameObjectWithTag("Symbol").GetComponent<SpriteRenderer>(); //searches for InteractSymbol
         inventMan = GetComponent<inventoryMan>();
 
         worldMan = GameObject.FindGameObjectWithTag("WorldManager").GetComponent<WorldManager>();
+
+        //loads Cursor Sprites
+        normalSprite = Resources.Load<Sprite>("CursorSprites/crosshair");
+        clickSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
     }
 
 
     void Update()
     {
+        if (changeBack)
+        {
+            cursorChange = false;
+            changeBack = false;
+            symbol.sprite = normalSprite;
+        }
         //Checks if has been picked up and equipped 
         if (inventMan.underPlayerControl)
         {
@@ -60,6 +78,7 @@ public class Ax : MonoBehaviour
                     //Checks if the hit is a ground tile and within Distance for hoeing
                     if (hit.transform.gameObject.tag == "sequencer" && Vector3.Distance(_player.transform.position, hit.point) <= axDistance)
                     {
+                        cursorChange = true;
                         currentTree = hit.transform.gameObject;
                         Cell tree = tgs.CellGetAtPosition(hit.point, true);
                         int index = currentTree.GetComponent<NewPlantLife>().cellIndex;
@@ -85,13 +104,24 @@ public class Ax : MonoBehaviour
                        
                         cameraSource.PlayOneShot(cropYield);
                         Destroy(hit.transform.gameObject);
-
                     }
                 }
             }
 
 
         }
+
+        if (cursorChange)
+        {
+            symbol.sprite = clickSprite;
+            frameCounter--;
+            if(frameCounter < 0)
+            {
+                changeBack = true;
+                frameCounter = 10;
+            }
+        }
+       
 
     }
 

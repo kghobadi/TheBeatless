@@ -31,16 +31,24 @@ public class Water : MonoBehaviour
 
     inventoryMan inventMan;
 
+    SpriteRenderer symbol;
+
+    private Sprite normalSprite;
+    private Sprite clickSprite;
+
+    bool cursorChange, changeBack;
+    int frameCounter;
+
     //Sprite symbol; use to change cursor sprite
 
     void Start()
     {
-
+        frameCounter = 10;
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
 
         _player = GameObject.FindWithTag("Player");
-
+        symbol = GameObject.FindGameObjectWithTag("Symbol").GetComponent<SpriteRenderer>(); //searches for InteractSymbol
         bed = GameObject.FindGameObjectWithTag("Bed");
         sleepScript = bed.GetComponent<Bed>();
 
@@ -48,11 +56,21 @@ public class Water : MonoBehaviour
         waterEffect.Stop();
 
         inventMan = GetComponent<inventoryMan>();
+
+        //loads Cursor Sprites
+        normalSprite = Resources.Load<Sprite>("CursorSprites/crosshair");
+        clickSprite = Resources.Load<Sprite>("CursorSprites/crosshairclicked");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (changeBack)
+        {
+            cursorChange = false;
+            changeBack = false;
+            symbol.sprite = normalSprite;
+        }
 
         if (inventMan.underPlayerControl)
         {
@@ -71,7 +89,7 @@ public class Water : MonoBehaviour
                     if (hit.transform.gameObject.tag == "sequencer" && Vector3.Distance(_player.transform.position, hit.point) <= waterDistance)
                     {
                         //Can add cursor sprite change here
-
+                        cursorChange = true;
                         currentPlant = hit.transform.gameObject.GetComponent<NewPlantLife>();
                         if (!currentPlant.hasBeenWateredToday)
                         {
@@ -87,6 +105,16 @@ public class Water : MonoBehaviour
                         }
                     }
                 }
+            }
+        }
+        if (cursorChange)
+        {
+            symbol.sprite = clickSprite;
+            frameCounter--;
+            if (frameCounter < 0)
+            {
+                changeBack = true;
+                frameCounter = 10;
             }
         }
     }
