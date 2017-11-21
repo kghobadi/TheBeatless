@@ -34,7 +34,7 @@ public class SeedCrates : Interactable {
             base.handleClickSuccess();
             seedClone = Instantiate(seedType, _player.transform.position, Quaternion.identity, _player.transform);
             FindPlayerArm(seedClone);
-            seedClone.GetComponent<NewSeed>().underPlayerControl = true;
+            seedClone.GetComponent<inventoryMan>().underPlayerControl = true;
             fpc.isHoldingSeed = true;
         }
 

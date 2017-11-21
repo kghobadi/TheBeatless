@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class Water : MonoBehaviour {
+public class Water : MonoBehaviour
+{
 
     TerrainGridSystem tgs;
 
@@ -28,9 +29,12 @@ public class Water : MonoBehaviour {
 
     public int particleAmount;
 
+    inventoryMan inventMan;
+
     //Sprite symbol; use to change cursor sprite
 
-    void Start () {
+    void Start()
+    {
 
         //TerrainGridSystem reference
         tgs = TerrainGridSystem.instance;
@@ -39,45 +43,52 @@ public class Water : MonoBehaviour {
 
         bed = GameObject.FindGameObjectWithTag("Bed");
         sleepScript = bed.GetComponent<Bed>();
-        
+
         waterEffect = GetComponentInChildren<ParticleSystem>();
         waterEffect.Stop();
+
+        inventMan = GetComponent<inventoryMan>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        //Sends out raycast
-        if (Input.GetMouseButtonDown(0))
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (inventMan.underPlayerControl)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            waterEffect.Emit(particleAmount);
-
-            //Checks if raycast hits
-            if (Physics.Raycast(ray, out hit))
+            //Sends out raycast
+            if (Input.GetMouseButtonDown(0))
             {
-                //Checks if the hit is a ground tile and within Distance for hoeing
-                if (hit.transform.gameObject.tag == "sequencer" && Vector3.Distance(_player.transform.position, hit.point) <= waterDistance)
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                waterEffect.Emit(particleAmount);
+
+                //Checks if raycast hits
+                if (Physics.Raycast(ray, out hit))
                 {
-                    //Can add cursor sprite change here
-                    
-                    currentPlant = hit.transform.gameObject.GetComponent<NewPlantLife>();
-                    if (!currentPlant.hasBeenWateredToday)
+                    //Checks if the hit is a ground tile and within Distance for hoeing
+                    if (hit.transform.gameObject.tag == "sequencer" && Vector3.Distance(_player.transform.position, hit.point) <= waterDistance)
                     {
-                        currentPlant.hasBeenWateredToday = true;
-                        currentPlant.hasBeenWatered = true;
-                        cameraSource.PlayOneShot(wateringSound);
+                        //Can add cursor sprite change here
 
-                        //to change ground texture to water texture
-                        Cell tree = tgs.CellGetAtPosition(hit.transform.position, true);
-                        int index = currentPlant.cellIndex;
-                        tgs.CellToggleRegionSurface(index, true, wateredTexture);
+                        currentPlant = hit.transform.gameObject.GetComponent<NewPlantLife>();
+                        if (!currentPlant.hasBeenWateredToday)
+                        {
+                            currentPlant.hasBeenWateredToday = true;
+                            currentPlant.hasBeenWatered = true;
+                            cameraSource.PlayOneShot(wateringSound);
 
+                            //to change ground texture to water texture
+                            Cell tree = tgs.CellGetAtPosition(hit.transform.position, true);
+                            int index = currentPlant.cellIndex;
+                            tgs.CellToggleRegionSurface(index, true, wateredTexture);
+
+                        }
                     }
                 }
             }
-            }
         }
     }
+}
 
