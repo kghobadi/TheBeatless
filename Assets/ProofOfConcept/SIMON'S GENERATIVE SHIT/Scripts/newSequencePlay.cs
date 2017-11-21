@@ -32,7 +32,7 @@ public class newSequencePlay : MonoBehaviour {
 
 		public List<int> currentKey;
 
-		public GameObject farmManager;
+	     GameObject farmManager;
 
 		NewPlantLife life;
 

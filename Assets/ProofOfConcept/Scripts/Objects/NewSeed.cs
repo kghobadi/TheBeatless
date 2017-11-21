@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TGS;
 
-public class NewSeed : Interactable
+public class NewSeed : MonoBehaviour
 {
+    GameObject _player;
+    FirstPersonController fpc;
 
     public bool plantSeed;
     public bool planting;
     public AudioClip plantedSeed;
-
+    AudioSource soundBoard;
     //which plant does this seed create?
     public GameObject plant;
     GameObject plantClone;
@@ -20,8 +22,7 @@ public class NewSeed : Interactable
     Vector3 targetPos;
 
     TerrainGridSystem tgs;
-
-    public bool underPlayerControl;
+    
 
     //All possible texture references. Can use resources.Load for this stuff. 
     public Texture2D groundTexture;
@@ -45,17 +46,19 @@ public class NewSeed : Interactable
     int currentCellIndex;
     int previousCellIndex;
 
+    inventoryMan inventMan;
+    Inventory invent;
 
-    public override void Start()
+    void Start()
     {
-        base.Start();
+        _player = GameObject.FindGameObjectWithTag("Player");
+        fpc = _player.GetComponent<FirstPersonController>();
+
+        soundBoard = Camera.main.GetComponent<AudioSource>();
 
         //grabs Sun ref
         bed = GameObject.FindGameObjectWithTag("Bed");
         sleepScript = bed.GetComponent<Bed>();
-
-        interactable = true;
-
         //Random decompDay
         //decompositionDay = Random.Range(decompositionDaysMin, decompositionDaysMax);
 
@@ -64,23 +67,15 @@ public class NewSeed : Interactable
 
         gameObject.name = "seed" + plant.name;
 
+        inventMan = GetComponent<inventoryMan>();
+        invent = _player.GetComponent<Inventory>();
         //StartCoroutine(Decompose());
-    }
-
-
-    public override void handleClickSuccess()
-    {
-        base.handleClickSuccess();
-        FindPlayerArm();
-        underPlayerControl = true;
-        playerControl.isHoldingSeed = true;
-
     }
 
     void Update()
     {
         //Checks if has been picked up and equipped 
-        if (underPlayerControl)
+        if (inventMan.underPlayerControl)
         {
             //Sends out raycast
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -115,8 +110,11 @@ public class NewSeed : Interactable
                         {
                             plantSeed = true;
                             targetPos = hit.point;
-                            playerControl.isHoldingSeed = false;
-                            underPlayerControl = false;
+                            fpc.isHoldingSeed = false;
+                            inventMan.underPlayerControl = false;
+                            invent.somethingEquipped = false;
+
+                            invent.usedNowTakeAgain(inventMan.slotNumRetake);
 
                         }
 
@@ -153,10 +151,6 @@ public class NewSeed : Interactable
         transform.Rotate(0, 1, 0 * Time.deltaTime);
 
     }
-
-
-
-
 
     public void PlantSeed(Cell tile, int index)
     {
@@ -203,31 +197,8 @@ public class NewSeed : Interactable
         tgs.CellToggleRegionSurface(index, true, texture);
         textureShowing = false;
     }
-    //Causes fruit to decay and either plant a seed on a fertile tile, or leave behind a seed for pick up
-    //IEnumerator Decompose()
-    //{
-    //    //for loops waits given # of days
-    //    for (int i = 0; i < decompositionDay; i++)
-    //    {
-    //        yield return new WaitUntil(() => sleepScript.dayPassed == true);
+   
 
-    //    }
-    //    Destroy(gameObject);
-
-    //}
-
-    void FindPlayerArm()
-    {
-        transform.SetParent(_player.transform);
-
-        Vector3 armPosition = new Vector3(-0.5f, 0f, 1f);
-
-        transform.localPosition = armPosition;
-        transform.localScale = transform.localScale * 2;
-        //gameObject.layer = originalLayer;
-        // Can show this with tiny animation and Arm movement
-
-    }
 
 
 }
