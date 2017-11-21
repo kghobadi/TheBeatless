@@ -104,7 +104,7 @@ public class Bed : Interactable
             fpc.isAwake = false;
 			setDayPassed = false;
             dayCounter++;
-            clock.bpm = Random.Range(minBpm, maxBpm);
+            //clock.bpm = Random.Range(minBpm, maxBpm);
             speedMultiplier = clock.bpm / minBpm;
             ParticleSystem.MainModule wondModule = wond.main;
             wondModule.simulationSpeed = minSimSpeed * speedMultiplier;
@@ -113,6 +113,8 @@ public class Bed : Interactable
             switch (windDir) {
 			case 0: //left to right
 				wond.transform.eulerAngles = new Vector3(-90, 0, -90);
+				//set the start of particles
+				//set their motion
 				//set simulation speed here when you've fucked w the BPM thingy
 			break;
 
